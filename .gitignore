@@ -3,3 +3,7 @@ node_modules/
 .env.local
 npm-debug.log*
 *.tmp
+*_backup.html
+*_v5.html
+*_v6.html
+b64.txt

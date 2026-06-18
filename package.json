@@ -1,15 +1,15 @@
 {
   "name": "bio-chem-ai",
-  "version": "3.3.0",
+  "version": "6.0.0",
   "private": true,
-  "description": "初中生物、化学、地理 AI 辅助学习项目",
+  "description": "初中全科 AI 辅助学习平台 · 蓝色系UI · 年级选择 · 章节大纲 · 随堂测试 · DeepSeek AI辅导",
   "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "build:library": "node scripts/build-resource-library.mjs",
     "build:geo": "node scripts/build-geo-longmarch.mjs",
-    "sync:resources": "node scripts/sync-resources.mjs",
-    "check:data": "node scripts/check-data.mjs"
+    "sync:resources": "node scripts/sync-resources.mjs"
   },
   "engines": {
     "node": ">=18"

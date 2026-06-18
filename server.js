@@ -8,9 +8,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 3000);
 
 const SUBJECTS = {
-  bio: { name: '生物学 七年级上册', dataFile: 'bio_data.json' },
-  chem: { name: '化学 九年级上册', dataFile: 'chem_data.json' },
-  geo: { name: '地理 七年级上册', dataFile: 'geo_data.json' }
+  bio: { name: '生物学', icon: '🧬', color: '#5b9a6b', dataFile: 'bio_data.json', grades: [7, 8] },
+  chem: { name: '化学', icon: '⚗️', color: '#4a90b8', dataFile: 'chem_data.json', grades: [9] },
+  geo: { name: '地理', icon: '🗺️', color: '#8B6914', dataFile: 'geo_data.json', grades: [7, 8] },
+  phy: { name: '物理', icon: '⚡', color: '#e87d4b', dataFile: 'phy_data.json', grades: [8, 9] },
+  math: { name: '数学', icon: '📐', color: '#4a90b8', dataFile: 'math_data.json', grades: [7, 8, 9] },
+  cn: { name: '语文', icon: '📖', color: '#8b6baa', dataFile: 'cn_data.json', grades: [7, 8, 9] },
+  eng: { name: '英语', icon: '🔤', color: '#e87d4b', dataFile: 'eng_data.json', grades: [7, 8, 9] },
+  hist: { name: '历史', icon: '🏛️', color: '#8B6914', dataFile: 'hist_data.json', grades: [7, 8, 9] },
+  pol: { name: '道德与法治', icon: '⚖️', color: '#2E8B85', dataFile: 'pol_data.json', grades: [7, 8, 9] }
 };
 
 const MIME_TYPES = {
@@ -56,7 +62,7 @@ function normalizeStaticPath(urlPath) {
 
 async function handleApi(req, res, url) {
   if (url.pathname === '/api/health') {
-    sendJson(res, { ok: true, app: 'bio-chem-ai', version: '3.3.0' });
+    sendJson(res, { ok: true, app: 'bio-chem-ai', version: '6.0.0' });
     return;
   }
 
@@ -66,15 +72,19 @@ async function handleApi(req, res, url) {
       const quizCount = data.reduce((sum, item) => sum + (item.quiz ? item.quiz.length : 0), 0);
       const gameTypes = [...new Set(data.filter(item => item.gameType).map(item => item.gameType))];
       return {
-        id,
-        name: meta.name,
-        knowledgeCount: data.length,
-        quizCount,
-        gameTypeCount: gameTypes.length,
-        gameTypes
+        id, name: meta.name, icon: meta.icon, color: meta.color,
+        knowledgeCount: data.length, quizCount,
+        gameTypeCount: gameTypes.length, gameTypes
       };
     }));
     sendJson(res, courses);
+    return;
+  }
+
+  // Resource library API - full textbook & standards catalog
+  if (url.pathname === '/api/library') {
+    const library = await readJson('data/resource_library.json');
+    sendJson(res, library);
     return;
   }
 
