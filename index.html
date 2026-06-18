@@ -3,1650 +3,784 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>夜市学堂 - 生物化学AI教学</title>
+<title>夜市学堂 - 初中生物化学AI教学</title>
 <style>
 :root {
-  --bg: #1a1a2e;
-  --bg2: #16213e;
-  --bg3: #0f3460;
-  --card: #1e2a4a;
-  --orange: #f39c12;
-  --orange-glow: #f7b733;
-  --blue: #3498db;
-  --blue-glow: #5dade2;
-  --green: #2ecc71;
-  --red: #e74c3c;
-  --text: #e8e8e8;
-  --text2: #a0a0b8;
-  --border: #2a3a5c;
-  --radius: 12px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.3);
-  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --bg: #faf7f2;
+  --bg2: #f5efe6;
+  --card: #ffffff;
+  --warm: #e87d4b;
+  --warm2: #f4a261;
+  --warm-light: #fef0e4;
+  --green: #5b9a6b;
+  --green-light: #e8f5e9;
+  --blue: #4a90b8;
+  --blue-light: #e3f0f8;
+  --purple: #8b6baa;
+  --purple-light: #f3edf8;
+  --text: #3d3226;
+  --text2: #7a6e5d;
+  --text3: #a89880;
+  --border: #e8ddd0;
+  --shadow: 0 2px 16px rgba(60,30,10,0.06);
+  --shadow-hover: 0 6px 24px rgba(60,30,10,0.1);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+.header{background:linear-gradient(135deg,#fae5d3,#fde8d0,#fdf0e0);padding:14px 24px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.header h1{font-size:1.4rem;font-weight:700;color:var(--warm);display:flex;align-items:center;gap:8px}
+.header h1 span.emoji{font-size:1.6rem}
+.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:30px;padding:3px}
+.tab{padding:8px 20px;border-radius:28px;border:none;cursor:pointer;font-size:.88rem;font-weight:500;color:var(--text2);background:transparent;transition:var(--transition);white-space:nowrap}
+.tab.active{background:var(--warm);color:#fff;box-shadow:0 2px 8px rgba(232,125,75,.3)}
+.tab:hover:not(.active){color:var(--warm)}
+.header-actions{display:flex;gap:8px}
+.btn-icon{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.btn-icon:hover{background:var(--warm-light);border-color:var(--warm2)}
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
+.container{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+.hero{text-align:center;padding:32px 16px 20px}
+.hero h2{font-size:1.8rem;font-weight:700;color:var(--text);margin-bottom:8px}
+.hero p{color:var(--text2);font-size:.95rem;max-width:500px;margin:0 auto}
+.stats{display:flex;justify-content:center;gap:32px;margin-top:16px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat .num{font-size:1.5rem;font-weight:700;color:var(--warm)}
+.stat .lbl{font-size:.78rem;color:var(--text3);margin-top:2px}
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 3px; }
+.unit-section{margin:20px 0 8px}
+.unit-title{font-size:1.05rem;font-weight:700;color:var(--text);padding:8px 0;border-bottom:2px solid var(--warm-light);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.unit-title .icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.unit-title .icon.bio{background:var(--green-light);color:var(--green)}
+.unit-title .icon.chem{background:var(--blue-light);color:var(--blue)}
 
-/* Neon glow text */
-.neon-text {
-  color: var(--orange);
-  text-shadow: 0 0 10px rgba(243,156,18,0.6), 0 0 20px rgba(243,156,18,0.3);
-  animation: neonPulse 2s ease-in-out infinite alternate;
-}
-@keyframes neonPulse {
-  from { text-shadow: 0 0 10px rgba(243,156,18,0.6), 0 0 20px rgba(243,156,18,0.3); }
-  to { text-shadow: 0 0 15px rgba(243,156,18,0.8), 0 0 30px rgba(243,156,18,0.5), 0 0 45px rgba(243,156,18,0.3); }
-}
+.knowledge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:24px}
+.kcard{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);cursor:pointer;transition:var(--transition);position:relative;overflow:hidden}
+.kcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);border-color:var(--warm2)}
+.kcard .kc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
+.kcard .kc-num{font-size:.7rem;font-weight:600;color:var(--warm);background:var(--warm-light);padding:2px 8px;border-radius:10px;white-space:nowrap}
+.kcard .kc-lock{font-size:.85rem;opacity:.5}
+.kcard .kc-title{font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4}
+.kcard .kc-case{font-size:.78rem;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.kcard .kc-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.kcard .kc-tag{font-size:.7rem;padding:3px 10px;border-radius:10px;font-weight:500}
+.kcard .kc-tag.exam{background:var(--purple-light);color:var(--purple)}
+.kcard .kc-tag.game{background:var(--warm-light);color:var(--warm)}
+.kcard .kc-tag.quiz{background:var(--green-light);color:var(--green)}
 
-/* Header */
-.header {
-  background: linear-gradient(135deg, var(--bg2), var(--bg3));
-  padding: 16px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 2px solid var(--border);
-  box-shadow: 0 2px 20px rgba(0,0,0,0.4);
-}
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-.logo span { color: var(--blue); }
+.kcard .kc-detail{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.kcard.expanded .kc-detail{display:block}
+.kcard .kc-detail h4{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:6px}
+.kcard .kc-detail ul{list-style:none;padding:0;margin:0 0 10px}
+.kcard .kc-detail ul li{font-size:.8rem;color:var(--text2);padding:3px 0;padding-left:16px;position:relative}
+.kcard .kc-detail ul li:before{content:'·';position:absolute;left:4px;color:var(--warm2);font-weight:700}
+.kcard .kc-detail .night{background:var(--warm-light);border-radius:var(--radius-sm);padding:10px 14px;font-size:.8rem;color:var(--warm);margin-bottom:10px;line-height:1.5}
+.kcard .kc-detail .btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-sm{padding:7px 16px;border-radius:20px;border:none;cursor:pointer;font-size:.78rem;font-weight:500;transition:var(--transition)}
+.btn-warm{background:var(--warm);color:#fff}
+.btn-warm:hover{background:#d4723f;transform:scale(1.03)}
+.btn-outline{background:transparent;color:var(--warm);border:1.5px solid var(--warm2)}
+.btn-outline:hover{background:var(--warm-light)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#4a8659}
 
-/* Nav tabs */
-.nav-tabs {
-  display: flex;
-  gap: 4px;
-  background: var(--bg);
-  border-radius: 28px;
-  padding: 4px;
-}
-.nav-tab {
-  padding: 8px 20px;
-  border-radius: 24px;
-  border: none;
-  background: transparent;
-  color: var(--text2);
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 600;
-  transition: var(--transition);
-  white-space: nowrap;
-}
-.nav-tab.active {
-  background: var(--orange);
-  color: #1a1a2e;
-  box-shadow: 0 0 15px rgba(243,156,18,0.4);
-}
-.nav-tab:hover:not(.active) { color: var(--orange); }
+.floating-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:30px;padding:6px 8px;display:flex;gap:4px;box-shadow:var(--shadow-hover);z-index:90}
+.floating-bar button{padding:8px 18px;border-radius:24px;border:none;cursor:pointer;font-size:.8rem;font-weight:500;transition:var(--transition);background:transparent;color:var(--text2);white-space:nowrap}
+.floating-bar button:hover,.floating-bar button.active-b{background:var(--warm-light);color:var(--warm)}
 
-/* Settings button */
-.settings-btn {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: var(--transition);
-}
-.settings-btn:hover { border-color: var(--orange); color: var(--orange); }
+/* Quiz Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border-radius:20px;width:92%;max-width:580px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px)scale(.96)}to{opacity:1;transform:translateY(0)scale(1)}}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:1}
+.modal-header h3{font-size:1.05rem;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:1rem;transition:var(--transition)}
+.modal-close:hover{background:var(--warm-light);border-color:var(--warm2)}
+.modal-body{padding:20px 24px 24px}
 
-/* Main container */
-.main-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-@media (max-width: 768px) {
-  .main-container { grid-template-columns: 1fr; }
-  .header-inner { justify-content: center; }
-}
+.quiz-progress{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.quiz-progress .bar{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.quiz-progress .bar-fill{height:100%;background:linear-gradient(90deg,var(--warm),var(--warm2));border-radius:3px;transition:width .4s}
+.quiz-progress .txt{font-size:.8rem;color:var(--text2);white-space:nowrap}
 
-/* Section cards */
-.section {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: var(--transition);
-}
-.section-header {
-  background: linear-gradient(135deg, var(--bg3), var(--bg2));
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  user-select: none;
-}
-.section-header h2 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  flex: 1;
-}
-.section-header .icon { font-size: 1.3rem; }
-.section-body { padding: 16px 20px; display: none; }
-.section.open .section-body { display: block; }
-.section.open .section-header .arrow { transform: rotate(180deg); }
-.arrow { transition: var(--transition); }
+.quiz-q{font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:20px;line-height:1.6}
+.quiz-img{text-align:center;margin:12px 0;font-size:3rem}
+.quiz-type-badge{display:inline-block;font-size:.7rem;padding:3px 10px;border-radius:10px;margin-bottom:10px;font-weight:500}
+.quiz-type-badge.mc{background:var(--blue-light);color:var(--blue)}
+.quiz-type-badge.fill{background:var(--green-light);color:var(--green)}
+.quiz-type-badge.sort{background:var(--purple-light);color:var(--purple)}
 
-/* Knowledge Cards */
-.knowledge-list { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; }
-.kcard {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
-  cursor: pointer;
-  transition: var(--transition);
-  position: relative;
-}
-.kcard:hover { border-color: var(--orange); transform: translateX(4px); }
-.kcard.locked { opacity: 0.6; cursor: pointer; }
-.kcard.locked::after {
-  content: "🔒";
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-}
-.kcard.free::after {
-  content: "🆓";
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.85rem;
-}
-.kcard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.kcard-title { font-weight: 700; font-size: 0.95rem; color: var(--orange); }
-.kcard-page { font-size: 0.8rem; color: var(--text2); background: var(--bg3); padding: 2px 8px; border-radius: 10px; }
-.kcard-unit { font-size: 0.78rem; color: var(--blue); margin-bottom: 4px; }
-.kcard-keypoints { font-size: 0.82rem; color: var(--text2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.kcard-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-.kcard.expanded .kcard-detail { display: block; }
-.kcard.expanded .kcard-keypoints { display: none; }
-.detail-section { margin-bottom: 10px; }
-.detail-label { font-weight: 700; color: var(--blue); font-size: 0.82rem; margin-bottom: 4px; }
-.detail-text { font-size: 0.85rem; color: var(--text2); }
-.tag-list { display: flex; flex-wrap: wrap; gap: 4px; }
-.tag {
-  background: var(--bg3);
-  color: var(--blue-glow);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 0.78rem;
-}
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{padding:14px 18px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;font-size:.9rem;transition:var(--transition);background:var(--bg2);color:var(--text)}
+.quiz-opt:hover{border-color:var(--warm2);background:var(--warm-light)}
+.quiz-opt.selected{border-color:var(--warm);background:var(--warm-light);font-weight:600}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green)}
+.quiz-opt.wrong{border-color:#e74c3c;background:#fdeaea;color:#e74c3c}
 
-/* Quiz inside cards */
-.quiz-section { margin-top: 12px; }
-.quiz-question { margin-bottom: 12px; background: var(--bg); border-radius: 8px; padding: 10px; }
-.quiz-q-text { font-weight: 600; font-size: 0.88rem; margin-bottom: 8px; }
-.quiz-options { display: flex; flex-direction: column; gap: 6px; }
-.quiz-opt {
-  padding: 8px 12px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: var(--transition);
-}
-.quiz-opt:hover { border-color: var(--blue); }
-.quiz-opt.correct { border-color: var(--green); background: rgba(46,204,113,0.15); color: var(--green); }
-.quiz-opt.wrong { border-color: var(--red); background: rgba(231,76,60,0.15); color: var(--red); }
-.quiz-feedback { font-size: 0.82rem; margin-top: 6px; padding: 8px; border-radius: 6px; display: none; }
-.quiz-feedback.show { display: block; }
-.quiz-feedback.correct { background: rgba(46,204,113,0.1); color: var(--green); }
-.quiz-feedback.wrong { background: rgba(231,76,60,0.1); color: var(--red); }
+.quiz-fill-input{padding:14px 18px;border-radius:var(--radius-sm);border:2px solid var(--border);font-size:.95rem;width:100%;background:var(--bg2);color:var(--text);font-family:inherit;transition:var(--transition)}
+.quiz-fill-input:focus{outline:none;border-color:var(--warm2);background:var(--warm-light)}
 
-/* AI Chat */
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 500px;
-  background: var(--bg);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.chat-bubble {
-  max-width: 85%;
-  padding: 12px 16px;
-  border-radius: 16px;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  animation: fadeIn 0.3s ease;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.chat-bubble.bot {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-}
-.chat-bubble.user {
-  background: var(--bg3);
-  border: 1px solid var(--orange);
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
-}
-.chat-bubble.loading {
-  opacity: 0.6;
-  animation: pulse 1.5s ease infinite;
-}
-@keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
-.chat-input-area {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-}
-.chat-input {
-  flex: 1;
-  padding: 10px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 0.9rem;
-  outline: none;
-  transition: var(--transition);
-}
-.chat-input:focus { border-color: var(--orange); }
-.chat-send {
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  background: var(--orange);
-  color: #1a1a2e;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition);
-}
-.chat-send:hover { background: var(--orange-glow); box-shadow: 0 0 15px rgba(243,156,18,0.4); }
-.chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+.quiz-sort-list{display:flex;flex-direction:column;gap:8px}
+.quiz-sort-item{padding:12px 16px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg2);cursor:grab;font-size:.88rem;transition:var(--transition);display:flex;align-items:center;gap:10px}
+.quiz-sort-item:active{cursor:grabbing;background:var(--warm-light);border-color:var(--warm2)}
+.quiz-sort-item .num{width:24px;height:24px;border-radius:50%;background:var(--warm-light);color:var(--warm);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
 
-/* Games grid */
-.games-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-@media (max-width: 768px) { .games-grid { grid-template-columns: 1fr; } }
-.game-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  cursor: pointer;
-  transition: var(--transition);
-  text-align: center;
-}
-.game-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-.game-card.locked { opacity: 0.5; position: relative; }
-.game-card.locked::after {
-  content: "🔒 付费解锁";
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.85rem;
-  color: var(--orange);
-  background: var(--bg);
-  padding: 6px 12px;
-  border-radius: 16px;
-  white-space: nowrap;
-}
-.game-icon { font-size: 2.5rem; margin-bottom: 8px; }
-.game-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
-.game-desc { font-size: 0.78rem; color: var(--text2); }
+.quiz-feedback{padding:16px;border-radius:var(--radius-sm);margin-top:16px;display:none;animation:fadeIn .3s}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:var(--green-light);color:var(--green)}
+.quiz-feedback.fail{background:#fdeaea;color:#e74c3}
+.quiz-feedback .explanation{margin-top:8px;font-size:.82rem;color:var(--text2);line-height:1.5}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+.quiz-result{text-align:center;padding:20px 0}
+.quiz-result .score-circle{width:100px;height:100px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700}
+.quiz-result .score-circle.good{background:var(--green-light);color:var(--green)}
+.quiz-result .score-circle.mid{background:var(--warm-light);color:var(--warm)}
+.quiz-result .score-circle.low{background:#fdeaea;color:#e74c3}
+
+/* Chat */
+.chat-section{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin:24px 0;overflow:hidden}
+.chat-header{padding:14px 18px;background:var(--warm-light);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.chat-header .avatar{width:36px;height:36px;border-radius:50%;background:var(--warm);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.chat-header .name{font-weight:600;font-size:.9rem}
+.chat-header .role{font-size:.75rem;color:var(--text3)}
+.chat-body{padding:16px;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.chat-msg{max-width:85%;padding:10px 14px;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.5;animation:msgIn .25s ease}
+.chat-msg.user{align-self:flex-end;background:var(--warm);color:#fff;border-bottom-right-radius:4px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg2);color:var(--text);border-bottom-left-radius:4px}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-input-row{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border);background:var(--bg2)}
+.chat-input{flex:1;padding:10px 16px;border-radius:22px;border:1.5px solid var(--border);background:var(--card);font-size:.85rem;font-family:inherit;color:var(--text);transition:var(--transition)}
+.chat-input:focus{outline:none;border-color:var(--warm2)}
+
+/* Settings Modal */
+.settings-body label{display:block;font-size:.82rem;font-weight:600;margin:12px 0 4px;color:var(--text)}
+.settings-body input{width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:.85rem;background:var(--bg2);color:var(--text);font-family:inherit}
+.settings-body input:focus{outline:none;border-color:var(--warm2)}
 
 /* Game Modal */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-}
-.modal-overlay.show { display: flex; }
-.modal {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  width: 90vw;
-  max-width: 700px;
-  max-height: 85vh;
-  overflow-y: auto;
-  animation: slideUp 0.3s ease;
-}
-@keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-.modal-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.modal-close {
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-.modal-close:hover { background: var(--bg3); }
-.modal-body { padding: 20px; }
-
-/* Game-specific styles */
-.drag-item {
-  padding: 10px 16px;
-  background: var(--bg3);
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  cursor: grab;
-  user-select: none;
-  font-size: 0.85rem;
-  transition: var(--transition);
-}
-.drag-item:hover { border-color: var(--orange); }
-.drag-item.dragging { opacity: 0.5; }
-.drop-zone {
-  min-height: 60px;
-  border: 2px dashed var(--border);
-  border-radius: 8px;
-  padding: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: flex-start;
-  transition: var(--transition);
-}
-.drop-zone.drag-over { border-color: var(--orange); background: rgba(243,156,18,0.1); }
-.drop-zone .drag-item { cursor: default; }
-
-.slider-group { margin-bottom: 16px; }
-.slider-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.85rem; }
-.slider-input {
-  width: 100%;
-  -webkit-appearance: none;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--border);
-  outline: none;
-}
-.slider-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--orange);
-  cursor: pointer;
-}
-
-.btn {
-  padding: 10px 24px;
-  border-radius: 20px;
-  border: none;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: var(--transition);
-}
-.btn-orange { background: var(--orange); color: #1a1a2e; }
-.btn-orange:hover { background: var(--orange-glow); box-shadow: 0 0 15px rgba(243,156,18,0.4); }
-.btn-blue { background: var(--blue); color: #fff; }
-.btn-blue:hover { background: var(--blue-glow); box-shadow: 0 0 15px rgba(52,152,219,0.4); }
-.btn-outline {
-  background: transparent;
-  border: 1px solid var(--orange);
-  color: var(--orange);
-}
-.btn-outline:hover { background: rgba(243,156,18,0.1); }
-
-/* Progress bar */
-.progress-bar {
-  height: 8px;
-  background: var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  margin: 8px 0;
-}
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--orange), var(--orange-glow));
-  border-radius: 4px;
-  transition: width 0.5s ease;
-}
-
-/* Paywall */
-.paywall-banner {
-  background: linear-gradient(135deg, rgba(243,156,18,0.15), rgba(52,152,219,0.15));
-  border: 1px solid var(--orange);
-  border-radius: var(--radius);
-  padding: 20px;
-  text-align: center;
-  margin: 20px 0;
-}
-.paywall-price { font-size: 2rem; font-weight: 800; color: var(--orange); }
-.unlock-input {
-  padding: 10px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 0.9rem;
-  width: 200px;
-  text-align: center;
-  margin-right: 8px;
-}
-
-/* Settings modal */
-.settings-form { display: flex; flex-direction: column; gap: 12px; }
-.settings-form label { font-weight: 600; color: var(--blue); font-size: 0.9rem; }
-.settings-form input {
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 0.9rem;
-}
-
-/* Score display */
-.score-display {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--green);
-}
-.timer-display { color: var(--red); font-weight: 700; }
-
-/* Element grid */
-.element-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-  gap: 4px;
-  max-height: 300px;
-  overflow-y: auto;
-}
-.element-cell {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.7rem;
-  font-weight: 700;
-  transition: var(--transition);
-  color: var(--text2);
-}
-.element-cell:hover { border-color: var(--orange); color: var(--orange); transform: scale(1.1); }
-.element-cell.collected { background: rgba(243,156,18,0.2); border-color: var(--orange); color: var(--orange); }
+.game-frame{min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.game-frame h3{font-size:1.1rem;margin-bottom:12px}
 
 /* Toast */
-.toast {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--green);
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 20px;
-  font-weight: 600;
-  z-index: 300;
-  animation: toastIn 0.3s ease, toastOut 0.3s ease 2s forwards;
-}
-@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
-@keyframes toastOut { to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:10px 24px;border-radius:24px;font-size:.85rem;font-weight:500;z-index:300;animation:toastIn .3s ease;white-space:nowrap}
+.toast.ok{background:var(--green-light);color:var(--green)}
+.toast.err{background:#fdeaea;color:#e74c3}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-/* Empty state */
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text2);
-}
-.empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
-
-/* Equation display */
-.equation {
-  font-family: "Courier New", monospace;
-  font-size: 1.1rem;
-  padding: 8px 12px;
-  background: var(--bg);
-  border-radius: 6px;
-  text-align: center;
-  margin: 4px 0;
-}
-.equation-input {
-  width: 36px;
-  padding: 4px 6px;
-  text-align: center;
-  background: var(--bg3);
-  border: 1px solid var(--orange);
-  border-radius: 4px;
-  color: var(--text);
-  font-size: 0.95rem;
-  font-family: "Courier New", monospace;
-}
-
-/* Carbon transform */
-.carbon-canvas-area { position: relative; width: 100%; height: 200px; background: var(--bg); border-radius: 8px; overflow: hidden; }
-.carbon-node {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  background: var(--orange);
-  border-radius: 50%;
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(243,156,18,0.6);
+@media(max-width:640px){
+  .header{padding:10px 14px}
+  .header h1{font-size:1.15rem}
+  .knowledge-grid{grid-template-columns:1fr}
+  .stats{gap:20px}
+  .container{padding:12px 10px 40px}
+  .modal{width:96%;border-radius:16px}
+  .floating-bar{left:10px;right:10px;transform:none;justify-content:center;overflow-x:auto}
 }
 </style>
 </head>
 <body>
-
-<!-- Header -->
 <header class="header">
-  <div class="header-inner">
-    <div class="logo neon-text">🔥 夜市学堂</div>
-    <div class="nav-tabs">
-      <button class="nav-tab active" onclick="switchSubject('bio')">🧬 生物七上</button>
-      <button class="nav-tab" onclick="switchSubject('chem')">⚗️ 化学九上</button>
-    </div>
-    <button class="settings-btn" onclick="toggleSettings()">⚙️ 设置</button>
+  <h1><span class="emoji">🏮</span>夜市学堂</h1>
+  <div class="tabs">
+    <button class="tab active" onclick="switchSubject('bio')">🌿 生物七上</button>
+    <button class="tab" onclick="switchSubject('chem')">⚗️ 化学九上</button>
+  </div>
+  <div class="header-actions">
+    <button class="btn-icon" onclick="toggleSettings()" title="设置">⚙️</button>
+    <button class="btn-icon" onclick="document.querySelector('.chat-section').scrollIntoView()">💬</button>
   </div>
 </header>
 
-<!-- Settings Modal -->
-<div class="modal-overlay" id="settingsModal">
-  <div class="modal" style="max-width:450px">
-    <div class="modal-header">
-      <h3>⚙️ 设置</h3>
-      <button class="modal-close" onclick="toggleSettings()">✕</button>
+<div class="container">
+  <div class="hero">
+    <h2>在夜市里学生物化学</h2>
+    <p>烤串火候学燃烧反应，发面馒头学细胞分裂——把知识变成生活</p>
+    <div class="stats">
+      <div class="stat"><div class="num" id="stat-know">42</div><div class="lbl">知识点</div></div>
+      <div class="stat"><div class="num" id="stat-quiz">94</div><div class="lbl">练习题</div></div>
+      <div class="stat"><div class="num">8</div><div class="lbl">沙盘游戏</div></div>
+      <div class="stat"><div class="num" id="stat-score">0</div><div class="lbl">我的积分</div></div>
     </div>
-    <div class="modal-body">
-      <div class="settings-form">
-        <label>DeepSeek API Key</label>
-        <input type="password" id="apiKeyInput" placeholder="sk-xxxxxxxxxxxxxxxx">
-        <small style="color:var(--text2)">用于AI大厨阿火的聊天功能。密钥仅保存在本地浏览器。</small>
-        <button class="btn btn-orange" onclick="saveApiKey()">保存密钥</button>
-        <hr style="border-color:var(--border);margin:8px 0">
-        <label>解锁码（付费用户）</label>
-        <div style="display:flex;gap:8px">
-          <input type="text" id="unlockCodeInput" placeholder="输入解锁码" style="flex:1;padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.9rem">
-          <button class="btn btn-outline" onclick="applyUnlockCode()">激活</button>
-        </div>
-        <small style="color:var(--text2)">购买后获得解锁码，可解锁全部内容和游戏。</small>
-      </div>
+  </div>
+
+  <div id="knowledge-container"></div>
+
+  <!-- AI Chat -->
+  <div class="chat-section">
+    <div class="chat-header">
+      <div class="avatar">👨‍🍳</div>
+      <div><div class="name">夜市大厨 · 阿火</div><div class="role">20年老厨师 · 生化知识隐藏大师</div></div>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg ai">嘿！我是阿火。烤串20年了，有啥不懂的生物化学问题尽管问——我用夜市的道理给你讲明白！</div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="问阿火一个问题..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button class="btn-sm btn-warm" onclick="sendMessage()">发送</button>
     </div>
   </div>
 </div>
 
-<!-- Main Content -->
-<div class="main-container">
-  <!-- Left Column: Knowledge Cards + Quiz -->
-  <div>
-    <div class="section open" id="knowledgeSection">
-      <div class="section-header" onclick="toggleSection('knowledgeSection')">
-        <span class="icon">📚</span>
-        <h2>知识卡片</h2>
-        <span class="arrow">▼</span>
-      </div>
-      <div class="section-body">
-        <div class="knowledge-list" id="knowledgeList"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Right Column: AI Chat + Games -->
-  <div>
-    <div class="section open" id="chatSection">
-      <div class="section-header" onclick="toggleSection('chatSection')">
-        <span class="icon">👨‍🍳</span>
-        <h2>夜市大厨阿火</h2>
-        <span class="arrow">▼</span>
-      </div>
-      <div class="section-body">
-        <div class="chat-container" id="chatContainer">
-          <div class="chat-messages" id="chatMessages">
-            <div class="chat-bubble bot">
-              嘿，小伙子/小姑娘！我是夜市大厨阿火，在这夜市摆摊20年了。<br>有啥生物化学上的问题？用夜市里的玩意儿给你讲明白！
-            </div>
-          </div>
-          <div class="chat-input-area">
-            <input class="chat-input" id="chatInput" placeholder="问阿火一个问题..." onkeydown="if(event.key==='Enter')sendMessage()">
-            <button class="chat-send" id="chatSendBtn" onclick="sendMessage()">发送</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:20px" class="section open" id="gamesSection">
-      <div class="section-header" onclick="toggleSection('gamesSection')">
-        <span class="icon">🎮</span>
-        <h2>沙盘游戏</h2>
-        <span class="arrow">▼</span>
-      </div>
-      <div class="section-body">
-        <div class="games-grid" id="gamesGrid"></div>
-      </div>
-    </div>
-  </div>
+<!-- Floating bottom bar -->
+<div class="floating-bar" id="floatingBar">
+  <button onclick="openGameModal(0)">🎮 生物普查员</button>
+  <button onclick="openGameModal(1)">🧬 细胞工厂</button>
+  <button onclick="openGameModal(2)">🔥 烤串火候</button>
+  <button onclick="openGameModal(5)">🔬 元素周期</button>
+  <button onclick="openGameModal(4)">📝 方程配平</button>
 </div>
 
-<!-- Paywall Banner -->
-<div class="paywall-banner" id="paywallBanner">
-  <h3>🔒 解锁全部内容</h3>
-  <p style="margin:8px 0;color:var(--text2)">免费用户可访问前3个知识卡片和1个游戏</p>
-  <p class="paywall-price">¥29.9<span style="font-size:0.8rem;color:var(--text2)">/月</span></p>
-  <p style="margin:8px 0;color:var(--text2)">扫码支付后获取解锁码</p>
-  <div style="background:var(--bg);width:180px;height:180px;margin:12px auto;border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px dashed var(--border)">
-    <span style="color:var(--text2);text-align:center">[微信支付<br>二维码占位]</span>
+<!-- Quiz Modal -->
+<div class="modal-overlay" id="quizModal"><div class="modal">
+  <div class="modal-header">
+    <h3 id="quizTitle">随堂测验</h3>
+    <button class="modal-close" onclick="closeQuiz()">✕</button>
   </div>
-  <div style="margin-top:12px">
-    <input class="unlock-input" id="paywallUnlockInput" placeholder="输入解锁码">
-    <button class="btn btn-orange" onclick="applyUnlockCode()">激活解锁</button>
+  <div class="modal-body">
+    <div class="quiz-progress"><div class="bar"><div class="bar-fill" id="quizProgressFill" style="width:0%"></div></div><span class="txt" id="quizProgressTxt">0/0</span></div>
+    <div class="quiz-type-badge mc" id="quizTypeBadge">选择题</div>
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="quiz-img" id="quizImg"></div>
+    <div id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"><span id="quizFeedbackIcon"></span> <span id="quizFeedbackText"></span><div class="explanation" id="quizExplanation"></div></div>
+    <div style="text-align:center;margin-top:16px"><button class="btn-sm btn-warm" id="quizNextBtn" onclick="nextQuiz()" style="display:none">下一题 →</button></div>
   </div>
-</div>
+</div></div>
+
+<!-- Quiz Result Modal -->
+<div class="modal-overlay" id="quizResultModal"><div class="modal">
+  <div class="modal-header"><h3>测验完成！</h3><button class="modal-close" onclick="closeQuizResult()">✕</button></div>
+  <div class="modal-body"><div class="quiz-result" id="quizResultContent"></div></div>
+</div></div>
 
 <!-- Game Modal -->
-<div class="modal-overlay" id="gameModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="gameModalTitle">游戏</h3>
-      <button class="modal-close" onclick="closeGame()">✕</button>
-    </div>
-    <div class="modal-body" id="gameModalBody"></div>
+<div class="modal-overlay" id="gameModal"><div class="modal">
+  <div class="modal-header"><h3 id="gameTitle">沙盘游戏</h3><button class="modal-close" onclick="closeGame()">✕</button></div>
+  <div class="modal-body"><div class="game-frame" id="gameContent"></div></div>
+</div></div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal"><div class="modal">
+  <div class="modal-header"><h3>设置</h3><button class="modal-close" onclick="toggleSettings()">✕</button></div>
+  <div class="modal-body settings-body">
+    <label>DeepSeek API Key</label>
+    <input type="password" id="apiKeyInput" placeholder="sk-xxxxxxxxxxxxxxxx">
+    <div style="margin-top:8px"><button class="btn-sm btn-warm" onclick="saveApiKey()">保存密钥</button> <span style="font-size:.75rem;color:var(--text3);margin-left:8px">去 platform.deepseek.com 申请</span></div>
+    <label style="margin-top:16px">解锁码</label>
+    <input type="text" id="unlockInput" placeholder="输入解锁码">
+    <div style="margin-top:8px"><button class="btn-sm btn-green" onclick="unlock()">解锁全部</button> <span style="font-size:.75rem;color:var(--text3);margin-left:8px">¥29.9/月，联系购买</span></div>
+    <p style="font-size:.75rem;color:var(--text3);margin-top:4px">测试码：<code style="background:var(--bg2);padding:2px 6px;border-radius:4px">NIGHTSCHOOL2026</code></p>
   </div>
-</div>
+</div></div>
+
+<div id="toastContainer"></div>
 
 <script>
-// ========== DATA ==========
-const BIO_DATA = [
-  {"id":"bio-1-1-1","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第一节 观察周边环境中的生物","page":"P2-6","category":"bio","keypoints":["观察是科学探究的基本方法（有目的、有计划、按顺序）","调查方法：制定方案→如实记录→分类整理","区分生物与非生物","按植物/动物/真菌/细菌/病毒分类","调查时不捕捉或伤害生物"],"examPoints":["调查方法步骤","科学观察法","生物分类基础"],"textbookColumns":["「观察·思考」观察校园生物","「科学方法」观察","「思维训练」发现问题提出问题"],"nightMarketCase":"夜市=生态调查基地——植物（蔬菜/葱/香菜）、动物（鱼/虾/鸭）、真菌（蘑菇/木耳）、微生物（酵母/霉菌）","gameDesign":"「夜市生物普查员」：给一张夜市全景图，学生拖拽贴标签分类，统计后生成分类饼图","gameType":"drag-classify","free":true,"quiz":[{"q":"科学观察的基本要求是什么？","options":["A.随便看看就行","B.有目的、有计划、按一定顺序观察","C.只用眼睛看","D.不需要记录"],"answer":1,"explanation":"科学观察必须有目的、有计划、按顺序进行，并如实记录。"},{"q":"在夜市调查中，蘑菇属于哪类生物？","options":["A.植物","B.动物","C.真菌","D.微生物"],"answer":2,"explanation":"蘑菇属于真菌，不是植物——真菌是独立的生物类群。"}]},
-  {"id":"bio-1-1-2","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第二节 生物的特征","page":"P7-11","category":"bio","keypoints":["生物7个特征：①需要营养②能呼吸③能排出废物④能对外界刺激反应⑤能生长繁殖⑥有遗传变异⑦由细胞构成（病毒除外）","区分生石花（生物）vs钟乳石（非生物）","机器人不是生物（无生命活动）"],"examPoints":["判断某物是否为生物","列举生物共同特征"],"textbookColumns":["「想一想」机器人是生物吗？","「观察·思考」生物vs非生物（生石花/钟乳石）","「练习」含羞草/鲸/狮追斑马"],"nightMarketCase":"夜市活虾vs死虾：活虾游动蹦跶（对刺激反应），死虾不动——生物与非生物的直观区分","gameDesign":"「找不同」游戏：展示夜市摊位图，限时点击哪些是生物/非生物，计分排名","gameType":"click-timer","free":true,"quiz":[{"q":"以下哪个不是生物的基本特征？","options":["A.需要营养","B.能生长繁殖","C.能制造氧气","D.能对外界刺激作出反应"],"answer":2,"explanation":"制造氧气不是所有生物的共同特征，只有能光合作用的生物才制造氧气。"},{"q":"机器人为什么不是生物？","options":["A.不会动","B.没有生命活动，不能生长繁殖","C.是金属做的","D.不需要能量"],"answer":1,"explanation":"机器人缺乏生命活动——不能生长、繁殖、新陈代谢，不符合生物的基本特征。"}]},
-  {"id":"bio-1-2-1","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第一节 学习使用显微镜","page":"P12-17","category":"bio","keypoints":["显微镜结构：目镜/物镜/镜筒/载物台/遮光器/反光镜/粗准焦螺旋/细准焦螺旋","低倍镜→高倍镜顺序","物像与标本上下左右均颠倒","放大倍数=目镜×物镜","胡克1665年发现细胞"],"examPoints":["显微镜各部件功能","放大倍数计算","物像移动方向","胡克"],"textbookColumns":["「想一想」两个凸透镜组合=显微镜原理","「实验·探究」练习使用显微镜","「科学·技术·社会」显微镜发展史"],"nightMarketCase":"肉的肌肉纤维在显微镜下像一束束钢丝绳——远比肉眼看到的复杂","gameDesign":"「虚拟显微镜操作」：拖拽粗细调焦旋钮模拟对焦，找到隐藏在模糊图像中的细胞","gameType":"drag-focus","free":true,"quiz":[{"q":"显微镜的放大倍数如何计算？","options":["A.目镜+物镜","B.目镜×物镜","C.目镜÷物镜","D.物镜÷目镜"],"answer":1,"explanation":"放大倍数=目镜放大倍数×物镜放大倍数。"},{"q":"显微镜下看到的物像是怎样的？","options":["A.与标本相同","B.左右颠倒","C.上下左右均颠倒","D.只有上下颠倒"],"answer":2,"explanation":"显微镜成像是倒像，物像与标本上下左右均颠倒。"}]},
-  {"id":"bio-1-2-2","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第二节 植物细胞","page":"P18-22","category":"bio","keypoints":["玻片标本三种：装片/切片/涂片","制作洋葱内表皮临时装片7步（擦→滴→撕→展→盖→染→吸）","植物细胞结构：细胞壁/细胞膜/细胞质/细胞核/液泡/叶绿体/线粒体","西瓜甘甜因液泡含糖"],"examPoints":["装片制作步骤","植物细胞各结构功能","动植物区别"],"textbookColumns":["「实验·探究」制作洋葱内表皮临时装片","「练习」荷叶碧+荷花红"],"nightMarketCase":"青菜为什么绿？叶绿体里有叶绿素。西瓜甜=液泡含糖多","gameDesign":"「细胞装配工厂」：拖拽细胞结构零件到正确位置组装植物细胞，完成后叶绿体发光","gameType":"drag-assembly","free":false,"quiz":[{"q":"植物细胞特有的结构是什么？","options":["A.细胞膜和细胞质","B.细胞壁、叶绿体和液泡","C.细胞核和线粒体","D.只有细胞壁"],"answer":1,"explanation":"细胞壁、叶绿体和液泡是植物细胞特有的结构，动物细胞没有。"},{"q":"制作洋葱内表皮临时装片时，\"染\"这一步用的是什么？","options":["A.清水","B.生理盐水","C.碘液","D.酒精"],"answer":2,"explanation":"用碘液染色使细胞核更清晰可见，因为碘液能使细胞核着色。"}]},
-  {"id":"bio-1-2-3","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第三节 动物细胞","page":"P23-27","category":"bio","keypoints":["动物细胞：细胞膜/细胞质/细胞核/线粒体（无细胞壁/叶绿体/液泡）","细胞膜控制物质进出","四种动物细胞形态：上皮/神经/肌/软骨细胞","施莱登和施旺创立细胞学说"],"examPoints":["动植物细胞异同","细胞学说","选择透过性"],"textbookColumns":["「实验·探究」观察人口腔上皮细胞","「科学家的故事」施莱登施旺与细胞学说"],"nightMarketCase":"烤肉纤维由成千上万个动物细胞构成，烤熟后细胞死亡、线粒体停止工作","gameDesign":"「植物/动物细胞大比拼」：点击相同结构变绿，不同结构变红弹出说明","gameType":"click-compare","free":false,"quiz":[{"q":"动物细胞不具有的结构是？","options":["A.细胞膜","B.细胞核","C.线粒体","D.细胞壁"],"answer":3,"explanation":"动物细胞没有细胞壁——细胞壁是植物细胞特有的结构。"},{"q":"细胞学说的创立者是谁？","options":["A.胡克和列文虎克","B.施莱登和施旺","C.达尔文和林奈","D.巴斯德和科赫"],"answer":1,"explanation":"施莱登（植物学家）和施旺（动物学家）共同创立了细胞学说。"}]},
-  {"id":"bio-1-2-4","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第四节 细胞的生活","page":"P28-32","category":"bio","keypoints":["细胞膜控制物质进出（选择透过性）","叶绿体光合→有机物（化学能）","线粒体分解有机物→供能","细胞核含DNA控制遗传——克隆羊多莉证明（供核母羊决定性状）"],"examPoints":["细胞物质组成","细胞核作用","叶绿体/线粒体功能","克隆技术"],"textbookColumns":["「资料分析」多莉克隆羊","「练习」DNA主要在细胞核"],"nightMarketCase":"腌菜变软：高浓度食盐水→细胞失水（渗透），细胞膜选择透过性在腌菜摊天天上演","gameDesign":"「腌菜实验模拟」：调节食盐浓度滑块，观察细胞吸水/失水动态变化","gameType":"slider-simulate","free":false,"quiz":[{"q":"细胞中被称为\"动力工厂\"的结构是？","options":["A.细胞核","B.叶绿体","C.线粒体","D.液泡"],"answer":2,"explanation":"线粒体通过呼吸作用分解有机物释放能量，是细胞的\"动力工厂\"。"},{"q":"克隆羊多莉的性状主要与哪只羊相同？","options":["A.提供卵细胞的羊","B.提供细胞核的羊","C.代孕的羊","D.三只羊各占一部分"],"answer":1,"explanation":"细胞核含有DNA遗传物质，供核母羊决定了多莉的性状。"}]},
-  {"id":"bio-1-3-1","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第一节 细胞通过分裂产生新细胞","page":"P33-37","category":"bio","keypoints":["细胞生长（体积增大）→分裂（一分为二）","分裂过程：核→质→膜（植物加壁）","染色体=DNA+蛋白质，分裂前DNA复制","癌细胞：分裂失控+可转移"],"examPoints":["分裂过程和意义","染色体变化","DNA复制","癌细胞"],"textbookColumns":["「科学·技术·社会」癌细胞——脱缰之马"],"nightMarketCase":"发面馒头为什么膨大？酵母菌不断分裂繁殖产生CO₂使面团膨大","gameDesign":"「细胞分裂动画暂停题」：播放分裂动画，随机暂停判断阶段","gameType":"video-quiz","free":false,"quiz":[{"q":"细胞分裂过程中，最先分裂的是？","options":["A.细胞膜","B.细胞质","C.细胞核","D.细胞壁"],"answer":2,"explanation":"细胞分裂时，细胞核先分裂，然后是细胞质，最后是细胞膜（植物细胞还要形成细胞壁）。"},{"q":"癌细胞的主要特点是什么？","options":["A.分裂缓慢","B.分裂失控且可以转移","C.不能分裂","D.只在固定位置生长"],"answer":1,"explanation":"癌细胞的特点是分裂失控（不受正常调控）且可以转移到身体其他部位。"}]},
-  {"id":"bio-1-3-2","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第二节 动物体的结构层次","page":"P38-42","category":"bio","keypoints":["细胞→组织→器官→系统→动物体（5层）","四种基本组织：上皮/结缔/肌肉/神经","器官由多种组织构成","八大系统构成人体"],"examPoints":["结构层次（5层）","四种组织特征","器官定义"],"textbookColumns":["「观察·思考」胃的组织构成"],"nightMarketCase":"烤串=肌肉组织+结缔组织（筋膜），受神经支配——动物结构层次在烤串中完美体现","gameDesign":"「结构层次拼图」：5张图按顺序连线，胃的四种组织拖拽组合","gameType":"drag-sequence","free":false,"quiz":[{"q":"动物体的结构层次从微观到宏观正确的顺序是？","options":["A.器官→组织→细胞→系统→个体","B.细胞→组织→器官→系统→个体","C.组织→细胞→器官→系统→个体","D.细胞→器官→组织→系统→个体"],"answer":1,"explanation":"动物体结构层次：细胞→组织→器官→系统→动物体，共5个层次。"},{"q":"胃壁中的肌肉层属于什么组织？","options":["A.上皮组织","B.结缔组织","C.肌肉组织","D.神经组织"],"answer":2,"explanation":"胃壁的肌肉层由平滑肌构成，属于肌肉组织，负责胃的蠕动。"}]},
-  {"id":"bio-1-3-3","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第三节 植物体的结构层次","page":"P43-45","category":"bio","keypoints":["细胞→组织→器官→植物体（4层，无系统）","植物组织：分生/保护/薄壁/输导/机械","六大器官：根茎叶（营养器官）/花果实种子（生殖器官）"],"examPoints":["植物结构层次（4层）","六大器官","五种组织"],"textbookColumns":["「练习」油菜六大器官标注"],"nightMarketCase":"夜市蔬菜六大器官齐全：花/果/根（萝卜）/叶/茎（莴笋）/种子（花生）","gameDesign":"「器官分类器」：拖拽各种蔬菜到根/茎/叶/花/果实/种子6个框","gameType":"drag-classify","free":false,"quiz":[{"q":"植物体的结构层次比动物体少哪一个层次？","options":["A.细胞","B.组织","C.器官","D.系统"],"answer":3,"explanation":"植物体没有\"系统\"这个层次——细胞→组织→器官→植物体，只有4层。"},{"q":"萝卜是植物的哪个器官？","options":["A.茎","B.根","C.果实","D.叶"],"answer":1,"explanation":"萝卜是植物的根（贮藏根），属于营养器官。"}]},
-  {"id":"bio-1-3-4","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第四节 单细胞生物","page":"P46-49","category":"bio","keypoints":["单细胞生物：草履虫/眼虫/衣藻/变形虫/酵母菌/大肠杆菌","草履虫结构：纤毛/表膜/口沟/食物泡/胞肛/伸缩泡/大核/小核","草履虫趋性实验（肉汁趋之/食盐避之）","赤潮与人类关系"],"examPoints":["单细胞代表","草履虫结构功能","趋性实验"],"textbookColumns":["「实验·探究」观察草履虫并探究其趋性","「练习」草履虫每天吞食43000个细菌"],"nightMarketCase":"一小包酵母含数十亿酵母细胞——每一个都是完整的生命","gameDesign":"「草履虫进食挑战」：控制草履虫移动，用纤毛将细菌颗粒推入口沟→食物泡→消化→胞肛排出","gameType":"interactive-feed","free":false,"quiz":[{"q":"以下哪个不是单细胞生物？","options":["A.草履虫","B.酵母菌","C.水螅","D.眼虫"],"answer":2,"explanation":"水螅是多细胞动物（腔肠动物），而草履虫、酵母菌、眼虫都是单细胞生物。"},{"q":"草履虫用于运动的结构是？","options":["A.鞭毛","B.纤毛","C.伪足","D.口沟"],"answer":1,"explanation":"草履虫体表密布纤毛，通过纤毛的摆动在水中运动。"}]},
-  {"id":"bio-1-practice","unit":"第一单元 生物和细胞","chapter":"综合实践项目","section":"制作细胞模型","page":"P51-60","category":"bio","keypoints":["用日常材料制作植物或动物细胞3D模型","理解细胞各结构空间关系和功能","方案选择→材料准备→制作→展示评价"],"examPoints":["细胞结构3D理解","模型制作"],"textbookColumns":["教材提供三种方案：彩泥/琼脂+小物件/废旧材料"],"nightMarketCase":"鱼丸=细胞核、豆腐=细胞质、海带=细胞壁、菜汁=液泡——夜市食材做细胞模型","gameDesign":"「3D细胞建模」：虚拟选择日常材料，拖拽组装3D细胞模型，360°旋转查看","gameType":"drag-assembly","free":false,"quiz":[{"q":"用日常材料制作细胞模型时，以下哪项最适合代表细胞核？","options":["A.透明塑料袋","B.弹珠","C.报纸","D.细线"],"answer":1,"explanation":"弹珠圆形象征细胞核，大小适中，放在细胞模型中央位置。"},{"q":"制作植物细胞模型必须包含的结构是？","options":["A.只有细胞核和细胞质","B.细胞壁、细胞膜、细胞质、细胞核、液泡、叶绿体","C.只有细胞膜和细胞核","D.与动物细胞完全相同"],"answer":1,"explanation":"植物细胞模型需要体现其特有结构：细胞壁、液泡和叶绿体。"}]},
-  {"id":"bio-2-1-1","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第一节 藻类、苔藓植物和蕨类植物","page":"P62-66","category":"bio","keypoints":["无种子植物进化：藻类→苔藓→蕨类","藻类（水生/无根茎叶分化）","苔藓（有茎叶无真根/空气质量指示植物）","蕨类（有根茎叶/孢子繁殖）","鱼缸绿膜是藻类"],"examPoints":["三类植物区别和代表","苔藓作为空气指示植物"],"textbookColumns":["「想一想」鱼缸绿膜怎么来的？","「观察·思考」藻类/苔藓/蕨类结构比较"],"nightMarketCase":"蕨菜烤肉卷：夜市蕨菜=蕨类植物——比种子植物更古老的活化石。紫菜海带=藻类","gameDesign":"「植物进化时间轴」：点击不同地质年代出现对应植物代表，藻类→苔藓→蕨类逐步解锁","gameType":"timeline-click","free":false,"quiz":[{"q":"以下哪类植物可以作为空气质量的指示植物？","options":["A.藻类","B.苔藓植物","C.蕨类植物","D.种子植物"],"answer":1,"explanation":"苔藓植物叶片只有一层细胞，对空气污染敏感，是良好的空气指示植物。"},{"q":"鱼缸壁上的绿膜是什么？","options":["A.苔藓","B.霉菌","C.藻类","D.细菌"],"answer":2,"explanation":"鱼缸绿膜是藻类大量繁殖形成的，藻类需要阳光和水中的营养。"}]},
-  {"id":"bio-2-1-2","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第二节 种子植物","page":"P67-73","category":"bio","keypoints":["种子结构：种皮+胚（胚芽/胚轴/胚根/子叶）+胚乳","菜豆（双子叶/无胚乳）vs玉米（单子叶/有胚乳）","裸子植物（松/银杏/种子裸露无果皮）","被子植物（有果皮/最高等植物）"],"examPoints":["种子结构","裸子vs被子","单双子叶区别"],"textbookColumns":["「实验·探究」观察菜豆和玉米种子结构","「练习」松球果不是果实"],"nightMarketCase":"糖炒栗子（被子/有果皮）vs烤松子（裸子/种子裸露）——一口吃出进化差别","gameDesign":"「种子解剖台」：虚拟解剖菜豆和玉米种子，拖拽标签标注各结构，碘液染色后胚乳变蓝","gameType":"drag-label","free":false,"quiz":[{"q":"裸子植物和被子植物的主要区别是什么？","options":["A.有无根","B.有无茎","C.种子外有无果皮包被","D.有无叶"],"answer":2,"explanation":"裸子植物种子裸露无果皮包被（如松子），被子植物种子有果皮包被（如苹果）。"},{"q":"菜豆种子属于什么类型？","options":["A.单子叶有胚乳","B.双子叶无胚乳","C.单子叶无胚乳","D.裸子植物"],"answer":1,"explanation":"菜豆是双子叶植物，种子无胚乳，营养物质储存在子叶中。"}]},
-  {"id":"bio-2-2-1","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第一节 无脊椎动物","page":"P74-81","category":"bio","keypoints":["无脊椎动物类群：腔肠/扁形/线形/环节/软体/节肢","节肢动物是最大动物类群","鲍鱼和鱿鱼=软体动物不是鱼"],"examPoints":["各类群特征","节肢动物特点","区分软体vs鱼类"],"textbookColumns":["「想一想」鲍鱼和鱿鱼为什么不是鱼？"],"nightMarketCase":"夜市虾蟹=节肢动物（身体分节/外骨骼/足分节）。鱿鱼=软体动物不是鱼","gameDesign":"「动物分类大闯关」：从腔肠→扁形→线形→环节→软体→节肢逐级解锁","gameType":"level-unlock","free":false,"quiz":[{"q":"为什么鲍鱼和鱿鱼不是鱼？","options":["A.它们不会游泳","B.它们属于软体动物","C.它们没有鳍","D.它们是两栖动物"],"answer":1,"explanation":"鲍鱼和鱿鱼属于软体动物门，身体柔软，与鱼类（脊椎动物）是完全不同的类群。"},{"q":"动物界中最大的类群是？","options":["A.软体动物","B.环节动物","C.节肢动物","D.脊椎动物"],"answer":2,"explanation":"节肢动物是动物界种类最多、数量最大的类群，包括昆虫、虾蟹、蜘蛛等。"}]},
-  {"id":"bio-2-2-2","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第二节 脊椎动物","page":"P82-97","category":"bio","keypoints":["鱼（鳃呼吸/体表鳞/四大家鱼：青草鲢鳙）","两栖（幼体水生鳃→成体肺+皮肤）","爬行（肺呼吸/体表鳞甲/陆地产卵）","鸟（肺+气囊双重呼吸/体表羽/恒温）","哺乳（胎生哺乳/体表毛/恒温）"],"examPoints":["五类脊椎动物特征和代表","进化顺序","恒温vs变温"],"textbookColumns":["「观察·思考」鱼/蛙/蜥蜴/鸟/哺乳动物特征比较","「练习」鸟双重呼吸"],"nightMarketCase":"夜市一摊可巡礼五类脊椎动物：鱼→蛙腿→蛇肉串→鸽子→羊肉串","gameDesign":"「脊椎动物进化跑道」：五类动物按进化排列跑道，点击查看特征卡片","gameType":"click-learn","free":false,"quiz":[{"q":"以下哪类动物是恒温动物？","options":["A.鱼和蛙","B.鸟和哺乳动物","C.蛇和蜥蜴","D.鱼和爬行动物"],"answer":1,"explanation":"鸟类和哺乳动物是恒温动物，鱼类、两栖类和爬行类都是变温动物。"},{"q":"鸟类双重呼吸的\"双重\"指的是？","options":["A.两个鼻孔同时呼吸","B.肺和气囊共同参与","C.吸气和呼气都能呼吸","D.有两个肺"],"answer":1,"explanation":"鸟类有气囊与肺相连，飞行时气囊辅助呼吸，实现高效的气体交换。"}]},
-  {"id":"bio-2-3-1","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第一节 微生物的分布","page":"P98-102","category":"bio","keypoints":["微生物=个体微小/结构简单的生物统称","细菌和真菌广泛分布","菌落：细菌（小/光滑/颜色浅）vs真菌（大/绒毛状/多彩）","生存条件：水/适宜温度/有机物"],"examPoints":["微生物概念","菌落区别","分布特点"],"textbookColumns":["「实验·探究」检测环境中的细菌和真菌","「练习」真空包装防腐败"],"nightMarketCase":"用培养基检测夜市不同位置的微生物——砧板vs洗后蔬菜vs手","gameDesign":"「微生物侦探」：在不同场景虚拟取样→培养→对比菌落数量→排名积分","gameType":"click-compare","free":false,"quiz":[{"q":"细菌菌落和真菌菌落外观上最大的区别是什么？","options":["A.颜色相同","B.细菌菌落小且光滑，真菌菌落大且绒毛状","C.细菌菌落更大","D.没有区别"],"answer":1,"explanation":"细菌菌落一般较小、表面光滑、颜色较浅；真菌菌落较大、呈绒毛状或絮状、颜色多样。"},{"q":"微生物生存不需要的条件是？","options":["A.水","B.适宜温度","C.有机物","D.阳光"],"answer":3,"explanation":"大多数微生物不需要阳光，它们需要水、适宜温度和有机物即可生存繁殖。"}]},
-  {"id":"bio-2-3-2","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第二节 细菌","page":"P103-108","category":"bio","keypoints":["细菌形态：球菌/杆菌/螺旋菌","结构：细胞壁/膜/质/DNA（无真正核膜→原核生物）","有些有荚膜（保护）/鞭毛（运动）","分裂繁殖极快","芽孢=休眠体（非繁殖体）","有益（酸奶/泡菜）和有害（致病）"],"examPoints":["细菌形态结构","原核vs真核","分裂繁殖","芽孢"],"textbookColumns":["「科学·技术·社会」巴斯德与巴氏消毒法"],"nightMarketCase":"夜市放久食物发臭变黏——细菌大量繁殖。乳酸菌做酸奶=有益菌","gameDesign":"「细菌繁殖速度挑战」：1个细菌20分钟分裂1次，计算3小时后数量→展示指数增长","gameType":"calc-quiz","free":false,"quiz":[{"q":"细菌属于什么类型的生物？","options":["A.真核生物","B.原核生物","C.病毒","D.真菌"],"answer":1,"explanation":"细菌没有成形的细胞核（无核膜），遗传物质DNA集中在核区，属于原核生物。"},{"q":"细菌的芽孢是什么？","options":["A.繁殖体","B.休眠体","C.营养器官","D.运动器官"],"answer":1,"explanation":"芽孢是细菌在恶劣环境下的休眠体，不是繁殖体——一个细菌只形成一个芽孢。"}]},
-  {"id":"bio-2-3-3","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第三节 真菌","page":"P109-113","category":"bio","keypoints":["真菌=真核生物","酵母菌（单细胞/出芽生殖）","霉菌（多细胞/菌丝/孢子繁殖）","蘑菇木耳（大型真菌）","腐乳=毛霉功劳","橘子发霉=青霉"],"examPoints":["真菌与细菌区别","酵母菌/霉菌特征","发酵应用"],"textbookColumns":["「实验·探究」观察酵母菌和霉菌","「练习」蘑菇不是植物"],"nightMarketCase":"发面靠酵母菌——分解葡萄糖产生CO₂使面团膨胀。腐乳=毛霉发酵","gameDesign":"「发酵食品工坊」：选择食材+微生物，制作发酵食品（馒头/酸奶/酱油/葡萄酒）","gameType":"choice-simulate","free":false,"quiz":[{"q":"真菌与细菌最本质的区别是什么？","options":["A.大小不同","B.真菌有真正的细胞核（真核），细菌没有","C.真菌会动","D.细菌更大"],"answer":1,"explanation":"真菌是真核生物，有成形的细胞核；细菌是原核生物，没有真正的细胞核。"},{"q":"蘑菇属于什么生物类群？","options":["A.植物","B.动物","C.真菌","D.细菌"],"answer":2,"explanation":"蘑菇属于真菌（大型真菌），不是植物——真菌没有叶绿体，不能进行光合作用。"}]},
-  {"id":"bio-2-3-4","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第四节 病毒","page":"P114-119","category":"bio","keypoints":["病毒无细胞结构=蛋白质外壳+DNA或RNA","必须寄生活细胞","伊万诺夫斯基发现烟草花叶病毒","分类：动物/植物/细菌病毒（噬菌体）","HIV侵入细胞","有益：噬菌体治疗"],"examPoints":["病毒结构特点","与细胞关系","噬菌体","发现史"],"textbookColumns":["「资料分析」烟草花叶病毒发现史","「练习」病毒不能独立生活"],"nightMarketCase":"病毒比细菌更小，肉眼完全看不见——洗手是防御病毒的第一道防线","gameDesign":"「病毒入侵模拟」：播放病毒识别→注入→复制→释放动画，关键步骤暂停答题","gameType":"video-quiz","free":false,"quiz":[{"q":"病毒的结构组成是什么？","options":["A.细胞壁+细胞膜","B.蛋白质外壳+遗传物质（DNA或RNA）","C.细胞核+细胞质","D.只有蛋白质"],"answer":1,"explanation":"病毒没有细胞结构，仅由蛋白质外壳和内部的遗传物质（DNA或RNA）组成。"},{"q":"病毒能独立生活吗？","options":["A.能","B.不能，必须寄生在活细胞中","C.有时能有时不能","D.在空气中能"],"answer":1,"explanation":"病毒不能独立生活，必须寄生在活细胞中才能进行复制。"}]},
-  {"id":"bio-2-3-practice","unit":"第二单元 多种多样的生物","chapter":"综合实践项目","section":"利用细菌或真菌制作发酵食品","page":"P120-121","category":"bio","keypoints":["乳酸菌→酸奶/泡菜","酵母菌→馒头/酿酒","控制条件：温度/时间/原料","需先请老师鉴定安全再品尝"],"examPoints":["发酵原理","微生物应用","实验安全"],"textbookColumns":["教材提供多个项目选择和装置示意图"],"nightMarketCase":"泡菜坛=乳酸菌在无氧条件下分解糖类产生乳酸——发酵的实战版","gameDesign":"「泡菜配方师」：调节盐浓度/温度/发酵时间，观察pH变化和品质","gameType":"slider-simulate","free":false,"quiz":[{"q":"制作酸奶利用的是哪种微生物？","options":["A.酵母菌","B.乳酸菌","C.霉菌","D.大肠杆菌"],"answer":1,"explanation":"乳酸菌在无氧条件下分解牛奶中的乳糖产生乳酸，使牛奶凝固变酸成为酸奶。"},{"q":"制作泡菜需要在什么条件下进行？","options":["A.有氧","B.无氧","C.光照","D.高温"],"answer":1,"explanation":"泡菜制作需要密封营造无氧环境，让乳酸菌在无氧条件下发酵产生乳酸。"}]},
-  {"id":"bio-2-4-1","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第一节 尝试对生物进行分类","page":"P122-127","category":"bio","keypoints":["分类依据：形态结构/生理功能/生殖方式","植物按有无种子→有无果皮分类","动物按有无脊柱→具体特征分类","检索表（二歧分类法）","《本草纲目》纲目分类体系"],"examPoints":["分类方法","检索表使用","分类依据"],"textbookColumns":["「观察·思考」对植物和动物进行分类","「练习」检索表填空"],"nightMarketCase":"夜市食材自然分类：植物（蔬菜/水果）vs动物（鱼/肉），再细分到种","gameDesign":"「分类树挑战」：逐级点击分类从界到种，附检索表互动填写","gameType":"click-tree","free":false,"quiz":[{"q":"生物分类的主要依据不包括？","options":["A.形态结构","B.生理功能","C.颜色好看","D.生殖方式"],"answer":2,"explanation":"生物分类依据是形态结构、生理功能和生殖方式等科学特征，不是外观颜色。"},{"q":"二歧分类法（检索表）的特点是什么？","options":["A.一次只能选一种","B.每次在两个对立特征中选择一个","C.随意选择","D.按颜色分类"],"answer":1,"explanation":"检索表每次提供两个对立特征，选择其中一个继续，直到确定生物类别。"}]},
-  {"id":"bio-2-4-2","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第二节 从种到界","page":"P128-134","category":"bio","keypoints":["分类等级（高→低）：界→门→纲→目→科→属→种","种是最基本分类单位","等级越高共同特征越少","林奈双名法（属名+种名）","狼的分类：动物界→脊索动物门→哺乳纲→食肉目→犬科→犬属→狼种"],"examPoints":["分类等级关系","双名法","狼的分类实例"],"textbookColumns":["「观察·思考」狼的分类等级图示"],"nightMarketCase":"鲫鱼和鲤鱼同属鲤科不同种——亲缘关系近但不同种","gameDesign":"「族谱连线」：展示分类框，学生连线对应生物，完成后显示进化树","gameType":"drag-connect","free":false,"quiz":[{"q":"生物分类的基本单位是？","options":["A.界","B.门","C.属","D.种"],"answer":3,"explanation":"种（物种）是生物分类的最基本单位，同种的生物可以自然交配产生可育后代。"},{"q":"林奈双名法中的学名由哪两部分组成？","options":["A.界名+门名","B.属名+种名","C.科名+属名","D.目名+科名"],"answer":1,"explanation":"林奈双名法：学名=属名+种名，如Homo sapiens（智人）。"}]}
-];
+// ============ DATA ============
+const BIO_DATA = [{"id":"bio-1-1-1","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第一节 观察周边环境中的生物","page":"P2-6","category":"bio","keypoints":["观察是科学探究的基本方法（有目的、有计划、按顺序）","调查方法：制定方案→如实记录→分类整理","区分生物与非生物","按植物/动物/真菌/细菌/病毒分类","调查时不捕捉或伤害生物"],"examPoints":["调查方法步骤","科学观察法","生物分类基础"],"textbookColumns":["「观察·思考」观察校园生物","「科学方法」观察","「思维训练」发现问题提出问题"],"nightMarketCase":"夜市=生态调查基地——植物（蔬菜/葱/香菜）、动物（鱼/虾/鸭）、真菌（蘑菇/木耳）、微生物（酵母/霉菌）","gameDesign":"「夜市生物普查员」：给一张夜市全景图，学生拖拽贴标签分类，统计后生成分类饼图","gameType":"drag-classify","free":true,"quiz":[{"type":"mc","q":"科学观察的基本要求是什么？","options":["随便看看就行","有目的、有计划、按一定顺序观察","只用眼睛看","不需要记录"],"answer":1,"explanation":"科学观察必须有目的、有计划、按顺序进行，并如实记录。"},{"type":"mc","q":"在夜市调查中，蘑菇属于哪类生物？","options":["植物","动物","真菌","微生物"],"answer":2,"explanation":"蘑菇属于真菌，不是植物——真菌是独立的生物类群。"},{"type":"fill","q":"科学调查的基本步骤是：制定方案 → ___ → 分类整理","answer":"如实记录","hint":"调查时要'诚实地记下来'","explanation":"调查步骤：制定方案→如实记录→分类整理。"}]},{"id":"bio-1-1-2","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第二节 生物的特征","page":"P7-11","category":"bio","keypoints":["生物7个特征：①需要营养②能呼吸③能排出废物④能对外界刺激反应⑤能生长繁殖⑥有遗传变异⑦由细胞构成（病毒除外）","区分生石花（生物）vs钟乳石（非生物）","机器人不是生物（无生命活动）"],"examPoints":["判断某物是否为生物","列举生物共同特征"],"textbookColumns":["「想一想」机器人是生物吗？","「观察·思考」生物vs非生物（生石花/钟乳石）","「练习」含羞草/鲸/狮追斑马"],"nightMarketCase":"夜市活虾vs死虾：活虾游动蹦跶（对刺激反应），死虾不动——生物与非生物的直观区分","gameDesign":"「找不同」游戏：展示夜市摊位图，限时点击哪些是生物/非生物，计分排名","gameType":"click-timer","free":true,"quiz":[{"type":"mc","q":"以下哪个不是生物的基本特征？","options":["需要营养","能生长繁殖","能制造氧气","能对外界刺激作出反应"],"answer":2,"explanation":"制造氧气不是所有生物的共同特征，只有能光合作用的生物才制造氧气。"},{"type":"mc","q":"机器人为什么不是生物？","options":["不会动","没有生命活动，不能生长繁殖","是金属做的","不需要能量"],"answer":1,"explanation":"机器人缺乏生命活动——不能生长、繁殖、新陈代谢，不符合生物的基本特征。"}]},{"id":"bio-1-2-1","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第一节 学习使用显微镜","page":"P12-17","category":"bio","keypoints":["显微镜结构：目镜/物镜/镜筒/载物台/遮光器/反光镜/粗准焦螺旋/细准焦螺旋","低倍镜→高倍镜顺序","物像与标本上下左右均颠倒","放大倍数=目镜×物镜","胡克1665年发现细胞"],"examPoints":["显微镜各部件功能","放大倍数计算","物像移动方向","胡克"],"textbookColumns":["「想一想」两个凸透镜组合=显微镜原理","「实验·探究」练习使用显微镜","「科学·技术·社会」显微镜发展史"],"nightMarketCase":"肉的肌肉纤维在显微镜下像一束束钢丝绳——远比肉眼看到的复杂","gameDesign":"「虚拟显微镜操作」：拖拽粗细调焦旋钮模拟对焦，找到隐藏在模糊图像中的细胞","gameType":"drag-focus","free":true,"quiz":[{"type":"mc","q":"显微镜的放大倍数如何计算？","options":["目镜+物镜","目镜×物镜","目镜÷物镜","物镜÷目镜"],"answer":1,"explanation":"放大倍数=目镜放大倍数×物镜放大倍数。"},{"type":"mc","q":"显微镜下看到的物像是怎样的？","options":["与标本相同","左右颠倒","上下左右均颠倒","只有上下颠倒"],"answer":2,"explanation":"显微镜成像是倒像，物像与标本上下左右均颠倒。"},{"type":"fill","q":"如果用10×目镜和40×物镜，总放大倍数是___倍","answer":"400","hint":"目镜倍数 × 物镜倍数","explanation":"10×40=400倍。"}]},{"id":"bio-1-2-2","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第二节 植物细胞","page":"P18-22","category":"bio","keypoints":["玻片标本三种：装片/切片/涂片","制作洋葱内表皮临时装片7步（擦→滴→撕→展→盖→染→吸）","植物细胞结构：细胞壁/细胞膜/细胞质/细胞核/液泡/叶绿体/线粒体","西瓜甘甜因液泡含糖"],"examPoints":["装片制作步骤","植物细胞各结构功能","动植物区别"],"textbookColumns":["「实验·探究」制作洋葱内表皮临时装片","「练习」荷叶碧+荷花红"],"nightMarketCase":"青菜为什么绿？叶绿体里有叶绿素。西瓜甜=液泡含糖多","gameDesign":"「细胞装配工厂」：拖拽细胞结构零件到正确位置组装植物细胞，完成后叶绿体发光","gameType":"drag-assembly","free":false,"quiz":[{"type":"mc","q":"植物细胞特有的结构是什么？","options":["细胞膜和细胞质","细胞壁、叶绿体和液泡","细胞核和线粒体","只有细胞壁"],"answer":1,"explanation":"细胞壁、叶绿体和液泡是植物细胞特有的结构，动物细胞没有。"},{"type":"sort","q":"请排列制作洋葱内表皮临时装片的正确步骤","items":["用纱布擦净载玻片和盖玻片","在载玻片中央滴一滴清水","撕取洋葱内表皮","将内表皮展平","盖上盖玻片","用碘液染色","用吸水纸吸引"],"explanation":"7步顺序：擦→滴→撕→展→盖→染→吸。每一步都不能乱！"}]},{"id":"bio-1-2-3","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第三节 动物细胞","page":"P23-27","category":"bio","keypoints":["动物细胞：细胞膜/细胞质/细胞核/线粒体（无细胞壁/叶绿体/液泡）","细胞膜控制物质进出","四种动物细胞形态：上皮/神经/肌/软骨细胞","施莱登和施旺创立细胞学说"],"examPoints":["动植物细胞异同","细胞学说","选择透过性"],"textbookColumns":["「实验·探究」观察人口腔上皮细胞","「科学家的故事」施莱登施旺与细胞学说"],"nightMarketCase":"烤肉纤维由成千上万个动物细胞构成，烤熟后细胞死亡、线粒体停止工作","gameDesign":"「植物/动物细胞大比拼」：点击相同结构变绿，不同结构变红弹出说明","gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"动物细胞不具有的结构是？","options":["细胞膜","细胞核","线粒体","细胞壁"],"answer":3,"explanation":"动物细胞没有细胞壁——细胞壁是植物细胞特有的结构。"},{"type":"mc","q":"细胞学说的创立者是谁？","options":["胡克和列文虎克","施莱登和施旺","达尔文和林奈","巴斯德和科赫"],"answer":1,"explanation":"施莱登（植物学家）和施旺（动物学家）共同创立了细胞学说。"}]},{"id":"bio-1-2-4","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第四节 细胞的生活","page":"P28-32","category":"bio","keypoints":["细胞膜控制物质进出（选择透过性）","叶绿体光合→有机物（化学能）","线粒体分解有机物→供能","细胞核含DNA控制遗传——克隆羊多莉证明（供核母羊决定性状）"],"examPoints":["细胞物质组成","细胞核作用","叶绿体/线粒体功能","克隆技术"],"textbookColumns":["「资料分析」多莉克隆羊","「练习」DNA主要在细胞核"],"nightMarketCase":"腌菜变软：高浓度食盐水→细胞失水（渗透），细胞膜选择透过性在腌菜摊天天上演","gameDesign":"「腌菜实验模拟」：调节食盐浓度滑块，观察细胞吸水/失水动态变化","gameType":"slider-simulate","free":false,"quiz":[{"type":"mc","q":"细胞中被称为动力工厂的结构是？","options":["细胞核","叶绿体","线粒体","液泡"],"answer":2,"explanation":"线粒体通过呼吸作用分解有机物释放能量，是细胞的动力工厂。"},{"type":"mc","q":"克隆羊多莉的性状主要与哪只羊相同？","options":["提供卵细胞的羊","提供细胞核的羊","代孕的羊","三只羊各占一部分"],"answer":1,"explanation":"细胞核含有DNA遗传物质，供核母羊决定了多莉的性状。"}]},{"id":"bio-1-3-1","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第一节 细胞通过分裂产生新细胞","page":"P33-37","category":"bio","keypoints":["细胞生长（体积增大）→分裂（一分为二）","分裂过程：核→质→膜（植物加壁）","染色体=DNA+蛋白质，分裂前DNA复制","癌细胞：分裂失控+可转移"],"examPoints":["分裂过程和意义","染色体变化","DNA复制","癌细胞"],"textbookColumns":["「科学·技术·社会」癌细胞——脱缰之马"],"nightMarketCase":"发面馒头为什么膨大？酵母菌不断分裂繁殖产生CO₂使面团膨大","gameDesign":"「细胞分裂动画暂停题」：播放分裂动画，随机暂停判断阶段","gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"细胞分裂过程中，最先分裂的是？","options":["细胞膜","细胞质","细胞核","细胞壁"],"answer":2,"explanation":"细胞分裂时，细胞核先分裂，然后是细胞质，最后是细胞膜。"},{"type":"fill","q":"染色体是由___和蛋白质组成的","answer":"DNA","hint":"遗传物质的双螺旋结构","explanation":"染色体=DNA+蛋白质，DNA是遗传物质。"}]},{"id":"bio-1-3-2","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第二节 动物体的结构层次","page":"P38-42","category":"bio","keypoints":["细胞→组织→器官→系统→动物体（5层）","四种基本组织：上皮/结缔/肌肉/神经","器官由多种组织构成","八大系统构成人体"],"examPoints":["结构层次（5层）","四种组织特征","器官定义"],"textbookColumns":["「观察·思考」胃的组织构成"],"nightMarketCase":"烤串=肌肉组织+结缔组织（筋膜），受神经支配——动物结构层次在烤串中完美体现","gameDesign":"「结构层次拼图」：5张图按顺序连线，胃的四种组织拖拽组合","gameType":"drag-sequence","free":false,"quiz":[{"type":"sort","q":"请排列动物体结构层次从微观到宏观的正确顺序","items":["细胞","组织","器官","系统","动物体"],"explanation":"动物体结构层次：细胞→组织→器官→系统→动物体，共5个层次。"},{"type":"mc","q":"胃壁中的肌肉层属于什么组织？","options":["上皮组织","结缔组织","肌肉组织","神经组织"],"answer":2,"explanation":"胃壁的肌肉层由平滑肌构成，属于肌肉组织，负责胃的蠕动。"}]},{"id":"bio-1-3-3","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第三节 植物体的结构层次","page":"P43-45","category":"bio","keypoints":["细胞→组织→器官→植物体（4层，无系统）","植物组织：分生/保护/薄壁/输导/机械","六大器官：根茎叶（营养器官）/花果实种子（生殖器官）"],"examPoints":["植物结构层次（4层）","六大器官","五种组织"],"textbookColumns":["「练习」油菜六大器官标注"],"nightMarketCase":"夜市蔬菜六大器官齐全：花/果/根（萝卜）/叶/茎（莴笋）/种子（花生）","gameDesign":"「器官分类器」：拖拽各种蔬菜到根/茎/叶/花/果实/种子6个框","gameType":"drag-classify","free":false,"quiz":[{"type":"mc","q":"植物体的结构层次比动物体少哪一个层次？","options":["细胞","组织","器官","系统"],"answer":3,"explanation":"植物体没有系统这个层次——细胞→组织→器官→植物体，只有4层。"},{"type":"fill","q":"萝卜是植物的___器官（填根/茎/叶/花/果实/种子）","answer":"根","hint":"属于营养器官","explanation":"萝卜是植物的根（贮藏根），属于营养器官。"}]},{"id":"bio-1-3-4","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第四节 单细胞生物","page":"P46-49","category":"bio","keypoints":["单细胞生物：草履虫/眼虫/衣藻/变形虫/酵母菌/大肠杆菌","草履虫结构：纤毛/表膜/口沟/食物泡/胞肛/伸缩泡/大核/小核","草履虫趋性实验（肉汁趋之/食盐避之）","赤潮与人类关系"],"examPoints":["单细胞代表","草履虫结构功能","趋性实验"],"textbookColumns":["「实验·探究」观察草履虫并探究其趋性","「练习」草履虫每天吞食43000个细菌"],"nightMarketCase":"一小包酵母含数十亿酵母细胞——每一个都是完整的生命","gameDesign":"「草履虫进食挑战」：控制草履虫移动，用纤毛将细菌颗粒推入口沟→食物泡→消化→胞肛排出","gameType":"interactive-feed","free":false,"quiz":[{"type":"mc","q":"以下哪个不是单细胞生物？","options":["草履虫","酵母菌","水螅","眼虫"],"answer":2,"explanation":"水螅是多细胞动物（腔肠动物），而草履虫、酵母菌、眼虫都是单细胞生物。"},{"type":"mc","q":"草履虫用于运动的结构是？","options":["鞭毛","纤毛","伪足","口沟"],"answer":1,"explanation":"草履虫体表密布纤毛，通过纤毛的摆动在水中运动。"}]},{"id":"bio-2-1-1","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第一节 藻类、苔藓植物和蕨类植物","page":"P62-66","category":"bio","keypoints":["无种子植物进化：藻类→苔藓→蕨类","藻类（水生/无根茎叶分化）","苔藓（有茎叶无真根/空气质量指示植物）","蕨类（有根茎叶/孢子繁殖）","鱼缸绿膜是藻类"],"examPoints":["三类植物区别和代表","苔藓作为空气指示植物"],"textbookColumns":["「想一想」鱼缸绿膜怎么来的？","「观察·思考」藻类/苔藓/蕨类结构比较"],"nightMarketCase":"蕨菜烤肉卷：夜市蕨菜=蕨类植物——比种子植物更古老的活化石","gameDesign":"「植物进化时间轴」：点击不同地质年代出现对应植物代表","gameType":"timeline-click","free":false,"quiz":[{"type":"mc","q":"以下哪类植物可以作为空气质量的指示植物？","options":["藻类","苔藓植物","蕨类植物","种子植物"],"answer":1,"explanation":"苔藓植物叶片只有一层细胞，对空气污染敏感，是良好的空气指示植物。"},{"type":"mc","q":"鱼缸壁上的绿膜是什么？","options":["苔藓","霉菌","藻类","细菌"],"answer":2,"explanation":"鱼缸绿膜是藻类大量繁殖形成的，藻类需要阳光和水中的营养。"}]},{"id":"bio-2-1-2","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第二节 种子植物","page":"P67-73","category":"bio","keypoints":["种子结构：种皮+胚（胚芽/胚轴/胚根/子叶）+胚乳","菜豆（双子叶/无胚乳）vs玉米（单子叶/有胚乳）","裸子植物（松/银杏/种子裸露无果皮）","被子植物（有果皮/最高等植物）"],"examPoints":["种子结构","裸子vs被子","单双子叶区别"],"textbookColumns":["「实验·探究」观察菜豆和玉米种子结构","「练习」松球果不是果实"],"nightMarketCase":"糖炒栗子（被子/有果皮）vs烤松子（裸子/种子裸露）——一口吃出进化差别","gameDesign":"「种子解剖台」：虚拟解剖菜豆和玉米种子，拖拽标签标注各结构","gameType":"drag-label","free":false,"quiz":[{"type":"mc","q":"裸子植物和被子植物的主要区别是什么？","options":["有无根","有无茎","种子外有无果皮包被","有无叶"],"answer":2,"explanation":"裸子植物种子裸露无果皮包被，被子植物种子有果皮包被。"},{"type":"mc","q":"菜豆种子属于什么类型？","options":["单子叶有胚乳","双子叶无胚乳","单子叶无胚乳","裸子植物"],"answer":1,"explanation":"菜豆是双子叶植物，种子无胚乳，营养物质储存在子叶中。"}]},{"id":"bio-2-2-1","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第一节 无脊椎动物","page":"P74-81","category":"bio","keypoints":["无脊椎动物类群：腔肠/扁形/线形/环节/软体/节肢","节肢动物是最大动物类群","鲍鱼和鱿鱼=软体动物不是鱼"],"examPoints":["各类群特征","节肢动物特点","区分软体vs鱼类"],"textbookColumns":["「想一想」鲍鱼和鱿鱼为什么不是鱼？"],"nightMarketCase":"夜市虾蟹=节肢动物（身体分节/外骨骼/足分节）。鱿鱼=软体动物不是鱼","gameDesign":"「动物分类大闯关」：从腔肠→扁形→线形→环节→软体→节肢逐级解锁","gameType":"level-unlock","free":false,"quiz":[{"type":"mc","q":"为什么鲍鱼和鱿鱼不是鱼？","options":["它们不会游泳","它们属于软体动物","它们没有鳍","它们是两栖动物"],"answer":1,"explanation":"鲍鱼和鱿鱼属于软体动物门，身体柔软，与鱼类（脊椎动物）是完全不同的类群。"},{"type":"mc","q":"动物界中最大的类群是？","options":["软体动物","环节动物","节肢动物","脊椎动物"],"answer":2,"explanation":"节肢动物是动物界种类最多、数量最大的类群，包括昆虫、虾蟹、蜘蛛等。"}]},{"id":"bio-2-2-2","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第二节 脊椎动物","page":"P82-97","category":"bio","keypoints":["鱼（鳃呼吸/体表鳞/四大家鱼：青草鲢鳙）","两栖（幼体水生鳃→成体肺+皮肤）","爬行（肺呼吸/体表鳞甲/陆地产卵）","鸟（肺+气囊双重呼吸/体表羽/恒温）","哺乳（胎生哺乳/体表毛/恒温）"],"examPoints":["五类脊椎动物特征和代表","进化顺序","恒温vs变温"],"textbookColumns":["「观察·思考」鱼/蛙/蜥蜴/鸟/哺乳动物特征比较","「练习」鸟双重呼吸"],"nightMarketCase":"夜市一摊可巡礼五类脊椎动物：鱼→蛙腿→蛇肉串→鸽子→羊肉串","gameDesign":"「脊椎动物进化跑道」：五类动物按进化排列跑道，点击查看特征卡片","gameType":"click-learn","free":false,"quiz":[{"type":"mc","q":"以下哪类动物是恒温动物？","options":["鱼和蛙","鸟和哺乳动物","蛇和蜥蜴","鱼和爬行动物"],"answer":1,"explanation":"鸟类和哺乳动物是恒温动物，鱼类、两栖类和爬行类都是变温动物。"},{"type":"sort","q":"请按进化顺序排列脊椎动物类群（从低等到高等）","items":["鱼类","两栖类","爬行类","鸟类","哺乳类"],"explanation":"进化顺序：鱼→两栖→爬行→鸟→哺乳，正好也是夜市食材的进化巡礼！"}]},{"id":"bio-2-3-1","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第一节 微生物的分布","page":"P98-102","category":"bio","keypoints":["微生物=个体微小/结构简单的生物统称","细菌和真菌广泛分布","菌落：细菌（小/光滑/颜色浅）vs真菌（大/绒毛状/多彩）","生存条件：水/适宜温度/有机物"],"examPoints":["微生物概念","菌落区别","分布特点"],"textbookColumns":["「实验·探究」检测环境中的细菌和真菌","「练习」真空包装防腐败"],"nightMarketCase":"用培养基检测夜市不同位置的微生物——砧板vs洗后蔬菜vs手","gameDesign":"「微生物侦探」：在不同场景虚拟取样→培养→对比菌落数量→排名积分","gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"细菌菌落和真菌菌落外观上最大的区别是什么？","options":["颜色相同","细菌菌落小且光滑，真菌菌落大且绒毛状","细菌菌落更大","没有区别"],"answer":1,"explanation":"细菌菌落一般较小、表面光滑、颜色较浅；真菌菌落较大、呈绒毛状或絮状。"},{"type":"mc","q":"微生物生存不需要的条件是？","options":["水","适宜温度","有机物","阳光"],"answer":3,"explanation":"大多数微生物不需要阳光，它们需要水、适宜温度和有机物即可生存繁殖。"}]},{"id":"bio-2-3-2","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第二节 细菌","page":"P103-108","category":"bio","keypoints":["细菌形态：球菌/杆菌/螺旋菌","结构：细胞壁/膜/质/DNA（无真正核膜→原核生物）","有些有荚膜（保护）/鞭毛（运动）","分裂繁殖极快","芽孢=休眠体（非繁殖体）","有益（酸奶/泡菜）和有害（致病）"],"examPoints":["细菌形态结构","原核vs真核","分裂繁殖","芽孢"],"textbookColumns":["「科学·技术·社会」巴斯德与巴氏消毒法"],"nightMarketCase":"夜市放久食物发臭变黏——细菌大量繁殖。乳酸菌做酸奶=有益菌","gameDesign":"「细菌繁殖速度挑战」：1个细菌20分钟分裂1次，计算3小时后数量","gameType":"calc-quiz","free":false,"quiz":[{"type":"mc","q":"细菌属于什么类型的生物？","options":["真核生物","原核生物","病毒","真菌"],"answer":1,"explanation":"细菌没有成形的细胞核（无核膜），遗传物质DNA集中在核区，属于原核生物。"},{"type":"fill","q":"一个细菌每20分钟分裂一次，3小时后有___个细菌","answer":"512","hint":"3小时=180分钟，180÷20=9代，2⁹=512","explanation":"2⁹=512。这就是指数增长的力量！"}]},{"id":"bio-2-3-3","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第三节 真菌","page":"P109-113","category":"bio","keypoints":["真菌=真核生物","酵母菌（单细胞/出芽生殖）","霉菌（多细胞/菌丝/孢子繁殖）","蘑菇木耳（大型真菌）","腐乳=毛霉功劳","橘子发霉=青霉"],"examPoints":["真菌与细菌区别","酵母菌/霉菌特征","发酵应用"],"textbookColumns":["「实验·探究」观察酵母菌和霉菌","「练习」蘑菇不是植物"],"nightMarketCase":"发面靠酵母菌——分解葡萄糖产生CO₂使面团膨胀。腐乳=毛霉发酵","gameDesign":"「发酵食品工坊」：选择食材+微生物，制作发酵食品（馒头/酸奶/酱油/葡萄酒）","gameType":"choice-simulate","free":false,"quiz":[{"type":"mc","q":"真菌与细菌最本质的区别是什么？","options":["大小不同","真菌有真正的细胞核（真核），细菌没有","真菌会动","细菌更大"],"answer":1,"explanation":"真菌是真核生物，有成形的细胞核；细菌是原核生物，没有真正的细胞核。"},{"type":"mc","q":"蘑菇属于什么生物类群？","options":["植物","动物","真菌","细菌"],"answer":2,"explanation":"蘑菇属于真菌（大型真菌），不是植物——真菌没有叶绿体，不能进行光合作用。"}]},{"id":"bio-2-3-4","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第四节 病毒","page":"P114-119","category":"bio","keypoints":["病毒无细胞结构=蛋白质外壳+DNA或RNA","必须寄生活细胞","伊万诺夫斯基发现烟草花叶病毒","分类：动物/植物/细菌病毒（噬菌体）","HIV侵入细胞","有益：噬菌体治疗"],"examPoints":["病毒结构特点","与细胞关系","噬菌体","发现史"],"textbookColumns":["「资料分析」烟草花叶病毒发现史","「练习」病毒不能独立生活"],"nightMarketCase":"病毒比细菌更小，肉眼完全看不见——洗手是防御病毒的第一道防线","gameDesign":"「病毒入侵模拟」：播放病毒识别→注入→复制→释放动画","gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"病毒的结构组成是什么？","options":["细胞壁+细胞膜","蛋白质外壳+遗传物质（DNA或RNA）","细胞核+细胞质","只有蛋白质"],"answer":1,"explanation":"病毒没有细胞结构，仅由蛋白质外壳和内部的遗传物质组成。"},{"type":"mc","q":"病毒能独立生活吗？","options":["能","不能，必须寄生在活细胞中","有时能有时不能","在空气中能"],"answer":1,"explanation":"病毒不能独立生活，必须寄生在活细胞中才能进行复制。"}]},{"id":"bio-2-4-1","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第一节 尝试对生物进行分类","page":"P122-127","category":"bio","keypoints":["分类依据：形态结构/生理功能/生殖方式","植物按有无种子→有无果皮分类","动物按有无脊柱→具体特征分类","检索表（二歧分类法）","《本草纲目》纲目分类体系"],"examPoints":["分类方法","检索表使用","分类依据"],"textbookColumns":["「观察·思考」对植物和动物进行分类","「练习」检索表填空"],"nightMarketCase":"夜市食材自然分类：植物（蔬菜/水果）vs动物（鱼/肉），再细分到种","gameDesign":"「分类树挑战」：逐级点击分类从界到种，附检索表互动填写","gameType":"click-tree","free":false,"quiz":[{"type":"mc","q":"二歧分类法（检索表）的特点是什么？","options":["一次只能选一种","每次在两个对立特征中选择一个","随意选择","按颜色分类"],"answer":1,"explanation":"检索表每次提供两个对立特征，选择其中一个继续，直到确定生物类别。"},{"type":"fill","q":"生物分类的7个等级从大到小是：界→门→纲→目→___→属→种","answer":"科","hint":"'科'排在目之后、属之前","explanation":"分类等级：界→门→纲→目→科→属→种，共7级。"}]},{"id":"bio-2-4-2","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第二节 从种到界","page":"P128-134","category":"bio","keypoints":["分类等级（高→低）：界→门→纲→目→科→属→种","种是最基本分类单位","等级越高共同特征越少","林奈双名法（属名+种名）","狼的分类：动物界→脊索动物门→哺乳纲→食肉目→犬科→犬属→狼种"],"examPoints":["分类等级关系","双名法","狼的分类实例"],"textbookColumns":["「观察·思考」狼的分类等级图示"],"nightMarketCase":"鲫鱼和鲤鱼同属鲤科不同种——亲缘关系近但不同种","gameDesign":"「族谱连线」：展示分类框，学生连线对应生物，完成后显示进化树","gameType":"drag-connect","free":false,"quiz":[{"type":"mc","q":"生物分类的基本单位是？","options":["界","门","属","种"],"answer":3,"explanation":"种（物种）是生物分类的最基本单位，同种的生物可以自然交配产生可育后代。"},{"type":"mc","q":"林奈双名法中的学名由哪两部分组成？","options":["界名+门名","属名+种名","科名+属名","目名+科名"],"answer":1,"explanation":"林奈双名法：学名=属名+种名，如Homo sapiens（智人）。"}]}];
 
-const CHEM_DATA = [
-  {"id":"chem-0","unit":"绪论","chapter":"","section":"化学使世界变得更加绚丽多彩","page":"P1-6","category":"chem","keypoints":["化学研究物质组成/结构/性质/转化及应用","从分子层次认识物质","古代化学实践：陶器/青铜器/酿酒/造纸/火药","拉瓦锡/道尔顿/阿伏加德罗/门捷列夫","我国成就：结晶牛胰岛素/稀土分离/碳化硅反射镜"],"examPoints":["化学定义","化学史重要人物"],"textbookColumns":["「资料」新石器彩陶→商青铜→东汉酿酒→《天工开物》","「资料」扫描隧道显微镜操纵原子"],"nightMarketCase":"夜市就是化学实验室：烤串（燃烧）、腌制（渗透）、发面（发酵）、饮料（CO₂溶解）","gameDesign":"「夜市化学找茬」：给出夜市场景，限时点击哪些是化学变化/物理变化","gameType":"click-timer","free":true,"equations":[],"quiz":[{"q":"化学研究的核心层次是什么？","options":["A.宏观物体","B.分子和原子层次","C.天体层次","D.生态层次"],"answer":1,"explanation":"化学是从分子、原子层次上研究物质的组成、结构、性质及其变化规律的科学。"},{"q":"以下哪位科学家提出了元素周期律？","options":["A.拉瓦锡","B.道尔顿","C.门捷列夫","D.阿伏加德罗"],"answer":2,"explanation":"门捷列夫发现了元素周期律并编制了第一张元素周期表。"}]},
-  {"id":"chem-1-1","unit":"第一单元 走进化学世界","chapter":"课题1","section":"物质的变化和性质","page":"P8-13","category":"chem","keypoints":["物理变化：无新物质生成","化学变化：有新物质生成（发光/放热/气泡/颜色变化/沉淀）","物理/化学性质是固有属性"],"examPoints":["物理vs化学变化判断","物理vs化学性质"],"textbookColumns":["「实验1-1」水的沸腾和胆矾研碎","「实验1-2」石灰石与盐酸反应"],"nightMarketCase":"生肉→褐色=美拉德反应（化学变化）；木炭切割=物理变化；炭火燃烧=化学变化","gameDesign":"「变化分类快问快答」：限时3秒判断物理/化学变化，连对加速","gameType":"click-timer","equations":[],"free":true,"quiz":[{"q":"以下哪个是化学变化？","options":["A.冰融化成水","B.铁生锈","C.木棍折断","D.食盐溶于水"],"answer":1,"explanation":"铁生锈生成了新物质（氧化铁），属于化学变化；其余都没有新物质生成，属于物理变化。"},{"q":"物理性质和化学性质的根本区别是什么？","options":["A.是否需要仪器测量","B.是否需要通过化学变化来表现","C.是否能看见","D.是否可测量"],"answer":1,"explanation":"化学性质需要通过化学变化才能表现出来，物理性质则不需要。"}]},
-  {"id":"chem-1-2","unit":"第一单元 走进化学世界","chapter":"课题2","section":"化学实验与科学探究","page":"P14-25","category":"chem","keypoints":["科学探究6步：提出问题→猜想假设→制定计划→进行实验→收集证据→得出结论","常用仪器：试管/烧杯/酒精灯/量筒/胶头滴管/铁架台","酒精灯外焰加热、灯帽熄灭","量筒读数平视","禁止品尝、扇闻"],"examPoints":["仪器名称和使用","探究步骤","安全操作"],"textbookColumns":["「实验1-3」蜡烛燃烧探究","「探究」吸入与呼出气体比较"],"nightMarketCase":"夜市厨师=化学探究者：看火焰颜色知燃料种类，加盖灭火=隔绝氧气","gameDesign":"「虚拟实验室」：拖拽组装正确实验装置，错误操作触发安全警报","gameType":"drag-assembly","equations":[],"free":true,"quiz":[{"q":"酒精灯加热应该用哪个部分？","options":["A.焰心","B.内焰","C.外焰","D.任何部分"],"answer":2,"explanation":"外焰温度最高，加热时应使用外焰。焰心温度最低。"},{"q":"量筒读数时应该怎么做？","options":["A.俯视读数","B.仰视读数","C.平视凹液面最低处","D.随意看"],"answer":2,"explanation":"量筒读数时视线应与凹液面最低处保持水平，俯视偏大、仰视偏小。"}]},
-  {"id":"chem-2-1","unit":"第二单元 空气和氧气","chapter":"课题1","section":"我们周围的空气","page":"P30-37","category":"chem","keypoints":["空气组成（体积分数）：N₂78%/O₂21%/稀有气体0.94%/CO₂0.03%","纯净物vs混合物","红磷燃烧测定O₂含量（水面上升约1/5）"],"examPoints":["空气成分及体积分数","纯净物与混合物","测定O₂含量实验"],"textbookColumns":["「实验2-1」红磷燃烧测O₂含量","「练习」氮气化学性质不活泼"],"nightMarketCase":"炭火鼓风机原理：增加O₂供给（占空气仅21%），O₂越多燃烧越旺","gameDesign":"「空气成分调配员」：修改N₂/O₂/CO₂比例，观察对蜡烛火焰的影响","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"q":"空气中体积分数最大的气体是？","options":["A.氧气","B.氮气","C.二氧化碳","D.稀有气体"],"answer":1,"explanation":"氮气约占空气体积的78%，氧气约21%，氮气是最多的。"},{"q":"红磷燃烧测定氧气含量实验中，水面上升约多少？","options":["A.1/10","B.1/5","C.1/3","D.1/2"],"answer":1,"explanation":"氧气约占空气体积的1/5，红磷消耗完集气瓶中的氧气后，水面上升约1/5。"}]},
-  {"id":"chem-2-2","unit":"第二单元 空气和氧气","chapter":"课题2","section":"氧气","page":"P38-42","category":"chem","keypoints":["O₂物理性质：无色无味/密度略大于空气/不易溶于水","C+O₂→CO₂（白光）","S+O₂→SO₂（蓝紫色火焰）","3Fe+2O₂→Fe₃O₄（火星四射）","4P+5O₂→2P₂O₅","化合反应=多变一"],"examPoints":["O₂的化学性质","物质在O₂中燃烧现象","化合反应"],"textbookColumns":["「实验2-2」木炭/硫/铁丝在O₂中燃烧","「练习」铁丝燃烧底部铺沙防炸裂"],"nightMarketCase":"铁签会生锈：铁在潮湿空气中缓慢氧化（4Fe+3O₂→2Fe₂O₃），与纯氧中剧烈燃烧同理","gameDesign":"「氧气浓度实验台」：调节氧气浓度0%-100%，放入碳/硫/铁，观察燃烧速度变化","gameType":"slider-simulate","equations":["C+O₂→CO₂","S+O₂→SO₂","3Fe+2O₂→Fe₃O₄","4P+5O₂→2P₂O₅"],"free":false,"quiz":[{"q":"铁丝在氧气中燃烧的现象是？","options":["A.发出白光","B.火星四射，生成黑色固体","C.产生蓝紫色火焰","D.产生大量白烟"],"answer":1,"explanation":"铁丝在氧气中剧烈燃烧，火星四射，生成黑色的四氧化三铁（Fe₃O₄）。"},{"q":"化合反应的特点是什么？","options":["A.一变多","B.多变一","C.互相交换成分","D.质量不变"],"answer":1,"explanation":"化合反应是由两种或两种以上物质生成一种物质的反应，即\"多变一\"。"}]},
-  {"id":"chem-2-3","unit":"第二单元 空气和氧气","chapter":"课题3","section":"制取氧气","page":"P43-49","category":"chem","keypoints":["2KMnO₄→K₂MnO₄+MnO₂+O₂↑（加热）","2H₂O₂→2H₂O+O₂↑（MnO₂催化）","催化剂：改变反应速率但自身质量和化学性质不变","工业制O₂：液化空气分馏（物理变化）","收集：排水法/向上排空气法"],"examPoints":["制O₂方法和装置","催化剂概念","收集方法"],"textbookColumns":["「探究」催化剂（MnO₂/Fe₂O₃对比）","「练习」催化剂一变两不变"],"nightMarketCase":"双氧水消毒的泡泡：血液中的酶催化H₂O₂分解出O₂气泡——催化剂在生活中的体现","gameDesign":"「制氧气装置拼图」：组装正确实验装置，选择正确收集方法","gameType":"drag-assembly","equations":["2KMnO₄→K₂MnO₄+MnO₂+O₂↑","2H₂O₂→2H₂O+O₂↑"],"free":false,"quiz":[{"q":"催化剂在反应前后不变的是什么？","options":["A.质量和化学性质","B.质量和物理性质","C.只质量不变","D.只化学性质不变"],"answer":1,"explanation":"催化剂在反应前后质量和化学性质都不变，即\"一变两不变\"——改变反应速率，质量和化学性质不变。"},{"q":"收集氧气可以用什么方法？","options":["A.只能用排水法","B.只能用排空气法","C.排水法或向上排空气法","D.向下排空气法"],"answer":2,"explanation":"氧气不易溶于水可用排水法，密度比空气大可用向上排空气法。"}]},
-  {"id":"chem-3-1","unit":"第三单元 物质构成的奥秘","chapter":"课题1","section":"分子和原子","page":"P56-64","category":"chem","keypoints":["分子=保持物质化学性质的最小粒子","原子=化学变化中的最小粒子","分子特性：质量体积极小/不断运动/分子间有间隔（热胀冷缩）","化学变化微观实质：分子→原子→重新组合→新分子"],"examPoints":["分子/原子概念和特性","化学变化微观本质"],"textbookColumns":["「实验3-1」品红扩散","「探究」分子运动（氨水+酚酞）"],"nightMarketCase":"烤鱼香味飘远：香味分子不断运动扩散——分子运动论在夜市飘香中的完美体现","gameDesign":"「分子运动追踪游戏」：调节温度滑块，观察香味分子运动速度变化和扩散范围","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"q":"保持二氧化碳化学性质的最小粒子是？","options":["A.碳原子","B.氧原子","C.二氧化碳分子","D.碳和氧原子"],"answer":2,"explanation":"分子是保持物质化学性质的最小粒子，二氧化碳的化学性质由CO₂分子保持。"},{"q":"化学变化的微观本质是什么？","options":["A.分子变大","B.分子分裂为原子，原子重新组合","C.原子分裂","D.物质消失"],"answer":1,"explanation":"化学变化中，分子分裂成原子，原子再重新组合成新的分子。"}]},
-  {"id":"chem-3-2","unit":"第三单元 物质构成的奥秘","chapter":"课题2","section":"原子结构","page":"P65-71","category":"chem","keypoints":["原子=原子核（质子+中子）+电子","质子数=核外电子数=原子序数=核电荷数","核外电子分层排布（KLMN…）","最外层电子数决定化学性质","相对原子质量≈质子数+中子数"],"examPoints":["原子结构","质子/中子/电子关系","相对原子质量","核外电子排布"],"textbookColumns":["「资料」张青莲测相对原子质量","「练习」原子结构示意图绘制"],"nightMarketCase":"食盐的原子密码：Na(11号/最外层1e⁻易失)→Na⁺，Cl(17号/最外层7e⁻易得)→Cl⁻——天作之合","gameDesign":"「原子结构搭积木」：给定质子数/中子数，搭建原子模型，完成后显示元素名称和性质","gameType":"drag-assembly","equations":[],"free":false,"quiz":[{"q":"在原子中，与质子数相等的是？","options":["A.中子数","B.核外电子数","C.相对原子质量","D.最外层电子数"],"answer":1,"explanation":"原子中质子数=核外电子数=核电荷数=原子序数。"},{"q":"决定元素化学性质的主要因素是？","options":["A.质子数","B.中子数","C.最外层电子数","D.相对原子质量"],"answer":2,"explanation":"最外层电子数决定了元素的化学性质——失电子还是得电子、得失几个。"}]},
-  {"id":"chem-3-3","unit":"第三单元 物质构成的奥秘","chapter":"课题3","section":"元素","page":"P72-77","category":"chem","keypoints":["元素=质子数相同的一类原子总称","元素周期表（横排=周期/竖排=族）","地壳含量前4：O>Si>Al>Fe","常见元素符号20个","门捷列夫发现周期律"],"examPoints":["元素定义","元素符号","地壳含量排序","周期表结构"],"textbookColumns":["「科学·技术·社会」门捷列夫与元素周期表"],"nightMarketCase":"铁锅补铁的真相：Fe²⁺离子是生物必需微量元素。夜市食材含Ca/Fe/Zn等元素","gameDesign":"「元素周期表闯关」：点击格子弹出夜市物品关联（Na→食盐/Fe→铁锅/Ca→骨头/Zn→牡蛎）","gameType":"click-learn","equations":[],"free":false,"quiz":[{"q":"地壳中含量最高的元素是？","options":["A.硅(Si)","B.铝(Al)","C.氧(O)","D.铁(Fe)"],"answer":2,"explanation":"地壳中元素含量排序：O>Si>Al>Fe>Ca，氧是含量最高的元素。"},{"q":"元素周期表中横排叫什么？","options":["A.族","B.周期","C.行","D.列"],"answer":1,"explanation":"元素周期表横排叫周期（共7个周期），竖排叫族（共18个族）。"}]},
-  {"id":"chem-4-1","unit":"第四单元 自然界的水","chapter":"课题1","section":"水资源及其利用","page":"P82-90","category":"chem","keypoints":["地球淡水仅2.53%","中国人均水资源仅世界1/4","硬水vs软水（含钙镁化合物）","净水方法：沉淀→过滤→吸附→消毒","活性炭吸附色素异味","蒸馏可得纯水"],"examPoints":["水资源现状","硬水软化","净水方法步骤"],"textbookColumns":["「实验4-1」过滤操作","「实验4-2」硬水检验（肥皂水）"],"nightMarketCase":"夜市洗碗/洗食材/制饮料消耗大量淡水。硬水地区洗碗易留水垢","gameDesign":"「节水决策游戏」：经营虚拟夜市摊，选择不同方式计算耗水量","gameType":"choice-simulate","equations":[],"free":false,"quiz":[{"q":"硬水和软水的区别是什么？","options":["A.颜色不同","B.是否含较多钙镁化合物","C.温度不同","D.密度不同"],"answer":1,"explanation":"硬水含有较多可溶性钙镁化合物，软水不含或含较少。用肥皂水检验——硬水泡沫少。"},{"q":"净水过程中，活性炭的作用是什么？","options":["A.杀菌消毒","B.吸附色素和异味","C.软化水质","D.增加矿物质"],"answer":1,"explanation":"活性炭具有疏松多孔的结构，可以吸附水中的色素和异味，但不能杀菌。"}]},
-  {"id":"chem-4-2","unit":"第四单元 自然界的水","chapter":"课题2","section":"水的组成","page":"P91-95","category":"chem","keypoints":["电解水：2H₂O→2H₂↑+O₂↑","正极O₂（少）/负极H₂（多），体积比1:2","H₂燃烧：2H₂+O₂→2H₂O","水由氢氧元素组成"],"examPoints":["电解水实验现象和体积比","水的组成"],"textbookColumns":["「实验4-3」电解水","「资料」氢气的性质和用途"],"nightMarketCase":"氢能源是未来夜市燃料：电解水制氢，氢气燃烧产生水无污染","gameDesign":"「电解水实验」：调节电压观察正负极气泡产生，量取气体体积比","gameType":"slider-simulate","equations":["2H₂O→2H₂↑+O₂↑","2H₂+O₂→2H₂O"],"free":false,"quiz":[{"q":"电解水时，正极产生的气体是？","options":["A.氢气","B.氧气","C.水蒸气","D.氮气"],"answer":1,"explanation":"电解水正极产生氧气，负极产生氢气，正极气体体积约为负极的一半。"},{"q":"电解水实验证明水是由什么组成的？","options":["A.氢气和氧气","B.氢元素和氧元素","C.氢原子和氧原子","D.氢分子和氧分子"],"answer":1,"explanation":"水是由氢元素和氧元素组成的化合物，不是由氢气和氧气组成的混合物。"}]},
-  {"id":"chem-4-3","unit":"第四单元 自然界的水","chapter":"课题3","section":"物质组成的表示","page":"P96-103","category":"chem","keypoints":["化学式表示物质组成","化合价规则：代数和为0","元素质量分数=相对原子质量×个数÷相对分子质量×100%","化学式书写：正价左负价右"],"examPoints":["化学式书写","化合价","元素质量分数计算"],"textbookColumns":["「练习」常见物质化学式","「方法导引」化合价口诀"],"nightMarketCase":"可乐=H₂O+CO₂+C₆H₁₂O₆——成分表就是化学式应用。食盐=NaCl","gameDesign":"「化学式配对游戏」：拖拽化学式匹配夜市食品（H₂O→水/CO₂→汽水/NaCl→食盐/C₂H₅OH→酒）","gameType":"drag-match","equations":[],"free":false,"quiz":[{"q":"化合物中各元素化合价的代数和等于多少？","options":["A.1","B.0","C.-1","D.不确定"],"answer":1,"explanation":"化合物中，各元素化合价的代数和等于0，这是化合价的基本规则。"},{"q":"NaCl中钠元素的化合价是多少？","options":["A.+1","B.-1","C.0","D.+2"],"answer":0,"explanation":"NaCl中钠为+1价，氯为-1价，代数和为0。"}]},
-  {"id":"chem-5-1","unit":"第五单元 化学反应的定量关系","chapter":"课题1","section":"质量守恒定律","page":"P110-116","category":"chem","keypoints":["参加反应各物质质量总和=生成各物质质量总和","微观原因：原子种类/个数/质量不变","红磷燃烧验证（密封体系）","化学方程式配平原则：原子守恒"],"examPoints":["质量守恒定律内容和微观本质","验证实验"],"textbookColumns":["「实验5-1」红磷燃烧验证","「实验5-2」铁钉+硫酸铜"],"nightMarketCase":"100g生肉烤后70g——水分和CO₂散逸到空气中，如果在密封容器中烤，质量守恒！","gameDesign":"「密封烤肉实验」：在密封/开放两种环境下烤肉，对比质量变化曲线","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"q":"质量守恒定律的微观本质是什么？","options":["A.分子种类不变","B.原子种类、数目、质量不变","C.物质状态不变","D.分子数目不变"],"answer":1,"explanation":"化学反应前后，原子的种类、数目、质量都不变，所以总质量守恒。"},{"q":"为什么开放容器中镁燃烧后质量\"增加\"？","options":["A.质量守恒定律不成立","B.镁与空气中的氧气反应","C.实验误差","D.镁变质了"],"answer":1,"explanation":"镁在空气中燃烧与氧气反应生成氧化镁，结合了空气中的氧，所以质量增加，仍然符合质量守恒。"}]},
-  {"id":"chem-5-2","unit":"第五单元 化学反应的定量关系","chapter":"课题2","section":"化学方程式","page":"P117-122","category":"chem","keypoints":["化学方程式意义：①反应物/生成物/条件②各物质质量比③微粒个数比","配平方法：最小公倍数法","计算：已知一种物质质量求另一种"],"examPoints":["化学方程式配平","根据方程式计算"],"textbookColumns":["「练习」多种方程式配平","「方法导引」书写步骤"],"nightMarketCase":"炭火燃烧方程式C+O₂→CO₂——夜市炭火的化学本质。CH₄+2O₂→CO₂+2H₂O——天然气灶","gameDesign":"「方程式配平挑战」：给出未配平方程式（含夜市场景配图），学生填系数配平","gameType":"fill-blank","equations":["C+O₂→CO₂","CH₄+2O₂→CO₂+2H₂O"],"free":false,"quiz":[{"q":"化学方程式配平的原则是什么？","options":["A.分子数相等","B.原子种类和数目不变","C.体积相等","D.颜色相同"],"answer":1,"explanation":"配平化学方程式的原则是反应前后各原子种类和数目不变，即原子守恒。"},{"q":"配平化学方程式最常用的方法是什么？","options":["A.观察法","B.最小公倍数法","C.猜想法","D.试错法"],"answer":1,"explanation":"最小公倍数法是配平化学方程式最常用的系统方法。"}]},
-  {"id":"chem-6-1","unit":"第六单元 碳和碳的氧化物","chapter":"课题1","section":"碳单质的多样性","page":"P128-135","category":"chem","keypoints":["同素异形体：金刚石（最硬/无色透明）/石墨（最软导电/润滑）/C₆₀（足球烯）","木炭/活性炭吸附性（疏松多孔）","常温化学性质不活泼（古代字画不褪色）","高温：C+O₂→CO₂；2C+O₂→2CO","C+2CuO→2Cu+CO₂↑（还原反应）"],"examPoints":["同素异形体","吸附性","碳的化学性质","还原反应"],"textbookColumns":["「实验6-1」木炭吸附红墨水","「实验6-2」木炭还原氧化铜"],"nightMarketCase":"木炭（无定形碳/多孔）吸附性强+燃烧温度高。石墨=铅笔芯。钻石=金刚石","gameDesign":"「碳的变身游戏」：拖拽碳原子调整排列方式（四面体/层状/球状），变出金刚石/石墨/C₆₀","gameType":"drag-transform","equations":["C+O₂→CO₂","2C+O₂→2CO","C+2CuO→2Cu+CO₂↑"],"free":false,"quiz":[{"q":"金刚石和石墨性质差异大的原因是什么？","options":["A.组成元素不同","B.碳原子排列方式不同","C.颜色不同","D.来源不同"],"answer":1,"explanation":"金刚石和石墨都是碳单质，但碳原子排列方式不同——金刚石是正四面体网状结构，石墨是层状结构。"},{"q":"活性炭能吸附色素和异味是因为什么？","options":["A.化学反应","B.疏松多孔的结构","C.磁力吸引","D.高温作用"],"answer":1,"explanation":"活性炭具有疏松多孔的结构，表面积很大，可以吸附色素和异味分子。"}]},
-  {"id":"chem-6-2","unit":"第六单元 碳和碳的氧化物","chapter":"课题2","section":"碳的氧化物","page":"P136-144","category":"chem","keypoints":["CO₂：无色无味/密度>空气/不支持燃烧","CO₂+H₂O→H₂CO₃（使石蕊变红）","CO₂+Ca(OH)₂→CaCO₃↓（检验CO₂）","温室效应（CO₂/CH₄/O₃/氟利昂）","CO：有毒（与Hb结合致缺氧）/可燃（2CO+O₂→2CO₂）/还原性（CO+CuO→Cu+CO₂）"],"examPoints":["CO₂性质和检验","温室效应","CO毒性","低碳行动"],"textbookColumns":["「实验6-3」倾倒CO₂灭火","「实验6-5」CO₂与水反应（石蕊纸花）"],"nightMarketCase":"木炭烤串要通风：密闭空间炭火不充分燃烧产生CO（有毒！）——通风=化学安全常识","gameDesign":"「CO中毒预警」：模拟不同通风条件下炭火燃烧，实时显示CO浓度变化曲线","gameType":"slider-simulate","equations":["CO₂+H₂O→H₂CO₃","CO₂+Ca(OH)₂→CaCO₃↓+H₂O","2CO+O₂→2CO₂","CO+CuO→Cu+CO₂"],"free":false,"quiz":[{"q":"检验CO₂的常用方法是什么？","options":["A.用燃着的木条","B.通入澄清石灰水","C.闻气味","D.看颜色"],"answer":1,"explanation":"CO₂能使澄清石灰水变浑浊（生成CaCO₃沉淀），这是检验CO₂的特效方法。"},{"q":"CO中毒的原因是什么？","options":["A.CO有毒臭味","B.CO与血红蛋白结合，使血液无法运输氧气","C.CO腐蚀器官","D.CO使人窒息"],"answer":1,"explanation":"CO与血红蛋白的结合力比O₂强200多倍，使血红蛋白失去运输氧气的能力，导致组织缺氧。"}]},
-  {"id":"chem-6-3","unit":"第六单元 碳和碳的氧化物","chapter":"课题3","section":"二氧化碳的实验室制取","page":"P145-150","category":"chem","keypoints":["大理石+稀盐酸→CaCl₂+H₂O+CO₂↑","不用稀硫酸（CaSO₄沉淀包裹）","发生装置：固液不加热","收集：向上排空气法","检验：澄清石灰水变浑浊","验满：燃着木条熄灭"],"examPoints":["制CO₂装置和操作","检验方法","气体制取一般思路"],"textbookColumns":["「探究」设计CO₂制取装置","「方法导引」制取气体的一般思路"],"nightMarketCase":"碳酸饮料=CO₂的溶液：可乐含大量溶解CO₂，开瓶气泡析出","gameDesign":"「碳酸饮料配方师」：调节CO₂压力和温度，观察溶解量变化","gameType":"slider-simulate","equations":["CaCO₃+2HCl→CaCl₂+H₂O+CO₂↑"],"free":false,"quiz":[{"q":"实验室制取CO₂为什么不用稀硫酸？","options":["A.稀硫酸太贵","B.生成CaSO₄沉淀覆盖大理石，阻止反应","C.反应太慢","D.产生有毒气体"],"answer":1,"explanation":"稀硫酸与大理石反应生成微溶的CaSO₄，覆盖在大理石表面阻止反应继续进行。"},{"q":"验满CO₂的方法是什么？","options":["A.用带火星的木条","B.用燃着的木条放在瓶口","C.闻气味","D.看颜色变化"],"answer":1,"explanation":"CO₂不支持燃烧，将燃着的木条放在集气瓶口，如果木条熄灭说明已收集满。"}]},
-  {"id":"chem-7-1","unit":"第七单元 能源的合理利用与开发","chapter":"课题1","section":"燃料的燃烧","page":"P158-168","category":"chem","keypoints":["燃烧三要素：可燃物+O₂+温度≥着火点","灭火原理=破坏任一条件","控制变量法探究燃烧条件","白磷40℃着火/红磷260℃","爆炸：可燃气体/粉尘在有限空间快速燃烧","充分燃烧条件：足够空气+足够大接触面","CaO+H₂O→Ca(OH)₂放热"],"examPoints":["燃烧条件","灭火方法","爆炸极限","控制变量法"],"textbookColumns":["「探究」燃烧条件（白磷红磷对比）","「实验7-1」CaO与水放热"],"nightMarketCase":"夜市烤串=精准控制三要素——加炭（可燃物）/鼓风（O₂）/烤架高度（温度）","gameDesign":"「烤串火候控制台」：调节可燃物/O₂/温度三变量，使虚拟烤串恰到好处","gameType":"slider-simulate","equations":["CaO+H₂O→Ca(OH)₂"],"free":false,"quiz":[{"q":"燃烧必须同时具备的三个条件是什么？","options":["A.可燃物、氧气、达到着火点","B.可燃物、水、光照","C.氧气、高温、催化剂","D.可燃物、氮气、高温"],"answer":0,"explanation":"燃烧三要素：可燃物、氧气（或空气）、温度达到着火点，三者缺一不可。"},{"q":"油锅起火，最恰当的灭火方法是什么？","options":["A.用水浇","B.盖上锅盖","C.用风扇吹","D.端走油锅"],"answer":1,"explanation":"盖上锅盖可以隔绝氧气，破坏燃烧条件之一，是油锅起火最安全有效的灭火方法。"}]},
-  {"id":"chem-7-2","unit":"第七单元 能源的合理利用与开发","chapter":"课题2","section":"化石能源的合理利用","page":"P169-177","category":"chem","keypoints":["化石能源：煤/石油/天然气（不可再生）","煤主要含C，石油主要含C/H","天然气主要含CH₄（甲烷/沼气/可燃冰）","CH₄+2O₂→CO₂+2H₂O","化石能源燃烧→CO₂/SO₂/NOₓ污染","清洁能源：太阳能/风能/氢能/核能","我国南海可燃冰试采"],"examPoints":["化石能源种类和问题","酸雨成因","新能源","CH₄性质"],"textbookColumns":["「实验7-2」甲烷燃烧","「资料」可燃冰/我国清洁发电体系"],"nightMarketCase":"早年夜市用煤（高污染SO₂酸雨）→现在天然气（较清洁）→未来氢能（零排放）","gameDesign":"「能源时间机器」：穿越不同年代夜市，体验不同燃料的效率/污染/成本","gameType":"timeline-click","equations":["CH₄+2O₂→CO₂+2H₂O"],"free":false,"quiz":[{"q":"天然气的主要成分是什么？","options":["A.CO","B.CH₄","C.H₂","D.CO₂"],"answer":1,"explanation":"天然气的主要成分是甲烷（CH₄），是最简单的有机物。"},{"q":"酸雨形成的主要原因是燃烧化石燃料排放什么气体？","options":["A.CO₂和CO","B.SO₂和NOₓ","C.O₂和N₂","D.H₂O和CO₂"],"answer":1,"explanation":"煤和石油中含硫和氮，燃烧产生SO₂和NOₓ，在大气中形成硫酸和硝酸导致酸雨。"}]}
-];
+const CHEM_DATA = [{"id":"chem-0","unit":"绪论","chapter":"","section":"化学使世界变得更加绚丽多彩","page":"P1-6","category":"chem","keypoints":["化学研究物质组成/结构/性质/转化及应用","从分子层次认识物质","古代化学实践：陶器/青铜器/酿酒/造纸/火药","拉瓦锡/道尔顿/阿伏加德罗/门捷列夫","我国成就：结晶牛胰岛素/稀土分离/碳化硅反射镜"],"examPoints":["化学定义","化学史重要人物"],"textbookColumns":["「资料」新石器彩陶→商青铜→东汉酿酒→《天工开物》"],"nightMarketCase":"夜市就是化学实验室：烤串（燃烧）、腌制（渗透）、发面（发酵）、饮料（CO₂溶解）","gameDesign":"「夜市化学找茬」：给出夜市场景，限时点击哪些是化学变化/物理变化","gameType":"click-timer","free":true,"equations":[],"quiz":[{"type":"mc","q":"化学研究的核心层次是什么？","options":["宏观物体","分子和原子层次","天体层次","生态层次"],"answer":1,"explanation":"化学是从分子、原子层次上研究物质的组成、结构、性质及其变化规律的科学。"},{"type":"mc","q":"以下哪位科学家提出了元素周期律？","options":["拉瓦锡","道尔顿","门捷列夫","阿伏加德罗"],"answer":2,"explanation":"门捷列夫发现了元素周期律并编制了第一张元素周期表。"}]},{"id":"chem-1-1","unit":"第一单元 走进化学世界","chapter":"课题1","section":"物质的变化和性质","page":"P8-13","category":"chem","keypoints":["物理变化：无新物质生成","化学变化：有新物质生成（发光/放热/气泡/颜色变化/沉淀）","物理/化学性质是固有属性"],"examPoints":["物理vs化学变化判断","物理vs化学性质"],"textbookColumns":["「实验1-1」水的沸腾和胆矾研碎","「实验1-2」石灰石与盐酸反应"],"nightMarketCase":"生肉→褐色=美拉德反应（化学变化）；木炭切割=物理变化；炭火燃烧=化学变化","gameDesign":"「变化分类快问快答」：限时3秒判断物理/化学变化，连对加速","gameType":"click-timer","equations":[],"free":true,"quiz":[{"type":"mc","q":"以下哪个是化学变化？","options":["冰融化成水","铁生锈","木棍折断","食盐溶于水"],"answer":1,"explanation":"铁生锈生成了新物质（氧化铁），属于化学变化；其余都没有新物质生成。"},{"type":"sort","q":"请将以下过程分类为物理变化或化学变化","items":["铁生锈(化学)","水结冰(物理)","蜡烛燃烧(化学)","玻璃破碎(物理)","食物腐败(化学)","食盐溶解(物理)"],"explanation":"生成新物质的是化学变化，没有生成新物质的是物理变化。注意括号内是正确答案！"}]},{"id":"chem-1-2","unit":"第一单元 走进化学世界","chapter":"课题2","section":"化学实验与科学探究","page":"P14-25","category":"chem","keypoints":["科学探究6步：提出问题→猜想假设→制定计划→进行实验→收集证据→得出结论","常用仪器：试管/烧杯/酒精灯/量筒/胶头滴管/铁架台","酒精灯外焰加热、灯帽熄灭","量筒读数平视","禁止品尝、扇闻"],"examPoints":["仪器名称和使用","探究步骤","安全操作"],"textbookColumns":["「实验1-3」蜡烛燃烧探究","「探究」吸入与呼出气体比较"],"nightMarketCase":"夜市厨师=化学探究者：看火焰颜色知燃料种类，加盖灭火=隔绝氧气","gameDesign":"「虚拟实验室」：拖拽组装正确实验装置，错误操作触发安全警报","gameType":"drag-assembly","equations":[],"free":true,"quiz":[{"type":"mc","q":"酒精灯加热应该用哪个部分？","options":["焰心","内焰","外焰","任何部分"],"answer":2,"explanation":"外焰温度最高，加热时应使用外焰。焰心温度最低。"},{"type":"fill","q":"量筒读数时视线应与___液面___保持水平","answer":"凹,最低处","hint":"读液体体积要平视","explanation":"量筒读数时视线应与凹液面最低处保持水平，俯视偏大、仰视偏小。"}]},{"id":"chem-2-1","unit":"第二单元 空气和氧气","chapter":"课题1","section":"我们周围的空气","page":"P30-37","category":"chem","keypoints":["空气组成（体积分数）：N₂78%/O₂21%/稀有气体0.94%/CO₂0.03%","纯净物vs混合物","红磷燃烧测定O₂含量（水面上升约1/5）"],"examPoints":["空气成分及体积分数","纯净物与混合物","测定O₂含量实验"],"textbookColumns":["「实验2-1」红磷燃烧测O₂含量","「练习」氮气化学性质不活泼"],"nightMarketCase":"炭火鼓风机原理：增加O₂供给（占空气仅21%），O₂越多燃烧越旺","gameDesign":"「空气成分调配员」：修改N₂/O₂/CO₂比例，观察对蜡烛火焰的影响","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"空气中体积分数最大的气体是？","options":["氧气","氮气","二氧化碳","稀有气体"],"answer":1,"explanation":"氮气约占空气体积的78%，氧气约21%，氮气是最多的。"},{"type":"fill","q":"红磷燃烧测定氧气实验，水面上升约___","answer":"1/5","hint":"氧气占空气体积的多少？","explanation":"氧气约占空气体积的1/5，所以红磷消耗完氧气后水面上升约1/5。"}]},{"id":"chem-2-2","unit":"第二单元 空气和氧气","chapter":"课题2","section":"氧气","page":"P38-42","category":"chem","keypoints":["C+O₂→CO₂（白光）","S+O₂→SO₂（蓝紫色火焰）","3Fe+2O₂→Fe₃O₄（火星四射）","4P+5O₂→2P₂O₅","化合反应=多变一"],"examPoints":["O₂的化学性质","物质在O₂中燃烧现象","化合反应"],"textbookColumns":["「实验2-2」木炭/硫/铁丝在O₂中燃烧","「练习」铁丝燃烧底部铺沙防炸裂"],"nightMarketCase":"铁签会生锈：铁在潮湿空气中缓慢氧化（4Fe+3O₂→2Fe₂O₃）","gameDesign":"「氧气浓度实验台」：调节氧气浓度0%-100%，观察燃烧速度变化","gameType":"slider-simulate","equations":["C+O₂=CO₂","S+O₂=SO₂","3Fe+2O₂=Fe₃O₄","4P+5O₂=2P₂O₅"],"free":false,"quiz":[{"type":"mc","q":"铁丝在氧气中燃烧的现象是？","options":["发出白光","火星四射，生成黑色固体","产生蓝紫色火焰","产生大量白烟"],"answer":1,"explanation":"铁丝在氧气中剧烈燃烧，火星四射，生成黑色的四氧化三铁（Fe₃O₄）。"},{"type":"fill","q":"化合反应的特点是'多变___'","answer":"一","hint":"两种或多种物质变成一种","explanation":"化合反应是由两种或两种以上物质生成一种物质的反应。"}]},{"id":"chem-2-3","unit":"第二单元 空气和氧气","chapter":"课题3","section":"制取氧气","page":"P43-49","category":"chem","keypoints":["2KMnO₄→K₂MnO₄+MnO₂+O₂↑（加热）","2H₂O₂→2H₂O+O₂↑（MnO₂催化）","催化剂：改变反应速率但自身质量和化学性质不变","工业制O₂：液化空气分馏","收集：排水法/向上排空气法"],"examPoints":["制O₂方法和装置","催化剂概念","收集方法"],"textbookColumns":["「探究」催化剂（MnO₂/Fe₂O₃对比）","「练习」催化剂一变两不变"],"nightMarketCase":"双氧水消毒的泡泡：血液中的酶催化H₂O₂分解出O₂气泡","gameDesign":"「制氧气装置拼图」：组装正确实验装置，选择正确收集方法","gameType":"drag-assembly","equations":["2KMnO₄→K₂MnO₄+MnO₂+O₂↑","2H₂O₂→2H₂O+O₂↑"],"free":false,"quiz":[{"type":"mc","q":"催化剂在反应前后不变的是什么？","options":["质量和化学性质","质量和物理性质","只质量不变","只化学性质不变"],"answer":0,"explanation":"催化剂在反应前后质量和化学性质都不变，即一变两不变——改变反应速率，质量和化学性质不变。"},{"type":"mc","q":"收集氧气可以用什么方法？","options":["只能用排水法","只能用排空气法","排水法或向上排空气法","向下排空气法"],"answer":2,"explanation":"氧气不易溶于水可用排水法，密度比空气大可用向上排空气法。"}]},{"id":"chem-3-1","unit":"第三单元 物质构成的奥秘","chapter":"课题1","section":"分子和原子","page":"P56-64","category":"chem","keypoints":["分子=保持物质化学性质的最小粒子","原子=化学变化中的最小粒子","分子特性：不断运动/分子间有间隔（热胀冷缩）","化学变化微观实质：分子→原子→重新组合→新分子"],"examPoints":["分子/原子概念和特性","化学变化微观本质"],"textbookColumns":["「实验3-1」品红扩散","「探究」分子运动（氨水+酚酞）"],"nightMarketCase":"烤鱼香味飘远：香味分子不断运动扩散","gameDesign":"「分子运动追踪游戏」：调节温度滑块，观察香味分子扩散","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"保持二氧化碳化学性质的最小粒子是？","options":["碳原子","氧原子","二氧化碳分子","碳和氧原子"],"answer":2,"explanation":"分子是保持物质化学性质的最小粒子，CO₂的化学性质由CO₂分子保持。"},{"type":"mc","q":"化学变化的微观本质是什么？","options":["分子变大","分子分裂为原子，原子重新组合","原子分裂","物质消失"],"answer":1,"explanation":"化学变化中，分子分裂成原子，原子再重新组合成新的分子。"}]},{"id":"chem-3-2","unit":"第三单元 物质构成的奥秘","chapter":"课题2","section":"原子结构","page":"P65-71","category":"chem","keypoints":["原子=原子核（质子+中子）+电子","质子数=核外电子数=原子序数","核外电子分层排布（KLMN…）","最外层电子数决定化学性质","相对原子质量≈质子数+中子数"],"examPoints":["原子结构","质子/中子/电子关系","相对原子质量"],"textbookColumns":["「资料」张青莲测相对原子质量","「练习」原子结构示意图绘制"],"nightMarketCase":"食盐的原子密码：Na(11号/最外层1e⁻易失)→Na⁺，Cl(17号/最外层7e⁻易得)→Cl⁻","gameDesign":"「原子结构搭积木」：给定质子数/中子数，搭建原子模型","gameType":"drag-assembly","equations":[],"free":false,"quiz":[{"type":"mc","q":"在原子中，与质子数相等的是？","options":["中子数","核外电子数","相对原子质量","最外层电子数"],"answer":1,"explanation":"原子中质子数=核外电子数=核电荷数=原子序数。"},{"type":"fill","q":"钠（Na）的最外层有___个电子，它容易___（填得或失）电子","answer":"1,失","hint":"Na是11号元素，电子排布2-8-1","explanation":"Na最外层1个电子，容易失去变为Na⁺，达到稳定结构。"}]},{"id":"chem-3-3","unit":"第三单元 物质构成的奥秘","chapter":"课题3","section":"元素","page":"P72-77","category":"chem","keypoints":["元素=质子数相同的一类原子总称","元素周期表（横排=周期/竖排=族）","地壳含量前4：O>Si>Al>Fe","常见元素符号20个","门捷列夫发现周期律"],"examPoints":["元素定义","元素符号","地壳含量排序","周期表结构"],"textbookColumns":["「科学·技术·社会」门捷列夫与元素周期表"],"nightMarketCase":"铁锅补铁的真相：Fe²⁺离子是生物必需微量元素","gameDesign":"「元素周期表闯关」：点击格子弹出夜市物品关联","gameType":"click-learn","equations":[],"free":false,"quiz":[{"type":"mc","q":"地壳中含量最高的元素是？","options":["硅(Si)","铝(Al)","氧(O)","铁(Fe)"],"answer":2,"explanation":"地壳中元素含量排序：O>Si>Al>Fe>Ca，氧是含量最高的元素。"},{"type":"mc","q":"元素周期表中横排叫什么？","options":["族","周期","行","列"],"answer":1,"explanation":"元素周期表横排叫周期（共7个周期），竖排叫族（共18个族）。"}]},{"id":"chem-4-1","unit":"第四单元 自然界的水","chapter":"课题1","section":"水资源及其利用","page":"P82-90","category":"chem","keypoints":["地球淡水仅2.53%","硬水vs软水（含钙镁化合物）","净水方法：沉淀→过滤→吸附→消毒","活性炭吸附色素异味","蒸馏可得纯水"],"examPoints":["水资源现状","硬水软化","净水方法步骤"],"textbookColumns":["「实验4-1」过滤操作","「实验4-2」硬水检验（肥皂水）"],"nightMarketCase":"夜市洗碗/洗食材/制饮料消耗大量淡水。硬水地区洗碗易留水垢","gameDesign":"「节水决策游戏」：经营虚拟夜市摊，计算耗水量","gameType":"choice-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"硬水和软水的区别是什么？","options":["颜色不同","是否含较多钙镁化合物","温度不同","密度不同"],"answer":1,"explanation":"硬水含有较多可溶性钙镁化合物，软水不含或含较少。肥皂水检验——泡沫少的是硬水。"},{"type":"sort","q":"请排列净水的正确步骤","items":["沉淀","过滤","吸附","消毒"],"explanation":"净水步骤：沉淀（除去大颗粒）→过滤（除去小颗粒）→吸附（除色素异味）→消毒（杀菌）。"}]},{"id":"chem-4-2","unit":"第四单元 自然界的水","chapter":"课题2","section":"水的组成","page":"P91-95","category":"chem","keypoints":["电解水：2H₂O→2H₂↑+O₂↑","正极O₂（少）/负极H₂（多），体积比1:2","H₂燃烧：2H₂+O₂→2H₂O","水由氢氧元素组成"],"examPoints":["电解水实验现象和体积比","水的组成"],"textbookColumns":["「实验4-3」电解水","「资料」氢气的性质和用途"],"nightMarketCase":"氢能源是未来夜市燃料：电解水制氢，氢气燃烧产生水无污染","gameDesign":"「电解水实验」：调节电压观察正负极气泡产生","gameType":"slider-simulate","equations":["2H₂O=2H₂↑+O₂↑","2H₂+O₂=2H₂O"],"free":false,"quiz":[{"type":"mc","q":"电解水时，正极产生的气体是？","options":["氢气","氧气","水蒸气","氮气"],"answer":1,"explanation":"电解水正极产生氧气，负极产生氢气，正极气体体积约为负极的一半（1:2）。"},{"type":"fill","q":"水是由___元素和___元素组成的","answer":"氢,氧","hint":"电解水生成的就是这两种气体","explanation":"水是由氢元素和氧元素组成的化合物，不是由氢气和氧气组成的混合物。"}]},{"id":"chem-4-3","unit":"第四单元 自然界的水","chapter":"课题3","section":"物质组成的表示","page":"P96-103","category":"chem","keypoints":["化学式表示物质组成","化合价规则：代数和为0","元素质量分数=相对原子质量×个数÷相对分子质量×100%"],"examPoints":["化学式书写","化合价","元素质量分数计算"],"textbookColumns":["「练习」常见物质化学式","「方法导引」化合价口诀"],"nightMarketCase":"可乐=H₂O+CO₂+C₆H₁₂O₆——成分表就是化学式应用。食盐=NaCl","gameDesign":"「化学式配对游戏」：拖拽化学式匹配夜市食品","gameType":"drag-match","equations":[],"free":false,"quiz":[{"type":"mc","q":"化合物中各元素化合价的代数和等于多少？","options":["1","0","-1","不确定"],"answer":1,"explanation":"化合物中，各元素化合价的代数和等于0，这是化合价的基本规则。"},{"type":"fill","q":"NaCl中钠是___价，氯是___价","answer":"+1,-1","hint":"钠通常为+1价，氯通常为-1价","explanation":"NaCl中Na为+1价，Cl为-1价，代数和为0。"}]},{"id":"chem-5-1","unit":"第五单元 化学反应的定量关系","chapter":"课题1","section":"质量守恒定律","page":"P110-116","category":"chem","keypoints":["参加反应各物质质量总和=生成各物质质量总和","微观原因：原子种类/个数/质量不变","红磷燃烧验证（密封体系）","化学方程式配平原则：原子守恒"],"examPoints":["质量守恒定律内容和微观本质","验证实验"],"textbookColumns":["「实验5-1」红磷燃烧验证","「实验5-2」铁钉+硫酸铜"],"nightMarketCase":"100g生肉烤后70g——如果密封烤，质量守恒！水分和CO₂没跑掉。","gameDesign":"「密封烤肉实验」：开放/密封环境下烤肉，对比质量变化","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"质量守恒定律的微观本质是什么？","options":["分子种类不变","原子种类、数目、质量不变","物质状态不变","分子数目不变"],"answer":1,"explanation":"化学反应前后，原子的种类、数目、质量都不变，所以总质量守恒。"},{"type":"fill","q":"红磷燃烧实验必须在___体系中才能验证质量守恒","answer":"密封","hint":"如果不密封，生成的烟会跑掉","explanation":"有气体参与或生成的反应，必须在密封体系中进行才能验证质量守恒。"}]},{"id":"chem-5-2","unit":"第五单元 化学反应的定量关系","chapter":"课题2","section":"化学方程式","page":"P117-122","category":"chem","keypoints":["化学方程式意义：①反应物/生成物/条件②各物质质量比③微粒个数比","配平方法：最小公倍数法","计算：已知一种物质质量求另一种"],"examPoints":["化学方程式配平","根据方程式计算"],"textbookColumns":["「练习」多种方程式配平","「方法导引」书写步骤"],"nightMarketCase":"C+O₂→CO₂——夜市炭火的化学本质。CH₄+2O₂→CO₂+2H₂O——天然气灶","gameDesign":"「方程式配平挑战」：给出未配平方程式，学生填系数配平","gameType":"fill-blank","equations":["C+O₂=CO₂","CH₄+2O₂=CO₂+2H₂O"],"free":false,"quiz":[{"type":"mc","q":"化学方程式配平的原则是什么？","options":["分子数相等","原子种类和数目不变","体积相等","颜色相同"],"answer":1,"explanation":"配平化学方程式的原则是反应前后各原子种类和数目不变，即原子守恒。"}]},{"id":"chem-6-1","unit":"第六单元 碳和碳的氧化物","chapter":"课题1","section":"碳单质的多样性","page":"P128-135","category":"chem","keypoints":["同素异形体：金刚石（最硬）/石墨（最软导电）/C₆₀（足球烯）","木炭/活性炭吸附性（疏松多孔）","常温化学性质不活泼（古代字画不褪色）","高温：C+O₂→CO₂；C+2CuO→2Cu+CO₂↑（还原反应）"],"examPoints":["同素异形体","吸附性","碳的化学性质","还原反应"],"textbookColumns":["「实验6-1」木炭吸附红墨水","「实验6-2」木炭还原氧化铜"],"nightMarketCase":"木炭（无定形碳/多孔）吸附性强+燃烧温度高。石墨=铅笔芯。钻石=金刚石","gameDesign":"「碳的变身游戏」：拖拽碳原子调整排列，变出金刚石/石墨/C₆₀","gameType":"drag-transform","equations":["C+O₂=CO₂","C+2CuO=2Cu+CO₂↑"],"free":false,"quiz":[{"type":"mc","q":"金刚石和石墨性质差异大的原因是什么？","options":["组成元素不同","碳原子排列方式不同","颜色不同","来源不同"],"answer":1,"explanation":"金刚石和石墨都是碳单质，但碳原子排列方式不同——金刚石是正四面体网状，石墨是层状。"},{"type":"mc","q":"活性炭能吸附色素和异味是因为什么？","options":["化学反应","疏松多孔的结构","磁力吸引","高温作用"],"answer":1,"explanation":"活性炭具有疏松多孔的结构，表面积很大，可以吸附色素和异味分子。"}]},{"id":"chem-6-2","unit":"第六单元 碳和碳的氧化物","chapter":"课题2","section":"碳的氧化物","page":"P136-144","category":"chem","keypoints":["CO₂：不支持燃烧/与水→H₂CO₃/与Ca(OH)₂→CaCO₃↓（检验）","温室效应（CO₂/CH₄/O₃/氟利昂）","CO：有毒（与Hb结合致缺氧）/可燃/还原性"],"examPoints":["CO₂性质和检验","温室效应","CO毒性","低碳行动"],"textbookColumns":["「实验6-3」倾倒CO₂灭火","「实验6-5」CO₂与水反应（石蕊纸花）"],"nightMarketCase":"木炭烤串要通风：密闭空间炭火不充分燃烧产生CO（有毒！）","gameDesign":"「CO中毒预警」：模拟不同通风条件下炭火燃烧，实时显示CO浓度","gameType":"slider-simulate","equations":["CO₂+H₂O=H₂CO₃","CO₂+Ca(OH)₂=CaCO₃↓+H₂O","2CO+O₂=2CO₂"],"free":false,"quiz":[{"type":"mc","q":"检验CO₂的常用方法是什么？","options":["用燃着的木条","通入澄清石灰水","闻气味","看颜色"],"answer":1,"explanation":"CO₂能使澄清石灰水变浑浊（生成CaCO₃沉淀），这是检验CO₂的特效方法。"},{"type":"mc","q":"CO中毒的原因是什么？","options":["CO有毒臭味","CO与血红蛋白结合，使血液无法运氧气","CO腐蚀器官","CO使人窒息"],"answer":1,"explanation":"CO与血红蛋白的结合力比O₂强200多倍，使血红蛋白失去运输氧气的能力。"}]},{"id":"chem-6-3","unit":"第六单元 碳和碳的氧化物","chapter":"课题3","section":"二氧化碳的实验室制取","page":"P145-150","category":"chem","keypoints":["大理石+稀盐酸→CaCl₂+H₂O+CO₂↑","不用稀硫酸（CaSO₄沉淀包裹）","收集：向上排空气法","检验：澄清石灰水变浑浊","验满：燃着木条熄灭"],"examPoints":["制CO₂装置和操作","检验方法","气体制取一般思路"],"textbookColumns":["「探究」设计CO₂制取装置","「方法导引」制取气体的一般思路"],"nightMarketCase":"碳酸饮料=CO₂的溶液：可乐含大量溶解CO₂，开瓶气泡析出","gameDesign":"「碳酸饮料配方师」：调节CO₂压力和温度，观察溶解量变化","gameType":"slider-simulate","equations":["CaCO₃+2HCl=CaCl₂+H₂O+CO₂↑"],"free":false,"quiz":[{"type":"mc","q":"实验室制取CO₂为什么不用稀硫酸？","options":["稀硫酸太贵","生成CaSO₄沉淀覆盖大理石，阻止反应","反应太慢","产生有毒气体"],"answer":1,"explanation":"稀硫酸与大理石反应生成微溶的CaSO₄，覆盖在大理石表面阻止反应继续进行。"},{"type":"fill","q":"检验CO₂是否集满的方法：将燃着的木条放在___，木条___说明已满","answer":"瓶口,熄灭","hint":"不是伸入瓶中，是放在瓶口","explanation":"CO₂不支持燃烧，将燃着的木条放在瓶口（不是瓶中），熄灭则已满。"}]},{"id":"chem-7-1","unit":"第七单元 能源的合理利用与开发","chapter":"课题1","section":"燃料的燃烧","page":"P158-168","category":"chem","keypoints":["燃烧三要素：可燃物+O₂+温度≥着火点","灭火原理=破坏任一条件","控制变量法探究燃烧条件","白磷40℃着火/红磷260℃","充分燃烧条件：足够空气+足够大接触面","CaO+H₂O→Ca(OH)₂放热"],"examPoints":["燃烧条件","灭火方法","爆炸极限","控制变量法"],"textbookColumns":["「探究」燃烧条件（白磷红磷对比）","「实验7-1」CaO与水放热"],"nightMarketCase":"夜市烤串=精准控制三要素——加炭（可燃物）/鼓风（O₂）/烤架高度（温度）","gameDesign":"「烤串火候控制台」：调节可燃物/O₂/温度三变量，烤出完美烤串","gameType":"slider-simulate","equations":["CaO+H₂O=Ca(OH)₂"],"free":false,"quiz":[{"type":"mc","q":"燃烧必须同时具备的三个条件是什么？","options":["可燃物、氧气、达到着火点","可燃物、水、光照","氧气、高温、催化剂","可燃物、氮气、高温"],"answer":0,"explanation":"燃烧三要素：可燃物、氧气（或空气）、温度达到着火点，三者缺一不可。"},{"type":"mc","q":"油锅起火，最恰当的灭火方法是什么？","options":["用水浇","盖上锅盖","用风扇吹","端走油锅"],"answer":1,"explanation":"盖上锅盖可以隔绝氧气（破坏燃烧条件之一），是油锅起火最安全有效的方法。"}]},{"id":"chem-7-2","unit":"第七单元 能源的合理利用与开发","chapter":"课题2","section":"化石能源的合理利用","page":"P169-177","category":"chem","keypoints":["化石能源：煤/石油/天然气（不可再生）","天然气主要含CH₄（甲烷）","CH₄+2O₂→CO₂+2H₂O","化石能源燃烧→CO₂/SO₂/NOₓ污染","清洁能源：太阳能/风能/氢能"],"examPoints":["化石能源种类和问题","酸雨成因","新能源","CH₄性质"],"textbookColumns":["「实验7-2」甲烷燃烧","「资料」可燃冰/我国清洁发电体系"],"nightMarketCase":"早年夜市用煤（高污染SO₂酸雨）→现在天然气（较清洁）→未来氢能（零排放）","gameDesign":"「能源时间机器」：穿越不同年代夜市，体验不同燃料的效率/污染/成本","gameType":"timeline-click","equations":["CH₄+2O₂=CO₂+2H₂O"],"free":false,"quiz":[{"type":"mc","q":"天然气的主要成分是什么？","options":["CO","CH₄","H₂","CO₂"],"answer":1,"explanation":"天然气的主要成分是甲烷（CH₄），是最简单的有机物。"},{"type":"mc","q":"酸雨形成的主要原因是燃烧化石燃料排放什么气体？","options":["CO₂和CO","SO₂和NOₓ","O₂和N₂","H₂O和CO₂"],"answer":1,"explanation":"煤和石油中含硫和氮，燃烧产生SO₂和NOₓ，在大气中形成硫酸和硝酸导致酸雨。"}]}];
 
-const ALL_KNOWLEDGE = [...BIO_DATA, ...CHEM_DATA];
+const ALL_DATA = [...BIO_DATA, ...CHEM_DATA];
 
-// ========== STATE ==========
+// ============ STATE ============
 let currentSubject = 'bio';
-let isPaid = false;
+let isUnlocked = false;
 let apiKey = '';
-let quizScores = {};
+let totalScore = 0;
+let quizData = [];
+let quizIdx = 0;
+let quizScore = 0;
 
-// ========== INIT ==========
-function init() {
-  loadState();
-  renderKnowledgeCards();
-  renderGames();
-  updatePaywall();
-}
-
-function loadState() {
-  isPaid = localStorage.getItem('bioChemPaid') === 'true';
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
   apiKey = localStorage.getItem('bioChemApiKey') || '';
-  try { quizScores = JSON.parse(localStorage.getItem('bioChemScores') || '{}'); } catch(e) { quizScores = {}; }
+  isUnlocked = localStorage.getItem('bioChemUnlocked') === 'true';
+  totalScore = parseInt(localStorage.getItem('bioChemScore') || '0');
   document.getElementById('apiKeyInput').value = apiKey;
+  document.getElementById('stat-score').textContent = totalScore;
+  renderKnowledge();
+});
+
+// ============ SUBJECT SWITCH ============
+function switchSubject(sub) {
+  currentSubject = sub;
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (sub==='bio'&&i===0)||(sub==='chem'&&i===1)));
+  document.getElementById('stat-know').textContent = sub==='bio'?22:25;
+  document.getElementById('stat-quiz').textContent = sub==='bio'?55:39;
+  renderKnowledge();
 }
 
-function saveState() {
-  localStorage.setItem('bioChemPaid', isPaid);
-  localStorage.setItem('bioChemApiKey', apiKey);
-  localStorage.setItem('bioChemScores', JSON.stringify(quizScores));
-}
-
-// ========== NAVIGATION ==========
-function switchSubject(subj) {
-  currentSubject = subj;
-  document.querySelectorAll('.nav-tab').forEach((tab, i) => {
-    tab.classList.toggle('active', (i === 0 && subj === 'bio') || (i === 1 && subj === 'chem'));
+// ============ RENDER KNOWLEDGE ============
+function renderKnowledge() {
+  const data = currentSubject === 'bio' ? BIO_DATA : CHEM_DATA;
+  const container = document.getElementById('knowledge-container');
+  
+  // Group by unit
+  const units = {};
+  data.forEach(d => {
+    if (!units[d.unit]) units[d.unit] = [];
+    units[d.unit].push(d);
   });
-  renderKnowledgeCards();
-  document.getElementById('knowledgeSection').classList.add('open');
-}
 
-// ========== SECTION TOGGLE ==========
-function toggleSection(id) {
-  document.getElementById(id).classList.toggle('open');
-}
-
-// ========== SETTINGS ==========
-function toggleSettings() {
-  document.getElementById('settingsModal').classList.toggle('show');
-  document.getElementById('apiKeyInput').value = apiKey;
-}
-
-function saveApiKey() {
-  apiKey = document.getElementById('apiKeyInput').value.trim();
-  saveState();
-  toggleSettings();
-  showToast('API密钥已保存');
-}
-
-function applyUnlockCode() {
-  const code = (document.getElementById('unlockCodeInput').value || document.getElementById('paywallUnlockInput').value || '').trim();
-  if (code === 'NIGHTSCHOOL2026' || code === 'YESHIXUETANG') {
-    isPaid = true;
-    saveState();
-    renderKnowledgeCards();
-    renderGames();
-    updatePaywall();
-    showToast('解锁成功！全部内容已开放');
-    toggleSettings();
-  } else if (code) {
-    showToast('解锁码无效，请检查后重试', true);
-  }
-}
-
-// ========== PAYWALL ==========
-function updatePaywall() {
-  const banner = document.getElementById('paywallBanner');
-  if (isPaid) {
-    banner.innerHTML = '<div style="text-align:center;color:var(--green);font-weight:700;font-size:1.1rem">✅ 已解锁全部内容 — 享受学习吧！</div>';
-  }
-}
-
-function isAccessible(card) {
-  if (isPaid) return true;
-  if (card.free) return true;
-  const data = currentSubject === 'bio' ? BIO_DATA : CHEM_DATA;
-  const freeCards = data.filter(c => c.free);
-  return data.indexOf(card) < freeCards.length;
-}
-
-// ========== KNOWLEDGE CARDS ==========
-function renderKnowledgeCards() {
-  const data = currentSubject === 'bio' ? BIO_DATA : CHEM_DATA;
-  const container = document.getElementById('knowledgeList');
   let html = '';
-  let currentUnit = '';
-  
-  data.forEach((card, index) => {
-    if (card.unit !== currentUnit) {
-      currentUnit = card.unit;
-      html += `<div style="padding:8px 0;color:var(--blue);font-weight:700;font-size:0.9rem;border-bottom:1px solid var(--border);margin-bottom:4px">${currentUnit}</div>`;
-    }
-    
-    const freeCount = data.filter(c => c.free).length;
-    const accessible = isPaid || index < freeCount;
-    const lockClass = accessible ? (card.free ? 'free' : '') : 'locked';
-    
-    html += `<div class="kcard ${lockClass}" id="kcard-${card.id}" onclick="${accessible ? `toggleCard('${card.id}')` : 'showToast(\'请先解锁付费内容\', true)'}">
-      <div class="kcard-header">
-        <span class="kcard-title">${card.section}</span>
-        <span class="kcard-page">${card.page}</span>
-      </div>
-      ${card.chapter ? `<div class="kcard-unit">${card.chapter}</div>` : ''}
-      <div class="kcard-keypoints">${card.keypoints.slice(0, 2).join('；')}</div>
-      <div class="kcard-detail">
-        <div class="detail-section">
-          <div class="detail-label">📌 核心知识点</div>
-          <div class="tag-list">${card.keypoints.map(k => `<span class="tag">${k}</span>`).join('')}</div>
+  Object.entries(units).forEach(([unit, items]) => {
+    const isBio = items[0].category === 'bio';
+    html += `<div class="unit-section">
+      <div class="unit-title"><span class="icon ${isBio?'bio':'chem'}">${isBio?'🌿':'⚗️'}</span>${unit}</div>
+      <div class="knowledge-grid">`;
+    items.forEach((d, idx) => {
+      const locked = !d.free && !isUnlocked;
+      const quizCount = d.quiz ? d.quiz.length : 0;
+      html += `<div class="kcard" id="card-${d.id}" onclick="toggleCard('${d.id}')">
+        <div class="kc-top">
+          <span class="kc-num">${d.page}</span>
+          ${locked?'<span class="kc-lock">🔒 需解锁</span>':''}
         </div>
-        <div class="detail-section">
-          <div class="detail-label">📝 考试要点</div>
-          <div class="detail-text">${card.examPoints.join('、')}</div>
+        <div class="kc-title">${d.section}</div>
+        <div class="kc-case">💡 ${d.nightMarketCase}</div>
+        <div class="kc-tags">
+          ${d.examPoints.map(p=>`<span class="kc-tag exam">${p}</span>`).join('')}
+          <span class="kc-tag game">🎮 ${d.gameDesign.split('：')[0]}</span>
+          <span class="kc-tag quiz">📝 ${quizCount}题</span>
         </div>
-        ${card.textbookColumns ? `<div class="detail-section">
-          <div class="detail-label">📖 教材栏目</div>
-          <div class="detail-text">${card.textbookColumns.join(' | ')}</div>
-        </div>` : ''}
-        <div class="detail-section">
-          <div class="detail-label">🏮 夜市案例</div>
-          <div class="detail-text">${card.nightMarketCase}</div>
+        <div class="kc-detail">
+          <h4>📖 核心知识点</h4>
+          <ul>${d.keypoints.map(k=>`<li>${k}</li>`).join('')}</ul>
+          <div class="night">🏮 夜市案例：${d.nightMarketCase}</div>
+          <h4>教材栏目</h4>
+          <ul>${d.textbookColumns.map(c=>`<li>${c}</li>`).join('')}</ul>
+          <div class="btns">
+            <button class="btn-sm btn-green" onclick="event.stopPropagation();openQuiz('${d.id}')">📝 随堂测验</button>
+            ${!locked?`<button class="btn-sm btn-outline" onclick="event.stopPropagation();openGameByType('${d.gameType}')">🎮 沙盘游戏</button>`:''}
+          </div>
         </div>
-        ${card.equations && card.equations.length > 0 ? `<div class="detail-section">
-          <div class="detail-label">⚗️ 相关方程式</div>
-          ${card.equations.map(e => `<div class="equation">${e}</div>`).join('')}
-        </div>` : ''}
-        <div class="detail-section">
-          <div class="detail-label">🎮 游戏设计</div>
-          <div class="detail-text">${card.gameDesign}</div>
-        </div>
-        ${card.quiz ? renderQuizInCard(card) : ''}
-      </div>
-    </div>`;
+      </div>`;
+    });
+    html += '</div></div>';
   });
-  
   container.innerHTML = html;
+  document.getElementById('stat-know').textContent = data.length;
 }
 
 function toggleCard(id) {
-  const card = document.getElementById('kcard-' + id);
+  const card = document.getElementById('card-'+id);
   if (!card) return;
-  card.classList.toggle('expanded');
-}
-
-function renderQuizInCard(card) {
-  let html = '<div class="quiz-section"><div style="font-weight:700;color:var(--orange);margin-bottom:8px">📝 随堂测验</div>';
-  card.quiz.forEach((q, qi) => {
-    const qid = `quiz-${card.id}-${qi}`;
-    const answered = quizScores[qid] !== undefined;
-    html += `<div class="quiz-question" id="${qid}">
-      <div class="quiz-q-text">${qi + 1}. ${q.q}</div>
-      <div class="quiz-options">${q.options.map((opt, oi) => `
-        <div class="quiz-opt ${answered ? (oi === q.answer ? 'correct' : (quizScores[qid] === oi ? 'wrong' : '')) : ''}" 
-             onclick="${answered ? '' : `answerQuiz('${card.id}', ${qi}, ${oi}, ${q.answer}, '${qid}')`}">
-          ${opt}
-        </div>
-      `).join('')}</div>
-      ${answered ? `<div class="quiz-feedback show ${quizScores[qid] === q.answer ? 'correct' : 'wrong'}">
-        ${quizScores[qid] === q.answer ? '✅ 正确！' : '❌ 错误！'} ${q.explanation}
-      </div>` : ''}
-    </div>`;
-  });
-  html += '</div>';
-  return html;
-}
-
-function answerQuiz(cardId, qi, selected, correct, qid) {
-  quizScores[qid] = selected;
-  saveState();
-  // Re-render this card's quiz
-  const data = currentSubject === 'bio' ? BIO_DATA : CHEM_DATA;
-  const card = data.find(c => c.id === cardId);
-  if (!card) return;
-  const qEl = document.getElementById(qid);
-  if (!qEl) return;
-  const opts = qEl.querySelectorAll('.quiz-opt');
-  opts.forEach((opt, i) => {
-    opt.onclick = null;
-    if (i === correct) opt.classList.add('correct');
-    if (i === selected && i !== correct) opt.classList.add('wrong');
-  });
-  const fb = qEl.querySelector('.quiz-feedback') || document.createElement('div');
-  if (!qEl.querySelector('.quiz-feedback')) {
-    fb.className = 'quiz-feedback show ' + (selected === correct ? 'correct' : 'wrong');
-    fb.textContent = (selected === correct ? '✅ 正确！' : '❌ 错误！') + ' ' + card.quiz[qi].explanation;
-    qEl.appendChild(fb);
-  }
-  if (selected === correct) {
-    showToast('回答正确！');
+  const wasExpanded = card.classList.contains('expanded');
+  // Close all
+  document.querySelectorAll('.kcard.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!wasExpanded) {
+    card.classList.add('expanded');
+    card.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
 }
 
-// ========== AI CHAT ==========
-async function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-  
-  if (!apiKey) {
-    showToast('请先在设置中配置DeepSeek API Key', true);
+// ============ QUIZ ENGINE ============
+function openQuiz(knowledgeId) {
+  const item = ALL_DATA.find(d => d.id === knowledgeId);
+  if (!item || !item.quiz || item.quiz.length === 0) {
+    showToast('暂无测验题', true);
     return;
   }
-  
-  const msgsContainer = document.getElementById('chatMessages');
-  const sendBtn = document.getElementById('chatSendBtn');
-  
-  // Add user message
-  msgsContainer.innerHTML += `<div class="chat-bubble user">${escapeHtml(msg)}</div>`;
-  input.value = '';
-  
-  // Add loading bubble
-  const loadId = 'load-' + Date.now();
-  msgsContainer.innerHTML += `<div class="chat-bubble bot loading" id="${loadId}">阿火在想怎么用夜市说清楚...</div>`;
-  msgsContainer.scrollTop = msgsContainer.scrollHeight;
-  
-  sendBtn.disabled = true;
-  input.disabled = true;
-  
-  try {
-    const systemPrompt = `你是「夜市大厨阿火」，一个在夜市摆摊20年的老厨师，同时也是生物化学知识的隐藏大师。
-性格：说话像老厨师给徒弟支招——直接、实用、接地气。常用夜市食材/现象类比知识点。
-规则：1.先用夜市场景类比（1-2句），再用教科书语言解释 2.每个回答必须包含一个"夜市实例" 3.回答200字以内 4.超出课程范围礼貌引导回来
-知识范围：生物人教版2024版七年级上册（2单元7章）+ 化学人教版2024版九年级上册（7单元22课题）
-回答格式：不要用markdown，直接说。`;
+  quizData = item.quiz;
+  quizIdx = 0;
+  quizScore = 0;
+  document.getElementById('quizTitle').textContent = item.section + ' · 随堂测验';
+  document.getElementById('quizModal').classList.add('show');
+  renderQuizQuestion();
+}
 
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + apiKey
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: msg }
-        ],
-        max_tokens: 400,
-        temperature: 0.8
-      })
+function renderQuizQuestion() {
+  const q = quizData[quizIdx];
+  const total = quizData.length;
+  document.getElementById('quizProgressFill').style.width = ((quizIdx)/total*100)+'%';
+  document.getElementById('quizProgressTxt').textContent = `${quizIdx+1}/${total}`;
+  document.getElementById('quizFeedback').classList.remove('show','ok','fail');
+  document.getElementById('quizNextBtn').style.display = 'none';
+
+  const typeNames = {mc:'选择题', fill:'填空题', sort:'排序题'};
+  const typeBadge = document.getElementById('quizTypeBadge');
+  typeBadge.textContent = typeNames[q.type] || '选择题';
+  typeBadge.className = 'quiz-type-badge ' + (q.type||'mc');
+
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizImg').textContent = q.img || '';
+
+  const optContainer = document.getElementById('quizOptions');
+
+  if (q.type === 'mc') {
+    optContainer.innerHTML = q.options.map((o, i) => 
+      `<div class="quiz-opt" onclick="answerMC(${i})">${String.fromCharCode(65+i)}. ${o}</div>`
+    ).join('');
+  } else if (q.type === 'fill') {
+    optContainer.innerHTML = `
+      <input class="quiz-fill-input" id="quizFillInput" placeholder="请输入答案...">
+      <div style="margin-top:6px"><button class="btn-sm btn-warm" onclick="answerFill()">提交</button></div>`;
+  } else if (q.type === 'sort') {
+    const shuffled = [...q.items].sort(() => Math.random() - 0.5);
+    optContainer.innerHTML = `<div class="quiz-sort-list" id="sortList">
+      ${shuffled.map((s,i) => `<div class="quiz-sort-item" draggable="true" data-idx="${i}" data-text="${s}"><span class="num">${i+1}</span>${s.split('(')[0]}</div>`).join('')}
+    </div>
+    <div style="margin-top:8px"><button class="btn-sm btn-warm" onclick="answerSort()">提交排序</button></div>`;
+    // Simple drag toggle for reorder
+    let dragSrc = null;
+    document.querySelectorAll('#sortList .quiz-sort-item').forEach(item => {
+      item.addEventListener('dragstart', e => { dragSrc = item; e.dataTransfer.effectAllowed = 'move'; });
+      item.addEventListener('dragover', e => { e.preventDefault(); });
+      item.addEventListener('drop', e => {
+        e.preventDefault();
+        if (dragSrc !== item) {
+          const list = document.getElementById('sortList');
+          list.insertBefore(dragSrc, item.nextSibling === dragSrc ? item : item);
+          // Update numbers
+          document.querySelectorAll('#sortList .quiz-sort-item').forEach((el,i) => el.querySelector('.num').textContent = i+1);
+        }
+      });
     });
-    
-    const data = await response.json();
-    document.getElementById(loadId).remove();
-    
-    if (data.choices && data.choices[0]) {
-      const reply = data.choices[0].message.content;
-      msgsContainer.innerHTML += `<div class="chat-bubble bot">${escapeHtml(reply)}</div>`;
-    } else {
-      throw new Error(data.error?.message || '未知错误');
-    }
-  } catch(e) {
-    document.getElementById(loadId)?.remove();
-    msgsContainer.innerHTML += `<div class="chat-bubble bot" style="color:var(--red)">哎呀，灶台出了点问题：${escapeHtml(e.message)}。检查下API Key对不对？</div>`;
-  }
-  
-  sendBtn.disabled = false;
-  input.disabled = false;
-  msgsContainer.scrollTop = msgsContainer.scrollHeight;
-  input.focus();
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// ========== GAMES ==========
-const GAMES = [
-  { id: 'g1', name: '夜市生物普查员', icon: '🔍', desc: '拖拽分类：生物与非生物', type: 'drag-classify', free: true },
-  { id: 'g2', name: '细胞装配工厂', icon: '🏭', desc: '拖拽组装植物细胞结构', type: 'drag-assembly', free: false },
-  { id: 'g3', name: '烤串火候控制台', icon: '🍢', desc: '调节燃烧三要素烤出完美烤串', type: 'slider-simulate', free: false },
-  { id: 'g4', name: '变化分类快问快答', icon: '⚡', desc: '限时判断物理/化学变化', type: 'click-timer', free: false },
-  { id: 'g5', name: '方程式配平挑战', icon: '⚖️', desc: '填写化学方程式系数', type: 'fill-blank', free: false },
-  { id: 'g6', name: '元素周期表闯关', icon: '📊', desc: '点击元素看夜市物品关联', type: 'click-learn', free: false },
-  { id: 'g7', name: '细菌繁殖速度挑战', icon: '🧫', desc: '计算细菌指数增长', type: 'calc-quiz', free: false },
-  { id: 'g8', name: '碳的变身游戏', icon: '💎', desc: '变换碳原子排列看三种形态', type: 'drag-transform', free: false }
-];
-
-function renderGames() {
-  const grid = document.getElementById('gamesGrid');
-  let html = '';
-  GAMES.forEach((g, i) => {
-    const accessible = isPaid || g.free;
-    html += `<div class="game-card ${accessible ? '' : 'locked'}" onclick="${accessible ? `openGame('${g.id}')` : 'showToast(\'请先解锁付费内容\', true)'}">
-      <div class="game-icon">${g.icon}</div>
-      <div class="game-name">${g.name}</div>
-      <div class="game-desc">${g.desc}</div>
-    </div>`;
-  });
-  grid.innerHTML = html;
-}
-
-function openGame(gameId) {
-  const game = GAMES.find(g => g.id === gameId);
-  if (!game) return;
-  
-  const modal = document.getElementById('gameModal');
-  const title = document.getElementById('gameModalTitle');
-  const body = document.getElementById('gameModalBody');
-  
-  title.textContent = game.icon + ' ' + game.name;
-  modal.classList.add('show');
-  
-  switch(gameId) {
-    case 'g1': body.innerHTML = renderGame1(); initGame1(); break;
-    case 'g2': body.innerHTML = renderGame2(); initGame2(); break;
-    case 'g3': body.innerHTML = renderGame3(); initGame3(); break;
-    case 'g4': body.innerHTML = renderGame4(); initGame4(); break;
-    case 'g5': body.innerHTML = renderGame5(); initGame5(); break;
-    case 'g6': body.innerHTML = renderGame6(); initGame6(); break;
-    case 'g7': body.innerHTML = renderGame7(); initGame7(); break;
-    case 'g8': body.innerHTML = renderGame8(); initGame8(); break;
   }
 }
 
-function closeGame() {
-  document.getElementById('gameModal').classList.remove('show');
-}
-
-// === GAME 1: Drag-and-drop classification ===
-function renderGame1() {
-  return `<p style="color:var(--text2);margin-bottom:12px">把下面的物品拖到正确的分类框中！</p>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px" id="g1-items">
-      <div class="drag-item" draggable="true" data-cat="plant">🥬 青菜</div>
-      <div class="drag-item" draggable="true" data-cat="animal">🐟 活鱼</div>
-      <div class="drag-item" draggable="true" data-cat="microbe">🍄 蘑菇</div>
-      <div class="drag-item" draggable="true" data-cat="nonliving">🪨 石头</div>
-      <div class="drag-item" draggable="true" data-cat="plant">🥕 萝卜</div>
-      <div class="drag-item" draggable="true" data-cat="animal">🦐 虾</div>
-      <div class="drag-item" draggable="true" data-cat="microbe">🧫 酵母</div>
-      <div class="drag-item" draggable="true" data-cat="nonliving">🍶 酱油</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div><div style="font-weight:700;color:var(--green);margin-bottom:4px">🌿 植物</div><div class="drop-zone" id="g1-plant" data-cat="plant"></div></div>
-      <div><div style="font-weight:700;color:var(--blue);margin-bottom:4px">🐾 动物</div><div class="drop-zone" id="g1-animal" data-cat="animal"></div></div>
-      <div><div style="font-weight:700;color:var(--orange);margin-bottom:4px">🔬 微生物</div><div class="drop-zone" id="g1-microbe" data-cat="microbe"></div></div>
-      <div><div style="font-weight:700;color:var(--red);margin-bottom:4px">❌ 非生物</div><div class="drop-zone" id="g1-nonliving" data-cat="nonliving"></div></div>
-    </div>
-    <div id="g1-score" style="text-align:center;margin-top:12px;font-weight:700;color:var(--green)"></div>`;
-}
-
-function initGame1() {
-  let correct = 0, total = 8;
-  const items = document.querySelectorAll('#g1-items .drag-item');
-  const zones = document.querySelectorAll('.drop-zone');
-  
-  items.forEach(item => {
-    item.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', e.target.dataset.cat);
-      e.target.classList.add('dragging');
-    });
-    item.addEventListener('dragend', e => { e.target.classList.remove('dragging'); });
-    // Touch support
-    item.addEventListener('touchstart', function(e) {
-      this._touchData = { cat: this.dataset.cat, el: this };
-    });
+function answerMC(idx) {
+  const q = quizData[quizIdx];
+  const correct = idx === q.answer;
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((o,i) => {
+    o.style.pointerEvents = 'none';
+    if (i === q.answer) o.classList.add('correct');
+    if (i === idx && !correct) o.classList.add('wrong');
   });
-  
-  zones.forEach(zone => {
-    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', () => { zone.classList.remove('drag-over'); });
-    zone.addEventListener('drop', e => {
-      e.preventDefault();
-      zone.classList.remove('drag-over');
-      const cat = e.dataTransfer.getData('text/plain');
-      const dragged = document.querySelector('.drag-item.dragging');
-      if (cat === zone.dataset.cat && dragged) {
-        zone.appendChild(dragged);
-        dragged.draggable = false;
-        dragged.style.background = 'rgba(46,204,113,0.2)';
-        dragged.style.borderColor = 'var(--green)';
-        correct++;
-        if (correct === total) {
-          document.getElementById('g1-score').textContent = '🎉 全部正确！你是夜市普查高手！';
-        }
-      }
-    });
-    // Touch drop
-    zone.addEventListener('touchend', function(e) {
-      // Simplified touch - click to classify
-    });
-  });
-  
-  // Click-to-classify fallback for mobile
-  items.forEach(item => {
-    item.addEventListener('click', function() {
-      if (this.draggable === false) return;
-      const cat = this.dataset.cat;
-      const zone = document.getElementById('g1-' + cat);
-      if (zone) {
-        zone.appendChild(this);
-        this.draggable = false;
-        this.style.background = 'rgba(46,204,113,0.2)';
-        this.style.borderColor = 'var(--green)';
-        this.style.cursor = 'default';
-        correct++;
-        if (correct === total) {
-          document.getElementById('g1-score').textContent = '🎉 全部正确！你是夜市普查高手！';
-        }
-      }
-    });
-  });
+  showFeedback(correct, q.explanation);
 }
 
-// === GAME 2: Cell assembly ===
-function renderGame2() {
-  return `<p style="color:var(--text2);margin-bottom:12px">把细胞结构拖到正确的位置组装植物细胞</p>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px" id="g2-parts">
-      <div class="drag-item" draggable="true" data-part="wall">🧱 细胞壁</div>
-      <div class="drag-item" draggable="true" data-part="membrane">🛡️ 细胞膜</div>
-      <div class="drag-item" draggable="true" data-part="nucleus">🎯 细胞核</div>
-      <div class="drag-item" draggable="true" data-part="chloroplast">☀️ 叶绿体</div>
-      <div class="drag-item" draggable="true" data-part="vacuole">💧 液泡</div>
-      <div class="drag-item" draggable="true" data-part="mitochondria">⚡ 线粒体</div>
-      <div class="drag-item" draggable="true" data-part="cytoplasm">🌊 细胞质</div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px" id="g2-slots">
-      <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:0.85rem">最外层:</span><div class="drop-zone" id="g2-slot-wall" data-part="wall" style="flex:1;min-height:40px"></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:0.85rem">第二层:</span><div class="drop-zone" id="g2-slot-membrane" data-part="membrane" style="flex:1;min-height:40px"></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:0.85rem">中央:</span><div class="drop-zone" id="g2-slot-nucleus" data-part="nucleus" style="flex:1;min-height:40px"></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:0.85rem">绿色颗粒:</span><div class="drop-zone" id="g2-slot-chloroplast" data-part="chloroplast" style="flex:1;min-height:40px"></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:0.85rem">大水泡:</span><div class="drop-zone" id="g2-slot-vacuole" data-part="vacuole" style="flex:1;min-height:40px"></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:0.85rem">能量工厂:</span><div class="drop-zone" id="g2-slot-mitochondria" data-part="mitochondria" style="flex:1;min-height:40px"></div></div>
-      <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:0.85rem">填充物:</span><div class="drop-zone" id="g2-slot-cytoplasm" data-part="cytoplasm" style="flex:1;min-height:40px"></div></div>
-    </div>
-    <div id="g2-score" style="text-align:center;margin-top:12px;font-weight:700;color:var(--green)"></div>`;
+function answerFill() {
+  const input = document.getElementById('quizFillInput');
+  if (!input) return;
+  const userAnswer = input.value.trim();
+  const q = quizData[quizIdx];
+  const correctAnswers = q.answer.split(',');
+  const correct = correctAnswers.some(a => userAnswer === a.trim());
+  showFeedback(correct, q.explanation + `（正确答案：${q.answer}）`);
 }
 
-function initGame2() {
-  let correct = 0;
-  const parts = document.querySelectorAll('#g2-parts .drag-item');
-  const slots = document.querySelectorAll('#g2-slots .drop-zone');
+function answerSort() {
+  const q = quizData[quizIdx];
+  const items = document.querySelectorAll('#sortList .quiz-sort-item');
+  const userOrder = Array.from(items).map(el => el.dataset.text);
+  // Check if in correct order
+  const correctOrder = q.items.map(s => s.split('(')[0]);
+  const correct = JSON.stringify(userOrder) === JSON.stringify(correctOrder);
+  showFeedback(correct, q.explanation + `\n正确顺序：${q.items.join(' → ')}`);
+}
+
+function showFeedback(correct, explanation) {
+  const fb = document.getElementById('quizFeedback');
+  fb.className = 'quiz-feedback show ' + (correct?'ok':'fail');
+  document.getElementById('quizFeedbackIcon').textContent = correct ? '✅ 回答正确！' : '❌ 回答错误';
+  document.getElementById('quizFeedbackText').textContent = '';
+  document.getElementById('quizExplanation').textContent = explanation;
+  if (correct) quizScore++;
+  document.getElementById('quizNextBtn').style.display = 'inline-block';
+  // Disable inputs
+  document.querySelectorAll('.quiz-opt, .quiz-fill-input, #sortList .quiz-sort-item').forEach(el => el.style.pointerEvents = 'none');
+}
+
+function nextQuiz() {
+  quizIdx++;
+  if (quizIdx >= quizData.length) {
+    finishQuiz();
+    return;
+  }
+  renderQuizQuestion();
+}
+
+function finishQuiz() {
+  const total = quizData.length;
+  const percent = Math.round(quizScore/total*100);
+  const grade = percent >= 80 ? 'good' : percent >= 50 ? 'mid' : 'low';
+  const emoji = percent >= 80 ? '🎉' : percent >= 50 ? '👍' : '💪';
   
-  parts.forEach(part => {
-    part.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', e.target.dataset.part);
-      e.target.classList.add('dragging');
-    });
-    part.addEventListener('dragend', e => { e.target.classList.remove('dragging'); });
-    part.addEventListener('click', function() {
-      if (this.draggable === false) return;
-      const p = this.dataset.part;
-      const slot = document.getElementById('g2-slot-' + p);
-      if (slot && slot.children.length === 0) {
-        slot.appendChild(this);
-        this.draggable = false;
-        this.style.background = 'rgba(46,204,113,0.2)';
-        this.style.borderColor = 'var(--green)';
-        this.style.cursor = 'default';
-        correct++;
-        if (correct === 7) {
-          document.getElementById('g2-score').textContent = '🎉 植物细胞组装完成！叶绿体开始发光~';
-        }
-      }
-    });
-  });
+  document.getElementById('quizModal').classList.remove('show');
+  document.getElementById('quizResultModal').classList.add('show');
+  document.getElementById('quizResultContent').innerHTML = `
+    <div class="score-circle ${grade}">${percent}%</div>
+    <h3>${emoji} ${quizScore}/${total} 题正确</h3>
+    <p style="color:var(--text2);margin-top:8px">${percent>=80?'太棒了！你掌握得很好！':percent>=50?'还不错，继续加油！':'别灰心，再看看知识点吧！'}</p>
+    <button class="btn-sm btn-warm" style="margin-top:16px" onclick="closeQuizResult();openQuiz(quizData[0]&&ALL_DATA.find(d=>d.quiz&&d.quiz===quizData)?.id||'')">再来一次</button>
+    <button class="btn-sm btn-outline" style="margin-top:8px;margin-left:6px" onclick="closeQuizResult()">返回</button>`;
   
-  slots.forEach(slot => {
-    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
-    slot.addEventListener('dragleave', () => { slot.classList.remove('drag-over'); });
-    slot.addEventListener('drop', e => {
-      e.preventDefault();
-      slot.classList.remove('drag-over');
-      const part = e.dataTransfer.getData('text/plain');
-      const dragged = document.querySelector('#g2-parts .drag-item.dragging');
-      if (part === slot.dataset.part && dragged && slot.children.length === 0) {
-        slot.appendChild(dragged);
-        dragged.draggable = false;
-        dragged.style.background = 'rgba(46,204,113,0.2)';
-        dragged.style.borderColor = 'var(--green)';
-        dragged.style.cursor = 'default';
-        correct++;
-        if (correct === 7) {
-          document.getElementById('g2-score').textContent = '🎉 植物细胞组装完成！叶绿体开始发光~';
-        }
-      }
-    });
-  });
+  totalScore += quizScore;
+  localStorage.setItem('bioChemScore', totalScore);
+  document.getElementById('stat-score').textContent = totalScore;
 }
 
-// === GAME 3: Skewer heat control ===
-function renderGame3() {
-  return `<p style="color:var(--text2);margin-bottom:12px">调节三个滑块，让烤串达到完美的熟度！(目标: 可燃物70-80, O₂ 60-80, 温度 180-220)</p>
-    <div class="slider-group">
-      <div class="slider-label"><span>🔥 可燃物（炭量）</span><span id="g3-fuel-val">50</span></div>
-      <input type="range" class="slider-input" id="g3-fuel" min="0" max="100" value="50" oninput="updateG3()">
-    </div>
-    <div class="slider-group">
-      <div class="slider-label"><span>💨 氧气供给</span><span id="g3-o2-val">50</span></div>
-      <input type="range" class="slider-input" id="g3-o2" min="0" max="100" value="50" oninput="updateG3()">
-    </div>
-    <div class="slider-group">
-      <div class="slider-label"><span>🌡️ 温度(°C)</span><span id="g3-temp-val">150</span></div>
-      <input type="range" class="slider-input" id="g3-temp" min="0" max="300" value="150" oninput="updateG3()">
-    </div>
-    <div style="text-align:center;font-size:4rem;margin:16px 0" id="g3-skewer">🍢</div>
-    <div style="text-align:center;font-weight:700" id="g3-feedback">调节火候中...</div>
-    <div style="text-align:center;margin-top:8px;color:var(--text2)" id="g3-detail"></div>`;
+function closeQuiz() { document.getElementById('quizModal').classList.remove('show'); }
+function closeQuizResult() { document.getElementById('quizResultModal').classList.remove('show'); }
+
+// ============ GAMES ============
+function openGameByType(gameType) {
+  const gameIdx = { 'drag-classify':0, 'drag-assembly':1, 'slider-simulate':2, 'click-timer':3, 'fill-blank':4, 'click-learn':5, 'calc-quiz':6, 'click-compare':7 }[gameType] || 0;
+  openGameModal(gameIdx);
 }
 
-function initGame3() {
-  updateG3();
+function openGameModal(gidx) {
+  const games = ['夜市生物普查员','细胞装配工厂','烤串火候控制台','变化分类快问快答','方程式配平挑战','元素周期表闯关','细菌繁殖速度挑战','碳的变身游戏'];
+  document.getElementById('gameTitle').textContent = '🎮 ' + games[gidx];
+  document.getElementById('gameModal').classList.add('show');
+  document.getElementById('gameContent').innerHTML = renderGame(gidx);
+  initGame(gidx);
+}
+
+function closeGame() { document.getElementById('gameModal').classList.remove('show'); }
+
+function renderGame(g) {
+  if (g===0) return `<p style="color:var(--text2)">把物品拖到正确的分类框</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="g0-bins"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px" id="g0-items"></div><p id="g0-score" style="text-align:center;margin-top:10px;font-weight:600"></p>`;
+  if (g===1) return `<p style="color:var(--text2)">拖拽细胞器到正确位置组装植物细胞</p><div id="g1-area" style="width:300px;height:300px;border:2px dashed var(--border);border-radius:50%;margin:10px auto;position:relative"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px" id="g1-parts"></div><p id="g1-msg" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===2) return `<p style="text-align:center;font-size:3rem" id="g3-skewer">🍢</p><div style="margin:10px 0"><label>🪵 可燃物: <span id="g3-fuel-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-fuel" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>💨 氧气: <span id="g3-o2-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-o2" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>🌡 温度: <span id="g3-temp-val">200°C</span></label><input type="range" min="0" max="300" value="200" id="g3-temp" oninput="updateG3()" style="width:100%"></div><p id="g3-feedback" style="text-align:center;font-weight:600;margin-top:8px"></p><p id="g3-detail" style="text-align:center;font-size:.8rem;color:var(--text3);margin-top:4px"></p>`;
+  if (g===3) return `<p style="text-align:center;font-size:1.5rem;margin:10px 0" id="g4-question"></p><div style="display:flex;gap:12px;justify-content:center;margin-top:8px"><button class="btn-sm btn-blue" onclick="answerG4('physical')" style="background:var(--blue);color:#fff">🔄 物理变化</button><button class="btn-sm btn-warm" onclick="answerG4('chemical')">⚡ 化学变化</button></div><p id="g4-score" style="text-align:center;margin-top:8px;font-weight:600"></p><p id="g4-timer" style="text-align:center;color:var(--text3)"></p>`;
+  if (g===4) return `<p style="text-align:center;font-size:1.2rem;font-weight:600;margin:10px 0" id="g5-eq"></p><input class="quiz-fill-input" id="g5-input" placeholder="填系数，用逗号分隔，如 1,2,1,2"><button class="btn-sm btn-warm" onclick="checkG5()" style="margin-top:8px">检查</button><p id="g5-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===5) return `<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:320px;margin:0 auto" id="g6-grid"></div><p id="g6-info" style="text-align:center;margin-top:10px;font-weight:600"></p>`;
+  if (g===6) return `<p style="font-size:1rem;text-align:center" id="g7-q"></p><input class="quiz-fill-input" id="g7-input" placeholder="输入你的答案"><button class="btn-sm btn-warm" onclick="checkG7()" style="margin-top:8px">提交</button><p id="g7-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===7) return `<p style="text-align:center;font-size:5rem;margin:16px 0" id="g8-display">💎</p><p id="g8-name" style="text-align:center;font-weight:600">金刚石</p><p id="g8-desc" style="text-align:center;font-size:.8rem;color:var(--text3)">最硬的天然物质</p><div style="text-align:center;margin-top:12px"><button class="btn-sm btn-warm" onclick="transformG8()">🔄 改变原子排列</button></div>`;
+  return '';
+}
+
+function initGame(g) {
+  if (g===0) initG0();
+  if (g===1) initG1();
+  if (g===2) updateG3();
+  if (g===3) initG4();
+  if (g===4) initG5();
+  if (g===5) initG6();
+  if (g===6) initG7();
+}
+
+function initG0() {
+  const bins = ['🌿 植物','🐟 动物','🦠 微生物','⚪ 非生物'];
+  const items = [{n:'青菜',c:0},{n:'活虾',c:1},{n:'酵母粉',c:2},{n:'烤串',c:1},{n:'炭火',c:3},{n:'蘑菇',c:2},{n:'铁签',c:3},{n:'紫菜',c:0}];
+  document.getElementById('g0-bins').innerHTML = bins.map((b,i)=>`<div style="flex:1;min-width:80px;background:var(--bg2);border-radius:12px;padding:12px;text-align:center;border:2px dashed var(--border)" id="bin-${i}" ondragover="event.preventDefault()" ondrop="dropG0(event,${i})">${b}<div id="bin-items-${i}" style="min-height:20px;margin-top:6px"></div></div>`).join('');
+  const shuffled = [...items].sort(()=>Math.random()-.5);
+  document.getElementById('g0-items').innerHTML = shuffled.map((it,i)=>`<span draggable="true" id="g0item-${i}" data-cat="${it.c}" style="padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:20px;cursor:grab;font-size:.85rem" ondragstart="event.dataTransfer.setData('text/plain','${i}')">${it.n}</span>`).join('');
+  window.g0Score = 0;
+  document.getElementById('g0-score').textContent = '正确: 0/8';
+}
+
+function dropG0(e, binIdx) {
+  e.preventDefault();
+  const itemIdx = parseInt(e.dataTransfer.getData('text/plain'));
+  const item = document.getElementById('g0item-'+itemIdx);
+  if (!item) return;
+  const cat = parseInt(item.dataset.cat);
+  if (cat === binIdx) {
+    document.getElementById('bin-items-'+binIdx).appendChild(item);
+    item.style.background = 'var(--green-light)';
+    item.style.borderColor = 'var(--green)';
+    window.g0Score++;
+    document.getElementById('g0-score').textContent = `✅ 正确: ${window.g0Score}/8`;
+    if (window.g0Score >= 8) showToast('🎉 全部分类正确！生物学得不错！', false);
+  } else {
+    showToast('❌ 分错了，再想想！', true);
+  }
+}
+
+function initG1() {
+  const parts = ['细胞核','细胞质','细胞膜','细胞壁','液泡','叶绿体','线粒体'];
+  document.getElementById('g1-parts').innerHTML = parts.map(p=>`<span style="padding:6px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-size:.78rem" onclick="placeG1('${p}')">${p}</span>`).join('');
+  window.g1Placed = [];
+  document.getElementById('g1-msg').textContent = '点击细胞器再点击圆圈放置';
+}
+
+function placeG1(name) {
+  if (window.g1Placed.includes(name)) return;
+  window.g1Placed.push(name);
+  const area = document.getElementById('g1-area');
+  const dot = document.createElement('div');
+  dot.textContent = name.charAt(0);
+  dot.style.cssText = 'position:absolute;width:28px;height:28px;border-radius:50%;background:var(--warm-light);color:var(--warm);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;transform:translate(-50%,-50%);transition:.2s';
+  dot.style.left = (30+Math.random()*70)+'%';
+  dot.style.top = (20+Math.random()*70)+'%';
+  dot.title = name;
+  area.appendChild(dot);
+  if (window.g1Placed.length >= 7) {
+    document.getElementById('g1-msg').textContent = '✅ 植物细胞组装完成！';
+    totalScore += 5;
+    localStorage.setItem('bioChemScore', totalScore);
+    document.getElementById('stat-score').textContent = totalScore;
+  }
 }
 
 function updateG3() {
-  const fuel = parseInt(document.getElementById('g3-fuel').value);
-  const o2 = parseInt(document.getElementById('g3-o2').value);
-  const temp = parseInt(document.getElementById('g3-temp').value);
-  
-  document.getElementById('g3-fuel-val').textContent = fuel;
-  document.getElementById('g3-o2-val').textContent = o2;
-  document.getElementById('g3-temp-val').textContent = temp + '°C';
-  
-  let skewerEmoji = '🍢';
-  let feedback = '';
-  let detail = '';
-  let score = 0;
-  
-  // Score each dimension
-  const fuelOk = fuel >= 65 && fuel <= 85;
-  const o2Ok = o2 >= 55 && o2 <= 85;
-  const tempOk = temp >= 170 && temp <= 230;
-  
-  if (fuelOk && o2Ok && tempOk) {
-    skewerEmoji = '🍖';
-    feedback = '🎉 完美！烤串金黄酥脆，外焦里嫩！';
-    detail = '燃烧三要素恰到好处——可燃物充足、氧气够用、温度适宜。这就是夜市大厨的火候秘诀！';
-    score = 100;
-  } else if ((fuelOk && o2Ok) || (fuelOk && tempOk) || (o2Ok && tempOk)) {
-    feedback = '👍 还不错，但还需要微调一下...';
-    detail = '两个要素达标了，再看看第三个。';
-    score = 66;
-  } else if (fuelOk || o2Ok || tempOk) {
-    feedback = '😐 还差得远，烤串不太对劲...';
-    detail = '只有一个要素达标，继续调整！';
-    score = 33;
-  } else {
-    skewerEmoji = '🥩';
-    feedback = '🧊 生肉！完全没烤好！';
-    detail = '燃烧三要素都不满足。想想看：炭不够、没鼓风、温度太低...';
-    score = 0;
-  }
-  
-  if (fuel > 90) detail += ' 炭太多了，会烤焦！';
-  if (o2 > 90) detail += ' 氧气太多，火太旺！';
-  if (temp > 260) detail += ' 温度太高，烤串要糊了！';
-  if (fuel < 30) detail += ' 炭不够！';
-  if (o2 < 30) detail += ' 氧气不足，火要灭了！';
-  
-  document.getElementById('g3-skewer').textContent = skewerEmoji;
-  document.getElementById('g3-feedback').textContent = feedback;
-  document.getElementById('g3-detail').textContent = detail;
+  const fuel = parseInt(document.getElementById('g3-fuel')?.value||50);
+  const o2 = parseInt(document.getElementById('g3-o2')?.value||50);
+  const temp = parseInt(document.getElementById('g3-temp')?.value||200);
+  const fuelOk = fuel>=60&&fuel<=85, o2Ok = o2>=55&&o2<=85, tempOk = temp>=160&&temp<=240;
+  let emoji = '🥩', fb='', detail='';
+  if (fuelOk&&o2Ok&&tempOk) { emoji='🍖'; fb='🎉 完美！外焦里嫩！'; detail='燃烧三要素恰到好处！'; }
+  else if ((fuelOk&&o2Ok)||(fuelOk&&tempOk)||(o2Ok&&tempOk)) { fb='👍 还不错，再微调一下'; detail='两个达标，差一个'; }
+  else if (fuelOk||o2Ok||tempOk) { fb='😐 差得远'; detail='只有一个达标'; }
+  else { fb='🧊 完全没烤好！'; detail='三要素都不满足'; }
+  if (fuel>90) detail+=' 炭太多了！'; if (o2>90) detail+=' O₂太多！'; if (temp>260) detail+=' 温度太高！'; if (fuel<30) detail+=' 炭不够！';
+  document.getElementById('g3-skewer')&&(document.getElementById('g3-skewer').textContent=emoji);
+  document.getElementById('g3-feedback')&&(document.getElementById('g3-feedback').textContent=fb);
+  document.getElementById('g3-detail')&&(document.getElementById('g3-detail').textContent=detail);
+  document.getElementById('g3-fuel-val')&&(document.getElementById('g3-fuel-val').textContent=fuel);
+  document.getElementById('g3-o2-val')&&(document.getElementById('g3-o2-val').textContent=o2);
+  document.getElementById('g3-temp-val')&&(document.getElementById('g3-temp-val').textContent=temp+'°C');
 }
 
-// === GAME 4: Change classification quiz ===
-function renderGame4() {
-  return `<p style="color:var(--text2);margin-bottom:12px">快速判断：这是物理变化还是化学变化？</p>
-    <div style="text-align:center;font-size:2rem;margin:16px 0" id="g4-question"></div>
-    <div style="display:flex;gap:12px;justify-content:center">
-      <button class="btn btn-blue" onclick="answerG4('physical')">🔄 物理变化</button>
-      <button class="btn btn-orange" onclick="answerG4('chemical')">⚗️ 化学变化</button>
-    </div>
-    <div style="text-align:center;margin-top:12px">
-      <span class="score-display">得分: <span id="g4-score">0</span></span>
-      <span style="margin-left:16px" class="timer-display">⏱ <span id="g4-timer">5</span>s</span>
-    </div>
-    <div id="g4-feedback" style="text-align:center;margin-top:8px;font-weight:600"></div>
-    <div style="text-align:center;margin-top:8px;font-size:0.82rem;color:var(--text2)">连击: <span id="g4-streak">0</span></div>`;
-}
-
-let g4Data, g4Index, g4Score, g4Streak, g4Timer, g4Interval;
-
-function initGame4() {
-  g4Data = [
-    { q: '木炭在烤炉中燃烧', a: 'chemical' },
-    { q: '冰块融化成水', a: 'physical' },
-    { q: '铁签生锈', a: 'chemical' },
-    { q: '烤肉表面变褐色（美拉德反应）', a: 'chemical' },
-    { q: '把木炭敲碎', a: 'physical' },
-    { q: '面团发酵膨大', a: 'chemical' },
-    { q: '盐溶解在水中', a: 'physical' },
-    { q: '酒精灯中的酒精挥发', a: 'physical' },
-    { q: '生石灰加水放热', a: 'chemical' },
-    { q: '水沸腾变成水蒸气', a: 'physical' },
-    { q: '牛奶变酸', a: 'chemical' },
-    { q: '玻璃被打碎', a: 'physical' }
+function initG4() {
+  window.g4Questions = [
+    {q:'铁签生锈',a:'chemical'},{q:'木炭切割',a:'physical'},{q:'食物腐败',a:'chemical'},{q:'冰融化',a:'physical'},{q:'燃气燃烧',a:'chemical'},{q:'食盐溶解',a:'physical'},{q:'烤串变色',a:'chemical'},{q:'酒杯打碎',a:'physical'}
   ];
-  g4Index = 0;
-  g4Score = 0;
-  g4Streak = 0;
-  shuffle(g4Data);
-  updateG4Display();
+  window.g4Idx = 0; window.g4Score = 0;
+  document.getElementById('g4-score').textContent = '积分: 0';
+  nextG4();
 }
 
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-}
-
-function updateG4Display() {
-  if (g4Index >= g4Data.length) {
-    document.getElementById('g4-question').textContent = '🎉 全部完成！';
-    document.getElementById('g4-feedback').textContent = '最终得分: ' + g4Score;
-    clearInterval(g4Interval);
+function nextG4() {
+  if (!window.g4Questions || window.g4Idx >= window.g4Questions.length) {
+    document.getElementById('g4-question').textContent = `完成！得分：${window.g4Score}/${window.g4Questions.length}`;
     return;
   }
-  document.getElementById('g4-question').textContent = g4Data[g4Index].q;
-  document.getElementById('g4-score').textContent = g4Score;
-  document.getElementById('g4-streak').textContent = g4Streak;
-  document.getElementById('g4-feedback').textContent = '';
-  
-  let timeLeft = 5 + Math.max(0, 5 - g4Streak);
-  document.getElementById('g4-timer').textContent = timeLeft;
-  clearInterval(g4Interval);
-  g4Interval = setInterval(() => {
-    timeLeft--;
-    document.getElementById('g4-timer').textContent = timeLeft;
-    if (timeLeft <= 0) {
-      clearInterval(g4Interval);
-      document.getElementById('g4-feedback').textContent = '⏰ 时间到！正确答案是：' + (g4Data[g4Index].a === 'chemical' ? '化学变化' : '物理变化');
-      g4Streak = 0;
-      g4Index++;
-      setTimeout(updateG4Display, 1500);
-    }
-  }, 1000);
+  document.getElementById('g4-question').textContent = window.g4Questions[window.g4Idx].q + ' 是？';
 }
 
-function answerG4(answer) {
-  clearInterval(g4Interval);
-  const correct = g4Data[g4Index].a;
-  if (answer === correct) {
-    g4Score += 10 + g4Streak * 5;
-    g4Streak++;
-    document.getElementById('g4-feedback').textContent = '✅ 正确！+' + (10 + (g4Streak - 1) * 5) + '分';
-  } else {
-    document.getElementById('g4-feedback').textContent = '❌ 错误！正确答案是：' + (correct === 'chemical' ? '化学变化' : '物理变化');
-    g4Streak = 0;
-  }
-  g4Index++;
-  setTimeout(updateG4Display, 800);
+function answerG4(type) {
+  const q = window.g4Questions[window.g4Idx];
+  if (q.a === type) { window.g4Score++; showToast('✅ 正确！', false); }
+  else showToast('❌ 错误', true);
+  window.g4Idx++;
+  document.getElementById('g4-score').textContent = `积分: ${window.g4Score}`;
+  nextG4();
 }
 
-// === GAME 5: Equation balancing ===
-function renderGame5() {
-  return `<p style="color:var(--text2);margin-bottom:12px">填写化学方程式中的系数（空白处填数字）</p>
-    <div id="g5-equations"></div>
-    <div id="g5-result" style="text-align:center;margin-top:12px;font-weight:700"></div>`;
-}
-
-function initGame5() {
-  const eqs = [
-    { display: '<span class="equation-input" id="g5-c1"></span>H₂ + <span class="equation-input" id="g5-c2"></span>O₂ → <span class="equation-input" id="g5-c3"></span>H₂O', answers: ['2', '1', '2'], desc: '氢气燃烧生成水' },
-    { display: '<span class="equation-input" id="g5-c4"></span>KMnO₄ → <span class="equation-input" id="g5-c5"></span>K₂MnO₄ + <span class="equation-input" id="g5-c6"></span>MnO₂ + O₂↑', answers: ['2', '1', '1'], desc: '高锰酸钾分解' },
-    { display: '<span class="equation-input" id="g5-c7"></span>Fe + <span class="equation-input" id="g5-c8"></span>O₂ → Fe₃O₄', answers: ['3', '2'], desc: '铁丝在氧气中燃烧' },
-    { display: '<span class="equation-input" id="g5-c9"></span>CH₄ + <span class="equation-input" id="g5-c10"></span>O₂ → CO₂ + <span class="equation-input" id="g5-c11"></span>H₂O', answers: ['1', '2', '2'], desc: '甲烷燃烧' }
-  ];
-  
-  let html = '';
-  eqs.forEach((eq, i) => {
-    html += `<div style="margin-bottom:16px;background:var(--bg);padding:12px;border-radius:8px">
-      <div style="font-size:0.82rem;color:var(--blue);margin-bottom:6px">${eq.desc}</div>
-      <div style="font-size:1.1rem;text-align:center;font-family:'Courier New',monospace">${eq.display}</div>
-    </div>`;
-  });
-  html += '<div style="text-align:center"><button class="btn btn-orange" onclick="checkG5()">检查答案</button></div>';
-  document.getElementById('g5-equations').innerHTML = html;
-  
-  // Store answers for checking
-  window._g5data = eqs;
+function initG5() {
+  window.g5eqs = [{eq:'__H₂ + __O₂ → __H₂O', ans:'2,1,2'},{eq:'__C + __O₂ → __CO₂', ans:'1,1,1'},{eq:'__Fe + __O₂ → __Fe₃O₄', ans:'3,2,1'},{eq:'__CH₄ + __O₂ → __CO₂ + __H₂O', ans:'1,2,1,2'}];
+  window.g5Idx = 0;
+  document.getElementById('g5-eq').textContent = window.g5eqs[0].eq;
 }
 
 function checkG5() {
-  let allCorrect = true;
-  const eqs = window._g5data;
-  let c = 1;
-  eqs.forEach(eq => {
-    eq.answers.forEach(ans => {
-      const el = document.getElementById('g5-c' + c);
-      if (el) {
-        if (el.value.trim() === ans) {
-          el.style.borderColor = 'var(--green)';
-          el.style.background = 'rgba(46,204,113,0.15)';
-        } else {
-          el.style.borderColor = 'var(--red)';
-          el.style.background = 'rgba(231,76,60,0.15)';
-          allCorrect = false;
-        }
-      }
-      c++;
-    });
-  });
-  document.getElementById('g5-result').textContent = allCorrect ? '🎉 全部配平正确！化学配平大师！' : '还有错误，标红的系数需要修改。';
-  document.getElementById('g5-result').style.color = allCorrect ? 'var(--green)' : 'var(--red)';
-}
-
-// === GAME 6: Periodic table explorer ===
-function renderGame6() {
-  const elements = [
-    { sym: 'H', num: 1, item: '💧 水', desc: '水(H₂O)含氢元素——夜市所有饮料的基础' },
-    { sym: 'C', num: 6, item: '🪨 木炭', desc: '碳单质——夜市烤串的热量来源' },
-    { sym: 'N', num: 7, item: '💨 空气', desc: '氮气占空气78%——保护烤串不被快速氧化' },
-    { sym: 'O', num: 8, item: '🌬️ 氧气', desc: '呼吸和燃烧必需——鼓风机往炭火里送的就是它' },
-    { sym: 'Na', num: 11, item: '🧂 食盐', desc: 'NaCl——夜市所有美食的灵魂调味' },
-    { sym: 'Mg', num: 12, item: '🥬 叶绿素', desc: '叶绿素含镁——青菜绿油油的秘密' },
-    { sym: 'Al', num: 13, item: '🥘 铝箔', desc: '夜市烤鱼用的锡纸其实是铝箔' },
-    { sym: 'Si', num: 14, item: '🏖️ 沙子', desc: '地壳第二多元素——玻璃和沙子的主要成分' },
-    { sym: 'P', num: 15, item: '🔥 火柴', desc: '红磷——安全火柴的摩擦面成分' },
-    { sym: 'S', num: 16, item: '🥚 臭鸡蛋', desc: '硫化物有臭味——坏掉的鸡蛋味来自H₂S' },
-    { sym: 'Cl', num: 17, item: '🏊 消毒水', desc: '氯气用于自来水消毒——夜市洗碗水的守护者' },
-    { sym: 'K', num: 19, item: '🍌 香蕉', desc: '钾元素丰富——夜市水果摊的电解质补给' },
-    { sym: 'Ca', num: 20, item: '🦴 骨头', desc: '骨头汤含钙——夜市大骨熬汤的灵魂元素' },
-    { sym: 'Fe', num: 26, item: '🍳 铁锅', desc: '铁锅炒菜补铁——夜市大厨的传家宝' },
-    { sym: 'Cu', num: 29, item: '🪙 铜线', desc: '铜导线——夜市灯红酒绿的电路保障' },
-    { sym: 'Zn', num: 30, item: '🦪 牡蛎', desc: '牡蛎富含锌——夜市烧烤摊的高端食材' },
-    { sym: 'Ag', num: 47, item: '🥢 银筷子', desc: '古代用银针试毒——检测硫化物变黑' },
-    { sym: 'I', num: 53, item: '🧂 碘盐', desc: '加碘盐防大脖子病——夜市调味料的健康保障' },
-    { sym: 'Au', num: 79, item: '💍 金戒指', desc: '黄金化学性质极稳定——千年不褪色' },
-    { sym: 'Hg', num: 80, item: '🌡️ 温度计', desc: '水银温度计——唯一的液态金属' }
-  ];
-  
-  let html = '<div class="element-grid">';
-  elements.forEach(e => {
-    html += `<div class="element-cell" onclick="collectElement(this, '${e.sym}', '${e.num}', '${e.item.replace(/'/g, "\\'")}', '${e.desc.replace(/'/g, "\\'")}')">${e.sym}<br><small>${e.num}</small></div>`;
-  });
-  html += '</div>';
-  html += '<div style="text-align:center;margin-top:12px"><span style="font-weight:700;color:var(--orange)">已收集: <span id="g6-count">0</span>/20</span></div>';
-  html += '<div id="g6-info" style="text-align:center;margin-top:8px;font-size:0.9rem;color:var(--blue)"></div>';
-  return html;
-}
-
-let g6Collected = 0;
-
-function initGame6() {
-  g6Collected = 0;
-  document.getElementById('g6-count').textContent = '0';
-}
-
-function collectElement(cell, sym, num, item, desc) {
-  if (cell.classList.contains('collected')) return;
-  cell.classList.add('collected');
-  g6Collected++;
-  document.getElementById('g6-count').textContent = g6Collected;
-  document.getElementById('g6-info').textContent = `${sym}(${num}号) → ${item}: ${desc}`;
-  if (g6Collected >= 20) {
-    document.getElementById('g6-info').textContent = '🎉 收集完毕！你已经认识了20种夜市相关元素！';
+  const input = document.getElementById('g5-input').value.replace(/\s/g,'');
+  if (input === window.g5eqs[window.g5Idx].ans) {
+    document.getElementById('g5-result').textContent = '✅ 正确！';
+    window.g5Idx++;
+    if (window.g5Idx >= window.g5eqs.length) {
+      document.getElementById('g5-eq').textContent = '全部配平完成！';
+      document.getElementById('g5-input').style.display = 'none';
+    } else {
+      document.getElementById('g5-eq').textContent = window.g5eqs[window.g5Idx].eq;
+    }
+  } else {
+    document.getElementById('g5-result').textContent = '❌ 不对，再试试';
   }
+  document.getElementById('g5-input').value = '';
 }
 
-// === GAME 7: Bacteria growth calculator ===
-function renderGame7() {
-  const hours = Math.floor(Math.random() * 5) + 2;
-  window._g7hours = hours;
-  window._g7generations = hours * 3; // 20min per division, 3 per hour
-  const answer = Math.pow(2, window._g7generations);
-  window._g7answer = answer;
-  
-  return `<p style="color:var(--text2);margin-bottom:12px">
-    🧫 1个细菌每<strong>20分钟</strong>分裂1次（1个变2个）。<br>
-    经过 <strong>${hours}小时</strong>后，1个细菌能繁殖成多少个？（假设不死亡）
-  </p>
-  <div style="text-align:center;margin:16px 0">
-    <input type="number" id="g7-input" style="padding:10px 16px;border-radius:8px;border:2px solid var(--border);background:var(--bg);color:var(--text);font-size:1.1rem;width:200px;text-align:center" placeholder="输入答案">
-  </div>
-  <div style="text-align:center">
-    <button class="btn btn-orange" onclick="checkG7()">提交</button>
-    <button class="btn btn-outline" onclick="initGame7()" style="margin-left:8px">换一题</button>
-  </div>
-  <div id="g7-result" style="text-align:center;margin-top:12px;font-weight:700"></div>
-  <div id="g7-explain" style="text-align:center;margin-top:8px;font-size:0.85rem;color:var(--text2)"></div>`;
+function initG6() {
+  const elems = [{s:'H',n:'氢',nm:'水'},{s:'C',n:'碳',nm:'木炭'},{s:'O',n:'氧',nm:'呼吸'},{s:'N',n:'氮',nm:'空气'},{s:'Na',n:'钠',nm:'食盐'},{s:'Cl',n:'氯',nm:'食盐'},{s:'Fe',n:'铁',nm:'铁锅'},{s:'Ca',n:'钙',nm:'骨头'},{s:'K',n:'钾',nm:'香蕉'},{s:'Mg',n:'镁',nm:'绿叶'}];
+  window.g6Collected = [];
+  document.getElementById('g6-grid').innerHTML = elems.map((e,i)=>`<div style="padding:8px;text-align:center;background:var(--bg2);border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;border:1px solid var(--border)" onclick="collectG6(${i})">${e.s}<br><small style="color:var(--text3)">${e.n}</small></div>`).join('');
 }
 
-function initGame7() {
-  const modalBody = document.getElementById('gameModalBody');
-  modalBody.innerHTML = renderGame7();
+function collectG6(i) {
+  const elems = [{s:'H',n:'氢',nm:'水'},{s:'C',n:'碳',nm:'木炭'},{s:'O',n:'氧',nm:'呼吸'},{s:'N',n:'氮',nm:'空气'},{s:'Na',n:'钠',nm:'食盐'},{s:'Cl',n:'氯',nm:'食盐'},{s:'Fe',n:'铁',nm:'铁锅'},{s:'Ca',n:'钙',nm:'骨头'},{s:'K',n:'钾',nm:'香蕉'},{s:'Mg',n:'镁',nm:'绿叶'}];
+  if (window.g6Collected.includes(i)) return;
+  window.g6Collected.push(i);
+  document.getElementById('g6-info').textContent = `✅ ${elems[i].s}（${elems[i].n}）→ 夜市关联：${elems[i].nm} | 已收集 ${window.g6Collected.length}/10`;
+  if (window.g6Collected.length >= 10) showToast('🎉 全部元素收集完毕！', false);
+}
+
+function initG7() {
+  const hours = Math.floor(Math.random()*4)+1;
+  window.g7Answer = Math.pow(2, hours*3);
+  document.getElementById('g7-q').textContent = `1个细菌每20分钟分裂1次，${hours}小时后有多少个？`;
 }
 
 function checkG7() {
   const input = parseInt(document.getElementById('g7-input').value);
-  const answer = window._g7answer;
-  const hours = window._g7hours;
-  const gens = window._g7generations;
-  
-  if (input === answer) {
-    document.getElementById('g7-result').textContent = '🎉 完全正确！';
-    document.getElementById('g7-result').style.color = 'var(--green)';
+  document.getElementById('g7-result').textContent = input === window.g7Answer ? `✅ 正确！${window.g7Answer}个！这就是指数增长` : `❌ 不对，正确答案是 ${window.g7Answer}`;
+}
+
+function transformG8() {
+  const states = [{emoji:'💎',name:'金刚石',desc:'碳原子正四面体排列，最硬的天然物质'},{emoji:'✏️',name:'石墨',desc:'碳原子层状排列，最软且导电'},{emoji:'⚽',name:'C₆₀',desc:'60个碳原子排列成足球形状'}];
+  window.g8State = ((window.g8State||0)+1) % 3;
+  const s = states[window.g8State];
+  document.getElementById('g8-display').textContent = s.emoji;
+  document.getElementById('g8-name').textContent = s.name;
+  document.getElementById('g8-desc').textContent = s.desc;
+}
+
+// ============ CHAT ============
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  if (!apiKey) { showToast('请先在⚙️设置中配置DeepSeek API Key', true); return; }
+  const body = document.getElementById('chatBody');
+  body.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  body.innerHTML += `<div class="chat-msg ai">阿火在想...</div>`;
+  body.scrollTop = body.scrollHeight;
+  input.value = '';
+  try {
+    const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+      body:JSON.stringify({model:'deepseek-chat',messages:[
+        {role:'system',content:'你是「夜市大厨阿火」，在夜市摆摊20年的老厨师，也是生化知识隐藏大师。说话像老厨师给徒弟支招——直接、实用、接地气。常用夜市食材/现象类比知识点。规则：1.先夜市场景类比1-2句，再用教科书语言解释 2.每个回答含夜市实例 3.回答200字以内 4.超出生物七上/化学九上范围礼貌引导回来。'},
+        {role:'user',content:msg}
+      ],max_tokens:300})
+    });
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || '哎呀，厨房忙不过来了，等一下再问~';
+    body.lastElementChild.textContent = reply;
+  } catch(e) {
+    body.lastElementChild.textContent = '网络出问题了，检查一下API Key或者网络吧~';
+  }
+  body.scrollTop = body.scrollHeight;
+}
+
+// ============ SETTINGS ============
+function toggleSettings() {
+  document.getElementById('settingsModal').classList.toggle('show');
+}
+function saveApiKey() {
+  apiKey = document.getElementById('apiKeyInput').value.trim();
+  localStorage.setItem('bioChemApiKey', apiKey);
+  showToast('API Key已保存', false);
+  toggleSettings();
+}
+function unlock() {
+  const code = document.getElementById('unlockInput').value.trim();
+  if (code === 'NIGHTSCHOOL2026' || code === 'YESHIXUETANG') {
+    isUnlocked = true;
+    localStorage.setItem('bioChemUnlocked', 'true');
+    showToast('🔓 已解锁全部内容！', false);
+    renderKnowledge();
+    toggleSettings();
   } else {
-    document.getElementById('g7-result').textContent = '❌ 不对哦，再想想！';
-    document.getElementById('g7-result').style.color = 'var(--red)';
+    showToast('解锁码错误', true);
   }
-  document.getElementById('g7-explain').textContent = 
-    `${hours}小时 = ${hours}×3 = ${gens}次分裂 → 1×2^${gens} = ${answer}个细菌。这就是指数增长的威力！`;
 }
 
-// === GAME 8: Carbon transformation ===
-function renderGame8() {
-  return `<p style="color:var(--text2);margin-bottom:12px">点击按钮变换碳原子的排列方式，看碳的三种"变身"！</p>
-    <div class="carbon-canvas-area" id="g8-canvas">
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--text2)">点击下方按钮开始</div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
-      <button class="btn btn-blue" onclick="transformG8('diamond')">💎 金刚石<br><small>正四面体</small></button>
-      <button class="btn btn-orange" onclick="transformG8('graphite')">✏️ 石墨<br><small>层状结构</small></button>
-      <button class="btn" style="background:var(--green);color:#fff" onclick="transformG8('c60')">⚽ C₆₀<br><small>足球烯</small></button>
-    </div>
-    <div id="g8-info" style="text-align:center;margin-top:12px;font-weight:600;color:var(--blue)"></div>`;
+// ============ TOAST ============
+function showToast(msg, isErr) {
+  const el = document.createElement('div');
+  el.className = 'toast ' + (isErr?'err':'ok');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2000);
 }
 
-function initGame8() {
-  // Will be rendered by transformG8
-}
-
-function transformG8(type) {
-  const canvas = document.getElementById('g8-canvas');
-  const info = document.getElementById('g8-info');
-  let nodes = '';
-  const w = canvas.offsetWidth || 400;
-  const h = 200;
-  const cx = w / 2, cy = h / 2;
-  
-  switch(type) {
-    case 'diamond':
-      // Tetrahedral arrangement - 5 nodes showing tetrahedral pattern
-      const positions = [
-        { x: cx, y: cy - 30 },
-        { x: cx - 35, y: cy + 25 },
-        { x: cx + 35, y: cy + 25 },
-        { x: cx - 18, y: cy - 60 },
-        { x: cx + 18, y: cy - 60 }
-      ];
-      positions.forEach((p, i) => {
-        nodes += `<div class="carbon-node" style="left:${p.x - 8}px;top:${p.y - 8}px;animation-delay:${i * 0.1}s"></div>`;
-      });
-      info.innerHTML = '<strong>💎 金刚石</strong> — 碳原子正四面体排列，每个碳与4个碳形成共价键。自然界最硬的物质！';
-      break;
-    case 'graphite':
-      // Layered structure
-      for (let layer = 0; layer < 3; layer++) {
-        for (let i = 0; i < 4; i++) {
-          nodes += `<div class="carbon-node" style="left:${cx - 36 + i * 24 - 8}px;top:${cy - 20 + layer * 30 - 8}px;animation-delay:${(layer * 4 + i) * 0.05}s"></div>`;
-        }
-      }
-      info.innerHTML = '<strong>✏️ 石墨</strong> — 碳原子层状排列，层与层之间易滑动。可以做铅笔芯和润滑剂！';
-      break;
-    case 'c60':
-      // Spherical - approximate with circle of nodes
-      for (let i = 0; i < 12; i++) {
-        const angle = (i / 12) * Math.PI * 2;
-        const r = 35;
-        nodes += `<div class="carbon-node" style="left:${cx + Math.cos(angle) * r - 8}px;top:${cy + Math.sin(angle) * r - 8}px;animation-delay:${i * 0.08}s"></div>`;
-      }
-      info.innerHTML = '<strong>⚽ C₆₀（足球烯）</strong> — 60个碳原子排列成足球形状。纳米材料的新星！';
-      break;
-  }
-  
-  canvas.innerHTML = nodes;
-}
-
-// ========== TOAST ==========
-function showToast(msg, isError) {
-  const existing = document.querySelector('.toast');
-  if (existing) existing.remove();
-  
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.style.background = isError ? 'var(--red)' : 'var(--green)';
-  toast.textContent = msg;
-  document.body.appendChild(toast);
-  
-  setTimeout(() => toast.remove(), 2500);
-}
-
-// ========== STARTUP ==========
-document.addEventListener('DOMContentLoaded', init);
-
-// Close settings modal on outside click
-document.getElementById('settingsModal').addEventListener('click', function(e) {
-  if (e.target === this) toggleSettings();
-});
-
-// Close game modal on outside click
-document.getElementById('gameModal').addEventListener('click', function(e) {
-  if (e.target === this) closeGame();
+// Close modals on overlay click
+['quizModal','quizResultModal','gameModal','settingsModal'].forEach(id => {
+  document.getElementById(id)?.addEventListener('click', function(e) {
+    if (e.target === this) { this.classList.remove('show'); }
+  });
 });
 </script>
 </body>
