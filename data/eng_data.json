@@ -12,13 +12,38 @@
       "询问姓名：What's your name?",
       "be动词：I am = I'm, you are = you're"
     ],
-    "examPoints": ["问候语", "be动词", "自我介绍"],
-    "textbookColumns": ["「1a」Look and say", "「1c」Pair work"],
+    "examPoints": [
+      "问候语",
+      "be动词",
+      "自我介绍"
+    ],
+    "textbookColumns": [
+      "「1a」Look and say",
+      "「1c」Pair work"
+    ],
     "free": true,
     "quiz": [
-      {"type":"mc","q":"How do you answer 'Good morning!'?","options":["Good evening!","Good morning!","Hello!","Good night!"],"answer":1,"explanation":"'Good morning!' 的礼貌回答是同样的 'Good morning!'。"},
-      {"type":"fill","q":"A: What's ___ name? B: My name is Tom.","answer":"your","hint":"询问'你的'名字","explanation":"询问对方姓名用 your（你的）。"}
-    ]
+      {
+        "type": "mc",
+        "q": "How do you answer 'Good morning!'?",
+        "options": [
+          "Good evening!",
+          "Good morning!",
+          "Hello!",
+          "Good night!"
+        ],
+        "answer": 1,
+        "explanation": "'Good morning!' 的礼貌回答是同样的 'Good morning!'。"
+      },
+      {
+        "type": "fill",
+        "q": "A: What's ___ name? B: My name is Tom.",
+        "answer": "your",
+        "hint": "询问'你的'名字",
+        "explanation": "询问对方姓名用 your（你的）。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-1-2",
@@ -33,13 +58,43 @@
       "不定冠词：a用于辅音音素前，an用于元音音素前",
       "指示代词：this（近指）/ that（远指）"
     ],
-    "examPoints": ["a/an用法", "指示代词", "物品词汇"],
-    "textbookColumns": ["「1a」Match words with pictures", "「2a」Listen and number"],
+    "examPoints": [
+      "a/an用法",
+      "指示代词",
+      "物品词汇"
+    ],
+    "textbookColumns": [
+      "「1a」Match words with pictures",
+      "「2a」Listen and number"
+    ],
     "free": true,
     "quiz": [
-      {"type":"mc","q":"___ apple is on the desk.","options":["A","An","The","/"],"answer":1,"explanation":"apple以元音音素开头，用an。"},
-      {"type":"mc","q":"___ is a book. (近处)","options":["That","This","These","Those"],"answer":1,"explanation":"this指近处单数物品，that指远处。"}
-    ]
+      {
+        "type": "mc",
+        "q": "___ apple is on the desk.",
+        "options": [
+          "A",
+          "An",
+          "The",
+          "/"
+        ],
+        "answer": 1,
+        "explanation": "apple以元音音素开头，用an。"
+      },
+      {
+        "type": "mc",
+        "q": "___ is a book. (近处)",
+        "options": [
+          "That",
+          "This",
+          "These",
+          "Those"
+        ],
+        "answer": 1,
+        "explanation": "this指近处单数物品，that指远处。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-1-3",
@@ -54,13 +109,37 @@
       "回答：It's + 颜色",
       "描述物品：The pen is blue."
     ],
-    "examPoints": ["颜色词汇", "What color句型"],
-    "textbookColumns": ["「1a」Color the words", "「2b」Listen and color"],
+    "examPoints": [
+      "颜色词汇",
+      "What color句型"
+    ],
+    "textbookColumns": [
+      "「1a」Color the words",
+      "「2b」Listen and color"
+    ],
     "free": true,
     "quiz": [
-      {"type":"mc","q":"What color is the sky? It's ___.","options":["red","blue","green","black"],"answer":1,"explanation":"天空是蓝色的 blue。"},
-      {"type":"fill","q":"The banana is ___ (黄色的).","answer":"yellow","hint":"banana的颜色","explanation":"香蕉是黄色的 yellow。"}
-    ]
+      {
+        "type": "mc",
+        "q": "What color is the sky? It's ___.",
+        "options": [
+          "red",
+          "blue",
+          "green",
+          "black"
+        ],
+        "answer": 1,
+        "explanation": "天空是蓝色的 blue。"
+      },
+      {
+        "type": "fill",
+        "q": "The banana is ___ (黄色的).",
+        "answer": "yellow",
+        "hint": "banana的颜色",
+        "explanation": "香蕉是黄色的 yellow。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-2-1",
@@ -75,13 +154,38 @@
       "询问来自哪里：Where are you from? I'm from China.",
       "人称代词：I/you/he/she/it/we/they"
     ],
-    "examPoints": ["人称代词", "特殊疑问句", "个人信息"],
-    "textbookColumns": ["「1a」Listen and repeat", "「2c」Role-play"],
+    "examPoints": [
+      "人称代词",
+      "特殊疑问句",
+      "个人信息"
+    ],
+    "textbookColumns": [
+      "「1a」Listen and repeat",
+      "「2c」Role-play"
+    ],
     "free": true,
     "quiz": [
-      {"type":"mc","q":"___ is from Beijing. ___ name is Li Ming.","options":["He; His","He; Her","She; His","She; Her"],"answer":0,"explanation":"Li Ming是男性名，用He（他）和His（他的）。"},
-      {"type":"fill","q":"A: ___ are you from? B: I'm from Shanghai.","answer":"Where","hint":"询问地点","explanation":"询问来自哪里用Where。"}
-    ]
+      {
+        "type": "mc",
+        "q": "___ is from Beijing. ___ name is Li Ming.",
+        "options": [
+          "He; His",
+          "He; Her",
+          "She; His",
+          "She; Her"
+        ],
+        "answer": 0,
+        "explanation": "Li Ming是男性名，用He（他）和His（他的）。"
+      },
+      {
+        "type": "fill",
+        "q": "A: ___ are you from? B: I'm from Shanghai.",
+        "answer": "Where",
+        "hint": "询问地点",
+        "explanation": "询问来自哪里用Where。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-2-2",
@@ -96,13 +200,43 @@
       "介绍家人：This is my father. / These are my parents.",
       "名词复数：parent→parents, brother→brothers"
     ],
-    "examPoints": ["家庭成员词汇", "名词所有格", "名词复数"],
-    "textbookColumns": ["「1a」Match family members", "「2d」Introduce your family"],
+    "examPoints": [
+      "家庭成员词汇",
+      "名词所有格",
+      "名词复数"
+    ],
+    "textbookColumns": [
+      "「1a」Match family members",
+      "「2d」Introduce your family"
+    ],
     "free": false,
     "quiz": [
-      {"type":"mc","q":"This is ___ book. (Tom的书)","options":["Tom","Toms","Tom's","Toms'"],"answer":2,"explanation":"名词所有格用's表示'...的'。"},
-      {"type":"mc","q":"My father and mother are my ___.","options":["parent","parents","brother","sister"],"answer":1,"explanation":"father+mother=parents（父母），是复数形式。"}
-    ]
+      {
+        "type": "mc",
+        "q": "This is ___ book. (Tom的书)",
+        "options": [
+          "Tom",
+          "Toms",
+          "Tom's",
+          "Toms'"
+        ],
+        "answer": 2,
+        "explanation": "名词所有格用's表示'...的'。"
+      },
+      {
+        "type": "mc",
+        "q": "My father and mother are my ___.",
+        "options": [
+          "parent",
+          "parents",
+          "brother",
+          "sister"
+        ],
+        "answer": 1,
+        "explanation": "father+mother=parents（父母），是复数形式。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-3-1",
@@ -117,13 +251,43 @@
       "方位介词：in, on, under, behind, next to, between",
       "一般疑问句：Is there a library? Yes, there is."
     ],
-    "examPoints": ["There be句型", "方位介词", "学校词汇"],
-    "textbookColumns": ["「1a」Label the places", "「2e」Describe your school"],
+    "examPoints": [
+      "There be句型",
+      "方位介词",
+      "学校词汇"
+    ],
+    "textbookColumns": [
+      "「1a」Label the places",
+      "「2e」Describe your school"
+    ],
     "free": false,
     "quiz": [
-      {"type":"mc","q":"___ a library in our school.","options":["There is","There are","It is","They are"],"answer":0,"explanation":"library是单数，用There is。"},
-      {"type":"mc","q":"The library is ___ the classroom and the lab.","options":["on","in","between","under"],"answer":2,"explanation":"between A and B 表示在两者之间。"}
-    ]
+      {
+        "type": "mc",
+        "q": "___ a library in our school.",
+        "options": [
+          "There is",
+          "There are",
+          "It is",
+          "They are"
+        ],
+        "answer": 0,
+        "explanation": "library是单数，用There is。"
+      },
+      {
+        "type": "mc",
+        "q": "The library is ___ the classroom and the lab.",
+        "options": [
+          "on",
+          "in",
+          "between",
+          "under"
+        ],
+        "answer": 2,
+        "explanation": "between A and B 表示在两者之间。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-4-1",
@@ -138,13 +302,43 @@
       "表达原因：Why do you like...? Because it's...",
       "形容词：interesting, fun, easy, difficult, boring, useful"
     ],
-    "examPoints": ["学科词汇", "Why/Because", "喜好表达"],
-    "textbookColumns": ["「1a」Match subjects", "「2c」Talk about favorites"],
+    "examPoints": [
+      "学科词汇",
+      "Why/Because",
+      "喜好表达"
+    ],
+    "textbookColumns": [
+      "「1a」Match subjects",
+      "「2c」Talk about favorites"
+    ],
     "free": false,
     "quiz": [
-      {"type":"mc","q":"— ___ is your favorite subject? — Math.","options":["Who","What","Where","When"],"answer":1,"explanation":"询问最喜欢什么学科用What。"},
-      {"type":"mc","q":"— Why do you like English? — ___ it's interesting.","options":["So","And","But","Because"],"answer":3,"explanation":"回答Why（为什么）用Because（因为）。"}
-    ]
+      {
+        "type": "mc",
+        "q": "— ___ is your favorite subject? — Math.",
+        "options": [
+          "Who",
+          "What",
+          "Where",
+          "When"
+        ],
+        "answer": 1,
+        "explanation": "询问最喜欢什么学科用What。"
+      },
+      {
+        "type": "mc",
+        "q": "— Why do you like English? — ___ it's interesting.",
+        "options": [
+          "So",
+          "And",
+          "But",
+          "Because"
+        ],
+        "answer": 3,
+        "explanation": "回答Why（为什么）用Because（因为）。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-5-1",
@@ -159,13 +353,38 @@
       "一般疑问句：Can you swim? Yes, I can. / No, I can't.",
       "社团词汇：chess club, music club, sports club, art club"
     ],
-    "examPoints": ["can/can't", "能力表达", "社团词汇"],
-    "textbookColumns": ["「1a」What can you do?", "「2d」Join a club"],
+    "examPoints": [
+      "can/can't",
+      "能力表达",
+      "社团词汇"
+    ],
+    "textbookColumns": [
+      "「1a」What can you do?",
+      "「2d」Join a club"
+    ],
     "free": false,
     "quiz": [
-      {"type":"mc","q":"— ___ you play the piano? — Yes, I can.","options":["Are","Do","Can","Is"],"answer":2,"explanation":"询问能力用Can。"},
-      {"type":"fill","q":"I can swim but I ___ (不会) play chess.","answer":"can't","hint":"can的否定形式","explanation":"can的否定是cannot，缩写为can't。"}
-    ]
+      {
+        "type": "mc",
+        "q": "— ___ you play the piano? — Yes, I can.",
+        "options": [
+          "Are",
+          "Do",
+          "Can",
+          "Is"
+        ],
+        "answer": 2,
+        "explanation": "询问能力用Can。"
+      },
+      {
+        "type": "fill",
+        "q": "I can swim but I ___ (不会) play chess.",
+        "answer": "can't",
+        "hint": "can的否定形式",
+        "explanation": "can的否定是cannot，缩写为can't。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-6-1",
@@ -180,13 +399,43 @@
       "一般现在时：I get up at 7:00. / He gets up at 7:00.",
       "第三人称单数动词变化：get→gets, go→goes, have→has"
     ],
-    "examPoints": ["一般现在时", "三单", "时间表达"],
-    "textbookColumns": ["「1a」Daily routines", "「2c」Interview"],
+    "examPoints": [
+      "一般现在时",
+      "三单",
+      "时间表达"
+    ],
+    "textbookColumns": [
+      "「1a」Daily routines",
+      "「2c」Interview"
+    ],
     "free": false,
     "quiz": [
-      {"type":"mc","q":"She ___ to school at 7:30 every day.","options":["go","gos","goes","going"],"answer":2,"explanation":"She是第三人称单数，动词go要加-es变成goes。"},
-      {"type":"mc","q":"I ___ eat breakfast at home. (频率100%)","options":["sometimes","never","often","always"],"answer":3,"explanation":"频率100%用always（总是）。"}
-    ]
+      {
+        "type": "mc",
+        "q": "She ___ to school at 7:30 every day.",
+        "options": [
+          "go",
+          "gos",
+          "goes",
+          "going"
+        ],
+        "answer": 2,
+        "explanation": "She是第三人称单数，动词go要加-es变成goes。"
+      },
+      {
+        "type": "mc",
+        "q": "I ___ eat breakfast at home. (频率100%)",
+        "options": [
+          "sometimes",
+          "never",
+          "often",
+          "always"
+        ],
+        "answer": 3,
+        "explanation": "频率100%用always（总是）。"
+      }
+    ],
+    "grade": 7
   },
   {
     "id": "eng-1-7-1",
@@ -201,12 +450,37 @@
       "日期表达：My birthday is on May 5th.",
       "询问日期：When is your birthday?"
     ],
-    "examPoints": ["月份词汇", "序数词", "日期表达"],
-    "textbookColumns": ["「1a」Months of the year", "「2d」Birthday survey"],
+    "examPoints": [
+      "月份词汇",
+      "序数词",
+      "日期表达"
+    ],
+    "textbookColumns": [
+      "「1a」Months of the year",
+      "「2d」Birthday survey"
+    ],
     "free": false,
     "quiz": [
-      {"type":"mc","q":"January is the ___ month of the year.","options":["one","first","oneth","second"],"answer":1,"explanation":"一月是一年的第一个月，用序数词first。"},
-      {"type":"fill","q":"My birthday is ___ May 1st.","answer":"on","hint":"具体日期用哪个介词？","explanation":"具体某一天前面用介词on。"}
-    ]
+      {
+        "type": "mc",
+        "q": "January is the ___ month of the year.",
+        "options": [
+          "one",
+          "first",
+          "oneth",
+          "second"
+        ],
+        "answer": 1,
+        "explanation": "一月是一年的第一个月，用序数词first。"
+      },
+      {
+        "type": "fill",
+        "q": "My birthday is ___ May 1st.",
+        "answer": "on",
+        "hint": "具体日期用哪个介词？",
+        "explanation": "具体某一天前面用介词on。"
+      }
+    ],
+    "grade": 7
   }
 ]
