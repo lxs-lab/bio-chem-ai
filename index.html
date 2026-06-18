@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>智慧学堂 - 初中生物化学 AI 教学</title>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 <style>
 :root {
   --bg: #faf7f2;
@@ -281,6 +282,29 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 .game-frame{min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .game-frame .game-instructions{font-size:.85rem;color:var(--text2);margin-bottom:16px;text-align:center;max-width:400px;line-height:1.5}
 
+/* PDF Viewer Modal */
+.pdf-modal{width:95%;max-width:1100px;height:90vh;display:flex;flex-direction:column}
+.pdf-modal .modal-body{flex:1;overflow:hidden;padding:0}
+.pdf-toolbar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.pdf-toolbar span{font-size:.82rem;color:var(--text2)}
+.pdf-toolbar .btn-sm{padding:6px 12px;font-size:.78rem}
+.pdf-frame{flex:1;border:none;width:100%;min-height:400px}
+
+/* Syllabus Tree Enhancements */
+.chapter-node{border-left:3px solid transparent}
+.chapter-node.open{border-left-color:var(--warm);background:var(--warm-light)}
+.cn-sections{padding-left:16px;border-left:2px dashed var(--border);margin-left:12px;margin-top:4px}
+.chapter-node.open .cn-sections{border-left-color:var(--warm2)}
+.section-item{position:relative}
+.section-item:before{content:'';position:absolute;left:-22px;top:50%;width:14px;height:2px;background:var(--border);transition:background .3s}
+.section-item:hover:before{background:var(--warm2)}
+.si-badge{font-size:.68rem;padding:2px 6px;border-radius:8px;margin-left:auto}
+.si-badge.free{background:var(--green-light);color:var(--green)}
+.si-badge.locked{background:#fdeaea;color:#e74c3c}
+.unit-stats-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.unit-stat-chip{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:.78rem;display:flex;align-items:center;gap:6px}
+.unit-stat-chip .chip-val{font-weight:700;color:var(--warm)}
+
 /* Toast */
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:10px 24px;border-radius:24px;font-size:.85rem;font-weight:500;z-index:300;animation:toastIn .3s ease;white-space:nowrap}
 .toast.ok{background:var(--green-light);color:var(--green)}
@@ -372,13 +396,13 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
           <div class="sc-icon">📘</div>
           <div class="sc-title">义务教育生物学课程标准</div>
           <div class="sc-desc">2022年版 · 教育部制定</div>
-          <a href="pdf/义务教育生物学课程标准2022版.pdf" target="_blank" class="btn-sm btn-warm" style="display:inline-block;text-decoration:none">📥 查看/下载</a>
+          <button class="btn-sm btn-warm" onclick="openPdf('pdf/义务教育生物学课程标准2022版.pdf','义务教育生物学课程标准 2022版')">📖 在线预览</button>
         </div>
         <div class="standard-card">
           <div class="sc-icon">📙</div>
           <div class="sc-title">义务教育化学课程标准</div>
           <div class="sc-desc">2022年版 · 教育部制定</div>
-          <a href="pdf/义务教育化学课程标准2022版.pdf" target="_blank" class="btn-sm btn-warm" style="display:inline-block;text-decoration:none">📥 查看/下载</a>
+          <button class="btn-sm btn-warm" onclick="openPdf('pdf/义务教育化学课程标准2022版.pdf','义务教育化学课程标准 2022版')">📖 在线预览</button>
         </div>
       </div>
     </div>
@@ -405,6 +429,8 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
         <h2 id="syllabusTitle">生物学 七年级上册</h2>
         <p id="syllabusSubtitle">人教版 · 2024版 · 课程知识结构</p>
       </div>
+
+      <div class="unit-stats-row" id="syllabusStats"></div>
 
       <div class="unit-map" id="syllabusUnitMap"></div>
 
@@ -525,6 +551,20 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 
 <div id="toastContainer"></div>
 
+<!-- PDF Viewer Modal -->
+<div class="modal-overlay" id="pdfModal"><div class="modal pdf-modal">
+  <div class="modal-header"><h3 id="pdfTitle">教材查看器</h3><button class="modal-close" onclick="closePdf()">✕</button></div>
+  <div class="modal-body">
+    <div class="pdf-toolbar">
+      <button class="btn-sm btn-outline" onclick="pdfZoomOut()">🔍−</button>
+      <button class="btn-sm btn-outline" onclick="pdfZoomIn()">🔍+</button>
+      <button class="btn-sm btn-outline" onclick="pdfReset()">↺ 重置</button>
+      <span id="pdfInfo"></span>
+    </div>
+    <iframe id="pdfFrame" class="pdf-frame" src=""></iframe>
+  </div>
+</div></div>
+
 <script>
 // ============ DATA ============
 const BIO_DATA = [{"id":"bio-1-1-1","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第一节 观察周边环境中的生物","page":"P2-6","category":"bio","keypoints":["观察是科学探究的基本方法（有目的、有计划、按顺序）","调查方法：制定方案→如实记录→分类整理","区分生物与非生物","按植物/动物/真菌/细菌/病毒分类","调查时不捕捉或伤害生物"],"examPoints":["调查方法步骤","科学观察法","生物分类基础"],"textbookColumns":["「观察·思考」观察校园生物","「科学方法」观察","「思维训练」发现问题提出问题"],"nightMarketCase":"夜市=生态调查基地——植物（蔬菜/葱/香菜）、动物（鱼/虾/鸭）、真菌（蘑菇/木耳）、微生物（酵母/霉菌）","gameDesign":"「夜市生物普查员」：给一张夜市全景图，学生拖拽贴标签分类，统计后生成分类饼图","gameType":"drag-classify","free":true,"quiz":[{"type":"mc","q":"科学观察的基本要求是什么？","options":["随便看看就行","有目的、有计划、按一定顺序观察","只用眼睛看","不需要记录"],"answer":1,"explanation":"科学观察必须有目的、有计划、按顺序进行，并如实记录。"},{"type":"mc","q":"在夜市调查中，蘑菇属于哪类生物？","options":["植物","动物","真菌","微生物"],"answer":2,"explanation":"蘑菇属于真菌，不是植物——真菌是独立的生物类群。"},{"type":"fill","q":"科学调查的基本步骤是：制定方案 → ___ → 分类整理","answer":"如实记录","hint":"调查时要'诚实地记下来'","explanation":"调查步骤：制定方案→如实记录→分类整理。"}]},{"id":"bio-1-1-2","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第二节 生物的特征","page":"P7-11","category":"bio","keypoints":["生物7个特征：①需要营养②能呼吸③能排出废物④能对外界刺激反应⑤能生长繁殖⑥有遗传变异⑦由细胞构成（病毒除外）","区分生石花（生物）vs钟乳石（非生物）","机器人不是生物（无生命活动）"],"examPoints":["判断某物是否为生物","列举生物共同特征"],"textbookColumns":["「想一想」机器人是生物吗？","「观察·思考」生物vs非生物（生石花/钟乳石）","「练习」含羞草/鲸/狮追斑马"],"nightMarketCase":"夜市活虾vs死虾：活虾游动蹦跶（对刺激反应），死虾不动——生物与非生物的直观区分","gameDesign":"「找不同」游戏：展示夜市摊位图，限时点击哪些是生物/非生物，计分排名","gameType":"click-timer","free":true,"quiz":[{"type":"mc","q":"以下哪个不是生物的基本特征？","options":["需要营养","能生长繁殖","能制造氧气","能对外界刺激作出反应"],"answer":2,"explanation":"制造氧气不是所有生物的共同特征，只有能光合作用的生物才制造氧气。"},{"type":"mc","q":"机器人为什么不是生物？","options":["不会动","没有生命活动，不能生长繁殖","是金属做的","不需要能量"],"answer":1,"explanation":"机器人缺乏生命活动——不能生长、繁殖、新陈代谢，不符合生物的基本特征。"}]},{"id":"bio-1-2-1","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第一节 学习使用显微镜","page":"P12-17","category":"bio","keypoints":["显微镜结构：目镜/物镜/镜筒/载物台/遮光器/反光镜/粗准焦螺旋/细准焦螺旋","低倍镜→高倍镜顺序","物像与标本上下左右均颠倒","放大倍数=目镜×物镜","胡克1665年发现细胞"],"examPoints":["显微镜各部件功能","放大倍数计算","物像移动方向","胡克"],"textbookColumns":["「想一想」两个凸透镜组合=显微镜原理","「实验·探究」练习使用显微镜","「科学·技术·社会」显微镜发展史"],"nightMarketCase":"肉的肌肉纤维在显微镜下像一束束钢丝绳——远比肉眼看到的复杂","gameDesign":"「虚拟显微镜操作」：拖拽粗细调焦旋钮模拟对焦，找到隐藏在模糊图像中的细胞","gameType":"drag-focus","free":true,"quiz":[{"type":"mc","q":"显微镜的放大倍数如何计算？","options":["目镜+物镜","目镜×物镜","目镜÷物镜","物镜÷目镜"],"answer":1,"explanation":"放大倍数=目镜放大倍数×物镜放大倍数。"},{"type":"mc","q":"显微镜下看到的物像是怎样的？","options":["与标本相同","左右颠倒","上下左右均颠倒","只有上下颠倒"],"answer":2,"explanation":"显微镜成像是倒像，物像与标本上下左右均颠倒。"},{"type":"fill","q":"如果用10×目镜和40×物镜，总放大倍数是___倍","answer":"400","hint":"目镜倍数 × 物镜倍数","explanation":"10×40=400倍。"}]},{"id":"bio-1-2-2","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第二节 植物细胞","page":"P18-22","category":"bio","keypoints":["玻片标本三种：装片/切片/涂片","制作洋葱内表皮临时装片7步（擦→滴→撕→展→盖→染→吸）","植物细胞结构：细胞壁/细胞膜/细胞质/细胞核/液泡/叶绿体/线粒体","西瓜甘甜因液泡含糖"],"examPoints":["装片制作步骤","植物细胞各结构功能","动植物区别"],"textbookColumns":["「实验·探究」制作洋葱内表皮临时装片","「练习」荷叶碧+荷花红"],"nightMarketCase":"青菜为什么绿？叶绿体里有叶绿素。西瓜甜=液泡含糖多","gameDesign":"「细胞装配工厂」：拖拽细胞结构零件到正确位置组装植物细胞，完成后叶绿体发光","gameType":"drag-assembly","free":false,"quiz":[{"type":"mc","q":"植物细胞特有的结构是什么？","options":["细胞膜和细胞质","细胞壁、叶绿体和液泡","细胞核和线粒体","只有细胞壁"],"answer":1,"explanation":"细胞壁、叶绿体和液泡是植物细胞特有的结构，动物细胞没有。"},{"type":"sort","q":"请排列制作洋葱内表皮临时装片的正确步骤","items":["用纱布擦净载玻片和盖玻片","在载玻片中央滴一滴清水","撕取洋葱内表皮","将内表皮展平","盖上盖玻片","用碘液染色","用吸水纸吸引"],"explanation":"7步顺序：擦→滴→撕→展→盖→染→吸。每一步都不能乱！"}]},{"id":"bio-1-2-3","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第三节 动物细胞","page":"P23-27","category":"bio","keypoints":["动物细胞：细胞膜/细胞质/细胞核/线粒体（无细胞壁/叶绿体/液泡）","细胞膜控制物质进出","四种动物细胞形态：上皮/神经/肌/软骨细胞","施莱登和施旺创立细胞学说"],"examPoints":["动植物细胞异同","细胞学说","选择透过性"],"textbookColumns":["「实验·探究」观察人口腔上皮细胞","「科学家的故事」施莱登施旺与细胞学说"],"nightMarketCase":"烤肉纤维由成千上万个动物细胞构成，烤熟后细胞死亡、线粒体停止工作","gameDesign":"「植物/动物细胞大比拼」：点击相同结构变绿，不同结构变红弹出说明","gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"动物细胞不具有的结构是？","options":["细胞膜","细胞核","线粒体","细胞壁"],"answer":3,"explanation":"动物细胞没有细胞壁——细胞壁是植物细胞特有的结构。"},{"type":"mc","q":"细胞学说的创立者是谁？","options":["胡克和列文虎克","施莱登和施旺","达尔文和林奈","巴斯德和科赫"],"answer":1,"explanation":"施莱登（植物学家）和施旺（动物学家）共同创立了细胞学说。"}]},{"id":"bio-1-2-4","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第四节 细胞的生活","page":"P28-32","category":"bio","keypoints":["细胞膜控制物质进出（选择透过性）","叶绿体光合→有机物（化学能）","线粒体分解有机物→供能","细胞核含DNA控制遗传——克隆羊多莉证明（供核母羊决定性状）"],"examPoints":["细胞物质组成","细胞核作用","叶绿体/线粒体功能","克隆技术"],"textbookColumns":["「资料分析」多莉克隆羊","「练习」DNA主要在细胞核"],"nightMarketCase":"腌菜变软：高浓度食盐水→细胞失水（渗透），细胞膜选择透过性在腌菜摊天天上演","gameDesign":"「腌菜实验模拟」：调节食盐浓度滑块，观察细胞吸水/失水动态变化","gameType":"slider-simulate","free":false,"quiz":[{"type":"mc","q":"细胞中被称为动力工厂的结构是？","options":["细胞核","叶绿体","线粒体","液泡"],"answer":2,"explanation":"线粒体通过呼吸作用分解有机物释放能量，是细胞的动力工厂。"},{"type":"mc","q":"克隆羊多莉的性状主要与哪只羊相同？","options":["提供卵细胞的羊","提供细胞核的羊","代孕的羊","三只羊各占一部分"],"answer":1,"explanation":"细胞核含有DNA遗传物质，供核母羊决定了多莉的性状。"}]},{"id":"bio-1-3-1","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第一节 细胞通过分裂产生新细胞","page":"P33-37","category":"bio","keypoints":["细胞生长（体积增大）→分裂（一分为二）","分裂过程：核→质→膜（植物加壁）","染色体=DNA+蛋白质，分裂前DNA复制","癌细胞：分裂失控+可转移"],"examPoints":["分裂过程和意义","染色体变化","DNA复制","癌细胞"],"textbookColumns":["「科学·技术·社会」癌细胞——脱缰之马"],"nightMarketCase":"发面馒头为什么膨大？酵母菌不断分裂繁殖产生CO₂使面团膨大","gameDesign":"「细胞分裂动画暂停题」：播放分裂动画，随机暂停判断阶段","gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"细胞分裂过程中，最先分裂的是？","options":["细胞膜","细胞质","细胞核","细胞壁"],"answer":2,"explanation":"细胞分裂时，细胞核先分裂，然后是细胞质，最后是细胞膜。"},{"type":"fill","q":"染色体是由___和蛋白质组成的","answer":"DNA","hint":"遗传物质的双螺旋结构","explanation":"染色体=DNA+蛋白质，DNA是遗传物质。"}]},{"id":"bio-1-3-2","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第二节 动物体的结构层次","page":"P38-42","category":"bio","keypoints":["细胞→组织→器官→系统→动物体（5层）","四种基本组织：上皮/结缔/肌肉/神经","器官由多种组织构成","八大系统构成人体"],"examPoints":["结构层次（5层）","四种组织特征","器官定义"],"textbookColumns":["「观察·思考」胃的组织构成"],"nightMarketCase":"烤串=肌肉组织+结缔组织（筋膜），受神经支配——动物结构层次在烤串中完美体现","gameDesign":"「结构层次拼图」：5张图按顺序连线，胃的四种组织拖拽组合","gameType":"drag-sequence","free":false,"quiz":[{"type":"sort","q":"请排列动物体结构层次从微观到宏观的正确顺序","items":["细胞","组织","器官","系统","动物体"],"explanation":"动物体结构层次：细胞→组织→器官→系统→动物体，共5个层次。"},{"type":"mc","q":"胃壁中的肌肉层属于什么组织？","options":["上皮组织","结缔组织","肌肉组织","神经组织"],"answer":2,"explanation":"胃壁的肌肉层由平滑肌构成，属于肌肉组织，负责胃的蠕动。"}]},{"id":"bio-1-3-3","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第三节 植物体的结构层次","page":"P43-45","category":"bio","keypoints":["细胞→组织→器官→植物体（4层，无系统）","植物组织：分生/保护/薄壁/输导/机械","六大器官：根茎叶（营养器官）/花果实种子（生殖器官）"],"examPoints":["植物结构层次（4层）","六大器官","五种组织"],"textbookColumns":["「练习」油菜六大器官标注"],"nightMarketCase":"夜市蔬菜六大器官齐全：花/果/根（萝卜）/叶/茎（莴笋）/种子（花生）","gameDesign":"「器官分类器」：拖拽各种蔬菜到根/茎/叶/花/果实/种子6个框","gameType":"drag-classify","free":false,"quiz":[{"type":"mc","q":"植物体的结构层次比动物体少哪一个层次？","options":["细胞","组织","器官","系统"],"answer":3,"explanation":"植物体没有系统这个层次——细胞→组织→器官→植物体，只有4层。"},{"type":"fill","q":"萝卜是植物的___器官（填根/茎/叶/花/果实/种子）","answer":"根","hint":"属于营养器官","explanation":"萝卜是植物的根（贮藏根），属于营养器官。"}]},{"id":"bio-1-3-4","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第四节 单细胞生物","page":"P46-49","category":"bio","keypoints":["单细胞生物：草履虫/眼虫/衣藻/变形虫/酵母菌/大肠杆菌","草履虫结构：纤毛/表膜/口沟/食物泡/胞肛/伸缩泡/大核/小核","草履虫趋性实验（肉汁趋之/食盐避之）","赤潮与人类关系"],"examPoints":["单细胞代表","草履虫结构功能","趋性实验"],"textbookColumns":["「实验·探究」观察草履虫并探究其趋性","「练习」草履虫每天吞食43000个细菌"],"nightMarketCase":"一小包酵母含数十亿酵母细胞——每一个都是完整的生命","gameDesign":"「草履虫进食挑战」：控制草履虫移动，用纤毛将细菌颗粒推入口沟→食物泡→消化→胞肛排出","gameType":"interactive-feed","free":false,"quiz":[{"type":"mc","q":"以下哪个不是单细胞生物？","options":["草履虫","酵母菌","水螅","眼虫"],"answer":2,"explanation":"水螅是多细胞动物（腔肠动物），而草履虫、酵母菌、眼虫都是单细胞生物。"},{"type":"mc","q":"草履虫用于运动的结构是？","options":["鞭毛","纤毛","伪足","口沟"],"answer":1,"explanation":"草履虫体表密布纤毛，通过纤毛的摆动在水中运动。"}]},{"id":"bio-2-1-1","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第一节 藻类、苔藓植物和蕨类植物","page":"P62-66","category":"bio","keypoints":["无种子植物进化：藻类→苔藓→蕨类","藻类（水生/无根茎叶分化）","苔藓（有茎叶无真根/空气质量指示植物）","蕨类（有根茎叶/孢子繁殖）","鱼缸绿膜是藻类"],"examPoints":["三类植物区别和代表","苔藓作为空气指示植物"],"textbookColumns":["「想一想」鱼缸绿膜怎么来的？","「观察·思考」藻类/苔藓/蕨类结构比较"],"nightMarketCase":"蕨菜烤肉卷：夜市蕨菜=蕨类植物——比种子植物更古老的活化石","gameDesign":"「植物进化时间轴」：点击不同地质年代出现对应植物代表","gameType":"timeline-click","free":false,"quiz":[{"type":"mc","q":"以下哪类植物可以作为空气质量的指示植物？","options":["藻类","苔藓植物","蕨类植物","种子植物"],"answer":1,"explanation":"苔藓植物叶片只有一层细胞，对空气污染敏感，是良好的空气指示植物。"},{"type":"mc","q":"鱼缸壁上的绿膜是什么？","options":["苔藓","霉菌","藻类","细菌"],"answer":2,"explanation":"鱼缸绿膜是藻类大量繁殖形成的，藻类需要阳光和水中的营养。"}]},{"id":"bio-2-1-2","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第二节 种子植物","page":"P67-73","category":"bio","keypoints":["种子结构：种皮+胚（胚芽/胚轴/胚根/子叶）+胚乳","菜豆（双子叶/无胚乳）vs玉米（单子叶/有胚乳）","裸子植物（松/银杏/种子裸露无果皮）","被子植物（有果皮/最高等植物）"],"examPoints":["种子结构","裸子vs被子","单双子叶区别"],"textbookColumns":["「实验·探究」观察菜豆和玉米种子结构","「练习」松球果不是果实"],"nightMarketCase":"糖炒栗子（被子/有果皮）vs烤松子（裸子/种子裸露）——一口吃出进化差别","gameDesign":"「种子解剖台」：虚拟解剖菜豆和玉米种子，拖拽标签标注各结构","gameType":"drag-label","free":false,"quiz":[{"type":"mc","q":"裸子植物和被子植物的主要区别是什么？","options":["有无根","有无茎","种子外有无果皮包被","有无叶"],"answer":2,"explanation":"裸子植物种子裸露无果皮包被，被子植物种子有果皮包被。"},{"type":"mc","q":"菜豆种子属于什么类型？","options":["单子叶有胚乳","双子叶无胚乳","单子叶无胚乳","裸子植物"],"answer":1,"explanation":"菜豆是双子叶植物，种子无胚乳，营养物质储存在子叶中。"}]},{"id":"bio-2-2-1","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第一节 无脊椎动物","page":"P74-81","category":"bio","keypoints":["无脊椎动物类群：腔肠/扁形/线形/环节/软体/节肢","节肢动物是最大动物类群","鲍鱼和鱿鱼=软体动物不是鱼"],"examPoints":["各类群特征","节肢动物特点","区分软体vs鱼类"],"textbookColumns":["「想一想」鲍鱼和鱿鱼为什么不是鱼？"],"nightMarketCase":"夜市虾蟹=节肢动物（身体分节/外骨骼/足分节）。鱿鱼=软体动物不是鱼","gameDesign":"「动物分类大闯关」：从腔肠→扁形→线形→环节→软体→节肢逐级解锁","gameType":"level-unlock","free":false,"quiz":[{"type":"mc","q":"为什么鲍鱼和鱿鱼不是鱼？","options":["它们不会游泳","它们属于软体动物","它们没有鳍","它们是两栖动物"],"answer":1,"explanation":"鲍鱼和鱿鱼属于软体动物门，身体柔软，与鱼类（脊椎动物）是完全不同的类群。"},{"type":"mc","q":"动物界中最大的类群是？","options":["软体动物","环节动物","节肢动物","脊椎动物"],"answer":2,"explanation":"节肢动物是动物界种类最多、数量最大的类群，包括昆虫、虾蟹、蜘蛛等。"}]},{"id":"bio-2-2-2","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第二节 脊椎动物","page":"P82-97","category":"bio","keypoints":["鱼（鳃呼吸/体表鳞/四大家鱼：青草鲢鳙）","两栖（幼体水生鳃→成体肺+皮肤）","爬行（肺呼吸/体表鳞甲/陆地产卵）","鸟（肺+气囊双重呼吸/体表羽/恒温）","哺乳（胎生哺乳/体表毛/恒温）"],"examPoints":["五类脊椎动物特征和代表","进化顺序","恒温vs变温"],"textbookColumns":["「观察·思考」鱼/蛙/蜥蜴/鸟/哺乳动物特征比较","「练习」鸟双重呼吸"],"nightMarketCase":"夜市一摊可巡礼五类脊椎动物：鱼→蛙腿→蛇肉串→鸽子→羊肉串","gameDesign":"「脊椎动物进化跑道」：五类动物按进化排列跑道，点击查看特征卡片","gameType":"click-learn","free":false,"quiz":[{"type":"mc","q":"以下哪类动物是恒温动物？","options":["鱼和蛙","鸟和哺乳动物","蛇和蜥蜴","鱼和爬行动物"],"answer":1,"explanation":"鸟类和哺乳动物是恒温动物，鱼类、两栖类和爬行类都是变温动物。"},{"type":"sort","q":"请按进化顺序排列脊椎动物类群（从低等到高等）","items":["鱼类","两栖类","爬行类","鸟类","哺乳类"],"explanation":"进化顺序：鱼→两栖→爬行→鸟→哺乳，正好也是夜市食材的进化巡礼！"}]},{"id":"bio-2-3-1","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第一节 微生物的分布","page":"P98-102","category":"bio","keypoints":["微生物=个体微小/结构简单的生物统称","细菌和真菌广泛分布","菌落：细菌（小/光滑/颜色浅）vs真菌（大/绒毛状/多彩）","生存条件：水/适宜温度/有机物"],"examPoints":["微生物概念","菌落区别","分布特点"],"textbookColumns":["「实验·探究」检测环境中的细菌和真菌","「练习」真空包装防腐败"],"nightMarketCase":"用培养基检测夜市不同位置的微生物——砧板vs洗后蔬菜vs手","gameDesign":"「微生物侦探」：在不同场景虚拟取样→培养→对比菌落数量→排名积分","gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"细菌菌落和真菌菌落外观上最大的区别是什么？","options":["颜色相同","细菌菌落小且光滑，真菌菌落大且绒毛状","细菌菌落更大","没有区别"],"answer":1,"explanation":"细菌菌落一般较小、表面光滑、颜色较浅；真菌菌落较大、呈绒毛状或絮状。"},{"type":"mc","q":"微生物生存不需要的条件是？","options":["水","适宜温度","有机物","阳光"],"answer":3,"explanation":"大多数微生物不需要阳光，它们需要水、适宜温度和有机物即可生存繁殖。"}]},{"id":"bio-2-3-2","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第二节 细菌","page":"P103-108","category":"bio","keypoints":["细菌形态：球菌/杆菌/螺旋菌","结构：细胞壁/膜/质/DNA（无真正核膜→原核生物）","有些有荚膜（保护）/鞭毛（运动）","分裂繁殖极快","芽孢=休眠体（非繁殖体）","有益（酸奶/泡菜）和有害（致病）"],"examPoints":["细菌形态结构","原核vs真核","分裂繁殖","芽孢"],"textbookColumns":["「科学·技术·社会」巴斯德与巴氏消毒法"],"nightMarketCase":"夜市放久食物发臭变黏——细菌大量繁殖。乳酸菌做酸奶=有益菌","gameDesign":"「细菌繁殖速度挑战」：1个细菌20分钟分裂1次，计算3小时后数量","gameType":"calc-quiz","free":false,"quiz":[{"type":"mc","q":"细菌属于什么类型的生物？","options":["真核生物","原核生物","病毒","真菌"],"answer":1,"explanation":"细菌没有成形的细胞核（无核膜），遗传物质DNA集中在核区，属于原核生物。"},{"type":"fill","q":"一个细菌每20分钟分裂一次，3小时后有___个细菌","answer":"512","hint":"3小时=180分钟，180÷20=9代，2⁹=512","explanation":"2⁹=512。这就是指数增长的力量！"}]},{"id":"bio-2-3-3","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第三节 真菌","page":"P109-113","category":"bio","keypoints":["真菌=真核生物","酵母菌（单细胞/出芽生殖）","霉菌（多细胞/菌丝/孢子繁殖）","蘑菇木耳（大型真菌）","腐乳=毛霉功劳","橘子发霉=青霉"],"examPoints":["真菌与细菌区别","酵母菌/霉菌特征","发酵应用"],"textbookColumns":["「实验·探究」观察酵母菌和霉菌","「练习」蘑菇不是植物"],"nightMarketCase":"发面靠酵母菌——分解葡萄糖产生CO₂使面团膨胀。腐乳=毛霉发酵","gameDesign":"「发酵食品工坊」：选择食材+微生物，制作发酵食品（馒头/酸奶/酱油/葡萄酒）","gameType":"choice-simulate","free":false,"quiz":[{"type":"mc","q":"真菌与细菌最本质的区别是什么？","options":["大小不同","真菌有真正的细胞核（真核），细菌没有","真菌会动","细菌更大"],"answer":1,"explanation":"真菌是真核生物，有成形的细胞核；细菌是原核生物，没有真正的细胞核。"},{"type":"mc","q":"蘑菇属于什么生物类群？","options":["植物","动物","真菌","细菌"],"answer":2,"explanation":"蘑菇属于真菌（大型真菌），不是植物——真菌没有叶绿体，不能进行光合作用。"}]},{"id":"bio-2-3-4","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第四节 病毒","page":"P114-119","category":"bio","keypoints":["病毒无细胞结构=蛋白质外壳+DNA或RNA","必须寄生活细胞","伊万诺夫斯基发现烟草花叶病毒","分类：动物/植物/细菌病毒（噬菌体）","HIV侵入细胞","有益：噬菌体治疗"],"examPoints":["病毒结构特点","与细胞关系","噬菌体","发现史"],"textbookColumns":["「资料分析」烟草花叶病毒发现史","「练习」病毒不能独立生活"],"nightMarketCase":"病毒比细菌更小，肉眼完全看不见——洗手是防御病毒的第一道防线","gameDesign":"「病毒入侵模拟」：播放病毒识别→注入→复制→释放动画","gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"病毒的结构组成是什么？","options":["细胞壁+细胞膜","蛋白质外壳+遗传物质（DNA或RNA）","细胞核+细胞质","只有蛋白质"],"answer":1,"explanation":"病毒没有细胞结构，仅由蛋白质外壳和内部的遗传物质组成。"},{"type":"mc","q":"病毒能独立生活吗？","options":["能","不能，必须寄生在活细胞中","有时能有时不能","在空气中能"],"answer":1,"explanation":"病毒不能独立生活，必须寄生在活细胞中才能进行复制。"}]},{"id":"bio-2-4-1","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第一节 尝试对生物进行分类","page":"P122-127","category":"bio","keypoints":["分类依据：形态结构/生理功能/生殖方式","植物按有无种子→有无果皮分类","动物按有无脊柱→具体特征分类","检索表（二歧分类法）","《本草纲目》纲目分类体系"],"examPoints":["分类方法","检索表使用","分类依据"],"textbookColumns":["「观察·思考」对植物和动物进行分类","「练习」检索表填空"],"nightMarketCase":"夜市食材自然分类：植物（蔬菜/水果）vs动物（鱼/肉），再细分到种","gameDesign":"「分类树挑战」：逐级点击分类从界到种，附检索表互动填写","gameType":"click-tree","free":false,"quiz":[{"type":"mc","q":"二歧分类法（检索表）的特点是什么？","options":["一次只能选一种","每次在两个对立特征中选择一个","随意选择","按颜色分类"],"answer":1,"explanation":"检索表每次提供两个对立特征，选择其中一个继续，直到确定生物类别。"},{"type":"fill","q":"生物分类的7个等级从大到小是：界→门→纲→目→___→属→种","answer":"科","hint":"'科'排在目之后、属之前","explanation":"分类等级：界→门→纲→目→科→属→种，共7级。"}]},{"id":"bio-2-4-2","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第二节 从种到界","page":"P128-134","category":"bio","keypoints":["分类等级（高→低）：界→门→纲→目→科→属→种","种是最基本分类单位","等级越高共同特征越少","林奈双名法（属名+种名）","狼的分类：动物界→脊索动物门→哺乳纲→食肉目→犬科→犬属→狼种"],"examPoints":["分类等级关系","双名法","狼的分类实例"],"textbookColumns":["「观察·思考」狼的分类等级图示"],"nightMarketCase":"鲫鱼和鲤鱼同属鲤科不同种——亲缘关系近但不同种","gameDesign":"「族谱连线」：展示分类框，学生连线对应生物，完成后显示进化树","gameType":"drag-connect","free":false,"quiz":[{"type":"mc","q":"生物分类的基本单位是？","options":["界","门","属","种"],"answer":3,"explanation":"种（物种）是生物分类的最基本单位，同种的生物可以自然交配产生可育后代。"},{"type":"mc","q":"林奈双名法中的学名由哪两部分组成？","options":["界名+门名","属名+种名","科名+属名","目名+科名"],"answer":1,"explanation":"林奈双名法：学名=属名+种名，如Homo sapiens（智人）。"}]}];
@@ -597,6 +637,18 @@ function renderSyllabus() {
   document.getElementById('syllabusTitle').textContent = isBio ? '生物学 七年级上册' : '化学 九年级上册';
   document.getElementById('syllabusSubtitle').textContent = '人教版 · 2024版 · 课程知识结构';
 
+  // Stats row
+  var freeCount = data.filter(function(d){return d.free;}).length;
+  var paidCount = data.length - freeCount;
+  var quizCount = data.reduce(function(s,d){return s + (d.quiz ? d.quiz.length : 0);}, 0);
+  var gameTypes = new Set(data.filter(function(d){return d.gameType;}).map(function(d){return d.gameType;}));
+  document.getElementById('syllabusStats').innerHTML =
+    '<div class="unit-stat-chip">📚 <span class="chip-val">' + data.length + '</span> 知识点</div>' +
+    '<div class="unit-stat-chip">📝 <span class="chip-val">' + quizCount + '</span> 练习题</div>' +
+    '<div class="unit-stat-chip">🎮 <span class="chip-val">' + gameTypes.size + '</span> 游戏类型</div>' +
+    '<div class="unit-stat-chip">🆓 <span class="chip-val">' + freeCount + '</span> 免费</div>' +
+    '<div class="unit-stat-chip">🔒 <span class="chip-val">' + paidCount + '</span> 付费</div>';
+
   // Build unit map
   var units = {};
   data.forEach(function(d) {
@@ -640,6 +692,7 @@ function renderSyllabus() {
         html += '<div class="section-item" onclick="event.stopPropagation();navigateTo(\'learning\',\'' + s.category + '\');scrollToCard(\'' + s.id + '\')">' +
               '<span class="si-dot"></span>' +
               '<span>' + s.section + '</span>' +
+              '<span class="si-badge ' + (s.free ? 'free' : 'locked') + '">' + (s.free ? '免费' : '付费') + '</span>' +
               '<span class="si-page">' + s.page + '</span>' +
             '</div>';
       });
@@ -970,10 +1023,13 @@ function openGameModal(gidx) {
   initGame(gidx);
 }
 
-function closeGame() { document.getElementById('gameModal').classList.remove('show'); }
+function closeGame() { 
+  if (window.g0Game) { window.g0Game.destroy(true); window.g0Game = null; }
+  document.getElementById('gameModal').classList.remove('show'); 
+}
 
 function renderGame(g) {
-  if (g===0) return `<p style="color:var(--text2)">把物品拖到正确的分类框</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="g0-bins"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px" id="g0-items"></div><p id="g0-score" style="text-align:center;margin-top:10px;font-weight:600"></p>`;
+  if (g===0) return `<div id="g0-phaser-container" style="width:100%;max-width:600px;margin:0 auto"></div><p id="g0-score" style="text-align:center;margin-top:8px;font-weight:600;font-size:1rem"></p>`;
   if (g===1) return `<p style="color:var(--text2)">拖拽细胞器到正确位置组装植物细胞</p><div id="g1-area" style="width:300px;height:300px;border:2px dashed var(--border);border-radius:50%;margin:10px auto;position:relative"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px" id="g1-parts"></div><p id="g1-msg" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
   if (g===2) return `<p style="text-align:center;font-size:3rem" id="g3-skewer">🍢</p><div style="margin:10px 0"><label>🪵 可燃物: <span id="g3-fuel-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-fuel" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>💨 氧气: <span id="g3-o2-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-o2" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>🌡 温度: <span id="g3-temp-val">200°C</span></label><input type="range" min="0" max="300" value="200" id="g3-temp" oninput="updateG3()" style="width:100%"></div><p id="g3-feedback" style="text-align:center;font-weight:600;margin-top:8px"></p><p id="g3-detail" style="text-align:center;font-size:.8rem;color:var(--text3);margin-top:4px"></p>`;
   if (g===3) return `<p style="text-align:center;font-size:1.5rem;margin:10px 0" id="g4-question"></p><div style="display:flex;gap:12px;justify-content:center;margin-top:8px"><button class="btn-sm btn-blue" onclick="answerG4('physical')" style="background:var(--blue);color:#fff">🔄 物理变化</button><button class="btn-sm btn-warm" onclick="answerG4('chemical')">⚡ 化学变化</button></div><p id="g4-score" style="text-align:center;margin-top:8px;font-weight:600"></p><p id="g4-timer" style="text-align:center;color:var(--text3)"></p>`;
@@ -993,30 +1049,91 @@ function initGame(g) {
   if (g===6) initG7();
 }
 function initG0() {
-  const bins = ['🌿 植物','🐟 动物','🦠 微生物','⚪ 非生物'];
-  const items = [{n:'青菜',c:0},{n:'活虾',c:1},{n:'酵母粉',c:2},{n:'烤串',c:1},{n:'炭火',c:3},{n:'蘑菇',c:2},{n:'铁签',c:3},{n:'紫菜',c:0}];
-  document.getElementById('g0-bins').innerHTML = bins.map((b,i)=>`<div style="flex:1;min-width:80px;background:var(--bg2);border-radius:12px;padding:12px;text-align:center;border:2px dashed var(--border)" id="bin-${i}" ondragover="event.preventDefault()" ondrop="dropG0(event,${i})">${b}<div id="bin-items-${i}" style="min-height:20px;margin-top:6px"></div></div>`).join('');
-  const shuffled = [...items].sort(()=>Math.random()-.5);
-  document.getElementById('g0-items').innerHTML = shuffled.map((it,i)=>`<span draggable="true" id="g0item-${i}" data-cat="${it.c}" style="padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:20px;cursor:grab;font-size:.85rem" ondragstart="event.dataTransfer.setData('text/plain','${i}')">${it.n}</span>`).join('');
+  var container = document.getElementById('g0-phaser-container');
+  if (!container) return;
+  container.innerHTML = '';
   window.g0Score = 0;
   document.getElementById('g0-score').textContent = '正确: 0/8';
-}
+  
+  var bins = [{label:'🌿 植物',color:0x5b9a6b},{label:'🐟 动物',color:0xe87d4b},{label:'🦠 微生物',color:0x5a85d9},{label:'⚪ 非生物',color:0x999999}];
+  var items = [{n:'🥬 青菜',c:0},{n:'🦐 活虾',c:1},{n:'🍄 酵母粉',c:2},{n:'🍖 烤串',c:1},{n:'🔥 炭火',c:3},{n:'🍄 蘑菇',c:2},{n:'🔩 铁签',c:3},{n:'🌿 紫菜',c:0}];
+  // Shuffle
+  for (var i = items.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tmp = items[i]; items[i] = items[j]; items[j] = tmp; }
+  
+  var W = 580, H = 380;
+  var config = {
+    type: Phaser.AUTO,
+    width: W, height: H,
+    parent: 'g0-phaser-container',
+    backgroundColor: '#faf7f2',
+    scene: { create: create }
+  };
+  
+  if (window.g0Game) window.g0Game.destroy(true);
+  window.g0Game = new Phaser.Game(config);
 
-function dropG0(e, binIdx) {
-  e.preventDefault();
-  const itemIdx = parseInt(e.dataTransfer.getData('text/plain'));
-  const item = document.getElementById('g0item-'+itemIdx);
-  if (!item) return;
-  const cat = parseInt(item.dataset.cat);
-  if (cat === binIdx) {
-    document.getElementById('bin-items-'+binIdx).appendChild(item);
-    item.style.background = 'var(--green-light)';
-    item.style.borderColor = 'var(--green)';
-    window.g0Score++;
-    document.getElementById('g0-score').textContent = `✅ 正确: ${window.g0Score}/8`;
-    if (window.g0Score >= 8) showToast('🎉 全部分类正确！生物学得不错！', false);
-  } else {
-    showToast('❌ 分错了，再想想！', true);
+  function create() {
+    var binW = W / 4 - 10;
+    bins.forEach(function(b, i) {
+      var x = 10 + i * (binW + 10) + binW / 2, y = 60;
+      var bg = this.add.rectangle(x, y, binW - 10, H - 80, 0xf5efe6, 1).setStrokeStyle(2, 0xe0e0e0);
+      this.add.text(x, 20, b.label, {fontSize:'14px',fontWeight:'bold',color:'#333'}).setOrigin(0.5);
+      // Zone for drop
+      var zone = this.add.zone(x, y + 20, binW - 20, H - 140).setRectangleDropZone(binW - 20, H - 140);
+      zone.setData('binIdx', i);
+    }, this);
+    
+    // Instruction
+    this.add.text(W/2, H - 10, '把物品拖到正确的分类框中!', {fontSize:'13px',color:'#999'}).setOrigin(0.5);
+    
+    items.forEach(function(item, idx) {
+      var bx = 40 + (idx % 4) * 140, by = 100 + Math.floor(idx / 4) * 55;
+      var txt = this.add.text(bx, by, item.n, {
+        fontSize:'15px', backgroundColor:'#ffffff',
+        padding:{x:12, y:8}, color:'#555'
+      }).setOrigin(0.5).setInteractive({draggable:true});
+      txt.setData('cat', item.c);
+      txt.setData('answered', false);
+      txt.setData('origX', bx);
+      txt.setData('origY', by);
+      
+      txt.on('drag', function(pointer, dragX, dragY) {
+        this.x = dragX; this.y = dragY;
+      });
+      
+      txt.on('dragend', function() {
+        var tgt = null;
+        var minDist = 60;
+        this.scene.children.list.forEach(function(child) {
+          if (child.type === 'Zone' && child.input && child.input.dropZone) {
+            var dx = this.x - child.x, dy = this.y - child.y;
+            var dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < minDist) { minDist = dist; tgt = child; }
+          }
+        }, this);
+        
+        if (tgt && !this.getData('answered')) {
+          var binIdx = tgt.getData('binIdx');
+          var cat = this.getData('cat');
+          if (cat === binIdx) {
+            this.setData('answered', true);
+            this.setStyle({backgroundColor:'#ebf7ef',color:'#5b9a6b'});
+            this.disableInteractive();
+            window.g0Score++;
+            document.getElementById('g0-score').textContent = '✅ 正确: ' + window.g0Score + '/8';
+            if (window.g0Score >= 8) {
+              this.scene.add.text(W/2, H/2, '🎉 全部正确!', {fontSize:'32px',color:'#e87d4b',fontWeight:'bold'}).setOrigin(0.5);
+            }
+            return;
+          }
+        }
+        
+        // Reset to original position
+        if (!this.getData('answered')) {
+          this.scene.tweens.add({targets:this, x:this.getData('origX'), y:this.getData('origY'), duration:200});
+        }
+      }, this);
+    }, this);
   }
 }
 
@@ -1229,7 +1346,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Close modals on overlay click
-['quizModal','quizResultModal','gameModal','settingsModal'].forEach(function(id) {
+['quizModal','quizResultModal','gameModal','settingsModal','pdfModal'].forEach(function(id) {
   var el = document.getElementById(id);
   if (el) {
     el.addEventListener('click', function(e) {
@@ -1237,6 +1354,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+// ============ PDF VIEWER ============
+var pdfZoomLevel = 100;
+function openPdf(url, title) {
+  document.getElementById('pdfTitle').textContent = title || '教材查看器';
+  document.getElementById('pdfFrame').src = url;
+  document.getElementById('pdfInfo').textContent = '缩放: 100%';
+  pdfZoomLevel = 100;
+  document.getElementById('pdfModal').classList.add('show');
+}
+function closePdf() {
+  document.getElementById('pdfModal').classList.remove('show');
+  document.getElementById('pdfFrame').src = '';
+}
+function pdfZoomIn() {
+  pdfZoomLevel = Math.min(pdfZoomLevel + 25, 300);
+  document.getElementById('pdfInfo').textContent = '缩放: ' + pdfZoomLevel + '%';
+  var frame = document.getElementById('pdfFrame');
+  frame.style.transform = 'scale(' + (pdfZoomLevel/100) + ')';
+  frame.style.transformOrigin = 'top center';
+}
+function pdfZoomOut() {
+  pdfZoomLevel = Math.max(pdfZoomLevel - 25, 50);
+  document.getElementById('pdfInfo').textContent = '缩放: ' + pdfZoomLevel + '%';
+  var frame = document.getElementById('pdfFrame');
+  frame.style.transform = 'scale(' + (pdfZoomLevel/100) + ')';
+  frame.style.transformOrigin = 'top center';
+}
+function pdfReset() {
+  pdfZoomLevel = 100;
+  document.getElementById('pdfInfo').textContent = '缩放: 100%';
+  document.getElementById('pdfFrame').style.transform = '';
+}
 </script>
 </body>
 </html>
