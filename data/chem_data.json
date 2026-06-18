@@ -51,7 +51,9 @@
         "explanation": "门捷列夫发现了元素周期律并编制了第一张元素周期表。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 1
   },
   {
     "id": "chem-1-1",
@@ -105,7 +107,9 @@
         "explanation": "生成新物质的是化学变化，没有生成新物质的是物理变化。注意括号内是正确答案！"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 8
   },
   {
     "id": "chem-1-2",
@@ -156,7 +160,9 @@
         "explanation": "量筒读数时视线应与凹液面最低处保持水平，俯视偏大、仰视偏小。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 14
   },
   {
     "id": "chem-2-1",
@@ -205,7 +211,9 @@
         "explanation": "氧气约占空气体积的1/5，所以红磷消耗完氧气后水面上升约1/5。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 30
   },
   {
     "id": "chem-2-2",
@@ -261,7 +269,9 @@
         "explanation": "化合反应是由两种或两种以上物质生成一种物质的反应。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 38
   },
   {
     "id": "chem-2-3",
@@ -320,7 +330,9 @@
         "explanation": "氧气不易溶于水可用排水法，密度比空气大可用向上排空气法。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 43
   },
   {
     "id": "chem-3-1",
@@ -374,7 +386,9 @@
         "explanation": "化学变化中，分子分裂成原子，原子再重新组合成新的分子。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 56
   },
   {
     "id": "chem-3-2",
@@ -425,7 +439,9 @@
         "explanation": "Na最外层1个电子，容易失去变为Na⁺，达到稳定结构。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 65
   },
   {
     "id": "chem-3-3",
@@ -481,7 +497,9 @@
         "explanation": "元素周期表横排叫周期（共7个周期），竖排叫族（共18个族）。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 72
   },
   {
     "id": "chem-4-1",
@@ -536,7 +554,9 @@
         "explanation": "净水步骤：沉淀（除去大颗粒）→过滤（除去小颗粒）→吸附（除色素异味）→消毒（杀菌）。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 82
   },
   {
     "id": "chem-4-2",
@@ -588,7 +608,9 @@
         "explanation": "水是由氢元素和氧元素组成的化合物，不是由氢气和氧气组成的混合物。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 91
   },
   {
     "id": "chem-4-3",
@@ -637,7 +659,9 @@
         "explanation": "NaCl中Na为+1价，Cl为-1价，代数和为0。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 96
   },
   {
     "id": "chem-5-1",
@@ -686,7 +710,9 @@
         "explanation": "有气体参与或生成的反应，必须在密封体系中进行才能验证质量守恒。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 110
   },
   {
     "id": "chem-5-2",
@@ -730,7 +756,9 @@
         "explanation": "配平化学方程式的原则是反应前后各原子种类和数目不变，即原子守恒。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 117
   },
   {
     "id": "chem-6-1",
@@ -789,7 +817,9 @@
         "explanation": "活性炭具有疏松多孔的结构，表面积很大，可以吸附色素和异味分子。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 128
   },
   {
     "id": "chem-6-2",
@@ -848,7 +878,9 @@
         "explanation": "CO与血红蛋白的结合力比O₂强200多倍，使血红蛋白失去运输氧气的能力。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 136
   },
   {
     "id": "chem-6-3",
@@ -901,7 +933,9 @@
         "explanation": "CO₂不支持燃烧，将燃着的木条放在瓶口（不是瓶中），熄灭则已满。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 145
   },
   {
     "id": "chem-7-1",
@@ -961,7 +995,9 @@
         "explanation": "盖上锅盖可以隔绝氧气（破坏燃烧条件之一），是油锅起火最安全有效的方法。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 158
   },
   {
     "id": "chem-7-2",
@@ -1020,6 +1056,8 @@
         "explanation": "煤和石油中含硫和氮，燃烧产生SO₂和NOₓ，在大气中形成硫酸和硝酸导致酸雨。"
       }
     ],
-    "grade": 9
+    "grade": 9,
+    "pdf_file": "化学9年级上册.pdf",
+    "pdf_page": 169
   }
 ]

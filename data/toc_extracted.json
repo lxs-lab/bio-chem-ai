@@ -1,0 +1,253 @@
+{
+  "bio": {
+    "total_pages": 146,
+    "structure": [],
+    "grade": 7,
+    "pdf_web_name": "生物学七年级上册.pdf"
+  },
+  "chem": {
+    "total_pages": 199,
+    "structure": [],
+    "grade": 9,
+    "pdf_web_name": "化学九年级上册.pdf"
+  },
+  "geo": {
+    "total_pages": 129,
+    "structure": [],
+    "grade": 7,
+    "pdf_web_name": "地理七年级上册.pdf"
+  },
+  "phy": {
+    "total_pages": 170,
+    "structure": [],
+    "grade": 8,
+    "pdf_web_name": "物理八年级上册.pdf"
+  },
+  "math": {
+    "total_pages": 202,
+    "structure": [],
+    "grade": 7,
+    "pdf_web_name": "数学七年级上册.pdf"
+  },
+  "cn": {
+    "total_pages": 166,
+    "structure": [],
+    "grade": 7,
+    "pdf_web_name": "语文七年级上册.pdf"
+  },
+  "eng": {
+    "total_pages": 138,
+    "structure": [],
+    "grade": 7,
+    "pdf_web_name": "英语七年级上册.pdf"
+  },
+  "hist": {
+    "total_pages": 134,
+    "structure": [],
+    "grade": 7,
+    "pdf_web_name": "中国历史七年级上册.pdf"
+  },
+  "pol": {
+    "total_pages": 114,
+    "structure": [
+      {
+        "unit_title": "第一单元少年有梦",
+        "page": 1,
+        "chapters": []
+      },
+      {
+        "unit_title": "第二单元成长的时空",
+        "page": 25,
+        "chapters": []
+      },
+      {
+        "unit_title": "第三单元珍爱我们的生命59",
+        "page": 60,
+        "chapters": []
+      },
+      {
+        "unit_title": "第四单元追求美好人生",
+        "page": 83,
+        "chapters": [
+          {
+            "chapter_title": "第一课开启初中生活",
+            "page": 2,
+            "sections": []
+          },
+          {
+            "chapter_title": "第二课正确认识自我",
+            "page": 9,
+            "sections": []
+          },
+          {
+            "chapter_title": "第三课梦想始于当下",
+            "page": 16,
+            "sections": []
+          },
+          {
+            "chapter_title": "第四课幸福和睦的家庭",
+            "page": 26,
+            "sections": []
+          },
+          {
+            "chapter_title": "第五课和谐的师生关系",
+            "page": 34,
+            "sections": []
+          },
+          {
+            "chapter_title": "第六课友谊之树常青",
+            "page": 42,
+            "sections": []
+          },
+          {
+            "chapter_title": "第七课在集体中成长",
+            "page": 50,
+            "sections": []
+          },
+          {
+            "chapter_title": "第八课生命可贵",
+            "page": 60,
+            "sections": []
+          },
+          {
+            "chapter_title": "第九课守护生命安全",
+            "page": 67,
+            "sections": []
+          },
+          {
+            "chapter_title": "第十课保持身心健康",
+            "page": 74,
+            "sections": []
+          },
+          {
+            "chapter_title": "第十一课确立人生目标",
+            "page": 84,
+            "sections": []
+          },
+          {
+            "chapter_title": "第十二课端正人生态度",
+            "page": 90,
+            "sections": []
+          },
+          {
+            "chapter_title": "第十三课实现人生价值",
+            "page": 95,
+            "sections": []
+          },
+          {
+            "chapter_title": "第一课开启初中生活",
+            "page": null,
+            "sections": [
+              {
+                "section_title": "奏响中学序曲",
+                "page": 2
+              },
+              {
+                "section_title": "规划初中生活",
+                "page": 6
+              },
+              {
+                "section_title": "认识自己",
+                "page": 9
+              },
+              {
+                "section_title": "做更好的自己",
+                "page": 12
+              },
+              {
+                "section_title": "做有梦想的少年",
+                "page": 16
+              },
+              {
+                "section_title": "学习成就梦想",
+                "page": 19
+              },
+              {
+                "section_title": "家的意味",
+                "page": 26
+              },
+              {
+                "section_title": "让家更美好",
+                "page": 29
+              },
+              {
+                "section_title": "走近老师",
+                "page": 34
+              },
+              {
+                "section_title": "珍惜师生情谊",
+                "page": 37
+              },
+              {
+                "section_title": "友谊的真谛",
+                "page": 42
+              },
+              {
+                "section_title": "交友的智慧",
+                "page": 45
+              },
+              {
+                "section_title": "集体生活成就我",
+                "page": 50
+              },
+              {
+                "section_title": "共建美好集体",
+                "page": 53
+              },
+              {
+                "section_title": "认识生命",
+                "page": 60
+              },
+              {
+                "section_title": "敬畏生命",
+                "page": 63
+              },
+              {
+                "section_title": "增强安全意识",
+                "page": 67
+              },
+              {
+                "section_title": "提高防护能力",
+                "page": 70
+              },
+              {
+                "section_title": "爱护身体",
+                "page": 74
+              },
+              {
+                "section_title": "滋养心灵",
+                "page": 77
+              },
+              {
+                "section_title": "探问人生目标",
+                "page": 84
+              },
+              {
+                "section_title": "树立正确的人生目标",
+                "page": 86
+              },
+              {
+                "section_title": "拥有积极的人生态度",
+                "page": 90
+              },
+              {
+                "section_title": "正确对待顺境和逆境",
+                "page": 92
+              },
+              {
+                "section_title": "在劳动中创造人生价值",
+                "page": 95
+              },
+              {
+                "section_title": "在奉献中成就精彩人生",
+                "page": 97
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "grade": 7,
+    "pdf_web_name": "道德与法治七年级上册.pdf"
+  }
+}

@@ -209,6 +209,30 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 .unlock-dialog .ud-error{font-size:.75rem;color:#ef4444;margin-bottom:8px;display:none}
 .unlock-dialog .ud-hint{font-size:.72rem;color:var(--gray-400);margin-top:8px}
 
+/* ===== PDF VIEWER MODAL ===== */
+.pdf-modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:2000;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s ease}
+.pdf-modal{background:var(--white);border-radius:var(--radius-lg);width:95%;max-width:1000px;height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:slideUp .3s ease;overflow:hidden}
+.pdf-modal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--gray-200);flex-shrink:0}
+.pdf-modal-header h3{font-size:.95rem;font-weight:700;color:var(--gray-800);display:flex;align-items:center;gap:8px}
+.pdf-modal-header .pm-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--gray-100);cursor:pointer;font-size:1.1rem;transition:var(--transition);color:var(--gray-600);display:flex;align-items:center;justify-content:center}
+.pdf-modal-header .pm-close:hover{background:var(--gray-200);color:var(--gray-800)}
+.pdf-modal-body{flex:1;position:relative;overflow:hidden}
+.pdf-modal-body iframe{width:100%;height:100%;border:none}
+.pdf-modal-controls{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border-top:1px solid var(--gray-200);flex-shrink:0;flex-wrap:wrap}
+.pdf-modal-controls button{padding:6px 14px;border-radius:var(--radius-sm);border:1px solid var(--gray-200);background:var(--white);cursor:pointer;font-size:.78rem;transition:var(--transition)}
+.pdf-modal-controls button:hover{background:var(--gray-50);border-color:var(--gray-300)}
+.pdf-modal-controls .pm-zoom-val{font-size:.78rem;color:var(--gray-500);min-width:40px;text-align:center}
+.pdf-paywall{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);z-index:10;gap:14px}
+.pdf-paywall .pp-icon{font-size:3.5rem}
+.pdf-paywall .pp-text{font-size:.9rem;color:var(--gray-600);text-align:center;max-width:320px;line-height:1.6}
+.pdf-paywall .pp-hint{font-size:.75rem;color:var(--gray-400)}
+.pdf-page-badge{font-size:.72rem;color:var(--gray-400);padding:2px 8px;background:var(--gray-100);border-radius:10px;margin-left:8px}
+.pdf-fab{position:fixed;bottom:24px;right:24px;z-index:400;width:48px;height:48px;border-radius:50%;background:var(--blue-600);color:#fff;border:none;cursor:pointer;font-size:1.3rem;box-shadow:0 4px 12px rgba(37,99,235,.35);transition:var(--transition);display:none;align-items:center;justify-content:center}
+.pdf-fab:hover{background:var(--blue-700);transform:scale(1.08);box-shadow:0 6px 20px rgba(37,99,235,.45)}
+.pdf-fab.show{display:flex}
+.pdf-btn-inline{padding:6px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--blue-300);background:var(--blue-50);color:var(--blue-700);cursor:pointer;font-size:.78rem;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:4px}
+.pdf-btn-inline:hover{background:var(--blue-100);border-color:var(--blue-400)}
+
 /* ===== RESOURCE SECTION ===== */
 .resource-section{max-width:1200px;margin:48px auto;padding:0 24px}
 .resource-section h2{font-size:1.2rem;font-weight:700;color:var(--gray-800);margin-bottom:16px}
@@ -335,6 +359,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
   </div>
   <div class="floating-bar" id="floatingBar">
     <button class="fb-btn" onclick="toggleSidebar()" title="目录">📑</button>
+    <button class="fb-btn" id="fbPdfBtn" onclick="openPdfFAB()" title="查看教材">📖</button>
     <button class="fb-btn" onclick="toggleAIPanel()" title="AI助手">💬</button>
   </div>
 </div>
@@ -349,6 +374,34 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
     <div class="ud-error" id="unlockError">解锁码不正确，请重试</div>
     <button class="btn btn-primary" onclick="doUnlock()" style="width:100%">🔓 立即解锁</button>
     <div class="ud-hint">💡 提示：关注公众号获取解锁码</div>
+  </div>
+</div>
+
+<!-- ====== PDF VIEWER MODAL ====== -->
+<div id="pdfModal" class="pdf-modal-overlay" style="display:none" onclick="if(event.target===this)closePdfViewer()">
+  <div class="pdf-modal">
+    <div class="pdf-modal-header">
+      <h3 id="pdfModalTitle">📖 教材查看</h3>
+      <button class="pm-close" onclick="closePdfViewer()">✕</button>
+    </div>
+    <div class="pdf-modal-body" id="pdfModalBody">
+      <!-- Paywall for locked users -->
+      <div class="pdf-paywall" id="pdfPaywall" style="display:none">
+        <div class="pp-icon">🔒</div>
+        <div class="pp-text">教材PDF属于付费内容<br>请先解锁全部课程后查看</div>
+        <button class="btn btn-primary" onclick="closePdfViewer();showUnlockModal()">🔓 立即解锁</button>
+        <div class="pp-hint">解锁后可查看教材对应页码</div>
+      </div>
+      <!-- PDF iframe -->
+      <iframe id="pdfIframe" src="" style="display:none"></iframe>
+    </div>
+    <div class="pdf-modal-controls">
+      <button onclick="pdfZoomOut()">🔍-</button>
+      <span class="pm-zoom-val" id="pdfZoomVal">100%</span>
+      <button onclick="pdfZoomIn()">🔍+</button>
+      <button onclick="pdfZoomReset()">↺ 重置</button>
+      <span class="pdf-page-badge" id="pdfPageBadge"></span>
+    </div>
   </div>
 </div>
 
@@ -445,11 +498,15 @@ function navigateTo(view, param) {
   
   // Floating bar
   const fb = document.getElementById('floatingBar');
+  const fbPdfBtn = document.getElementById('fbPdfBtn');
   fb.style.display = view === 'learning' ? 'flex' : 'none';
+  if (view !== 'learning') {
+    fbPdfBtn.style.display = 'none';
+  }
   
   // Render
   if (view === 'syllabus') renderSyllabus();
-  if (view === 'learning') renderLearning();
+  if (view === 'learning') { renderLearning(); updatePdfFab(); }
   
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -673,6 +730,14 @@ function renderContent(item) {
     });
     html += '</div>';
   }
+  
+  // PDF view button
+  if (item.pdf_file) {
+    html += `<div style="margin-top:10px">
+      <button class="pdf-btn-inline" onclick="openPdfViewer(ALL_DATA['${currentSubject}'].find(d=>d.id==='${item.id}'))">📖 查看教材${item.pdf_page?'（第'+item.pdf_page+'页）':''}</button>
+    </div>`;
+  }
+  
   html += '</div>';
   
   // Scene / Case box
@@ -962,6 +1027,80 @@ document.addEventListener('click', function(e) {
     document.getElementById('unlockModal').style.display = 'none';
   }
 });
+
+// ============ PDF VIEWER ============
+let pdfZoomLevel = 100;
+let currentPdfItem = null;
+
+function openPdfViewer(item) {
+  if (!item || !item.pdf_file) return;
+  currentPdfItem = item;
+  
+  const modal = document.getElementById('pdfModal');
+  const paywall = document.getElementById('pdfPaywall');
+  const iframe = document.getElementById('pdfIframe');
+  
+  // Update title
+  document.getElementById('pdfModalTitle').innerHTML = `📖 ${item.section} — ${item.unit || ''}`;
+  document.getElementById('pdfPageBadge').textContent = item.pdf_page ? `第 ${item.pdf_page} 页` : '';
+  
+  // Check paywall
+  if (!item.free && !isUnlocked) {
+    paywall.style.display = 'flex';
+    iframe.style.display = 'none';
+    iframe.src = '';
+  } else {
+    paywall.style.display = 'none';
+    iframe.style.display = 'block';
+    const page = item.pdf_page || 1;
+    iframe.src = `pdf/${item.pdf_file}#page=${page}&view=FitH`;
+  }
+  
+  pdfZoomLevel = 100;
+  document.getElementById('pdfZoomVal').textContent = '100%';
+  modal.style.display = 'flex';
+}
+
+function closePdfViewer() {
+  document.getElementById('pdfModal').style.display = 'none';
+  document.getElementById('pdfIframe').src = '';
+}
+
+function pdfZoomIn() {
+  pdfZoomLevel = Math.min(pdfZoomLevel + 25, 300);
+  applyPdfZoom();
+}
+
+function pdfZoomOut() {
+  pdfZoomLevel = Math.max(pdfZoomLevel - 25, 50);
+  applyPdfZoom();
+}
+
+function pdfZoomReset() {
+  pdfZoomLevel = 100;
+  applyPdfZoom();
+}
+
+function applyPdfZoom() {
+  document.getElementById('pdfZoomVal').textContent = pdfZoomLevel + '%';
+  const iframe = document.getElementById('pdfIframe');
+  iframe.style.transform = `scale(${pdfZoomLevel / 100})`;
+  iframe.style.transformOrigin = 'top center';
+}
+
+function openPdfFAB() {
+  const items = ALL_DATA[currentSubject] || [];
+  const item = items.find(d => d.id === currentSectionId);
+  if (item) openPdfViewer(item);
+}
+
+function updatePdfFab() {
+  const fbPdfBtn = document.getElementById('fbPdfBtn');
+  if (!fbPdfBtn) return;
+  const items = ALL_DATA[currentSubject] || [];
+  const item = items.find(d => d.id === currentSectionId);
+  fbPdfBtn.style.display = (item && item.pdf_file) ? 'flex' : 'none';
+}
 
 // ============ RESOURCE LIBRARY ============
 async function loadResourceLibrary() {
