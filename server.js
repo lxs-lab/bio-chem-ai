@@ -154,6 +154,7 @@ createServer(async (req, res) => {
     console.error(error);
     sendError(res, 500, 'Internal server error');
   }
-}).listen(PORT, () => {
-  console.log(`Bio Chem AI server running at http://localhost:${PORT}`);
+}).listen(PORT, '127.0.0.1', () => {
+  console.log(`Bio Chem AI server running at http://127.0.0.1:${PORT}`);
+  console.log(`Also accessible at http://localhost:${PORT}`);
 });
