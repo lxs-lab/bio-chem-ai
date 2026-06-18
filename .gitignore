@@ -7,3 +7,4 @@ npm-debug.log*
 *_v5.html
 *_v6.html
 b64.txt
+__pycache__/

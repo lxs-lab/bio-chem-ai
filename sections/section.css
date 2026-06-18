@@ -22,8 +22,12 @@ a:hover{text-decoration:underline}
 
 /* Navigation */
 .section-nav{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:10px 24px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--gray-200);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.breadcrumb{font-size:.78rem;color:var(--gray-500)}
+.breadcrumb{font-size:.78rem;color:var(--gray-500);display:flex;align-items:center;gap:2px;flex-wrap:wrap}
 .breadcrumb .bc-current{color:var(--gray-700);font-weight:600}
+.breadcrumb a{padding:4px 8px;border-radius:6px;transition:.2s}
+.breadcrumb a:hover{background:var(--blue-50);text-decoration:none}
+.nav-home-btn{padding:6px 14px;border-radius:20px;background:var(--blue-600);color:#fff!important;font-size:.78rem;font-weight:600;text-decoration:none!important;transition:.2s;white-space:nowrap;flex-shrink:0}
+.nav-home-btn:hover{background:var(--blue-700);transform:translateY(-1px)}
 .nav-links{display:flex;align-items:center;gap:12px}
 .nav-link{padding:6px 14px;border-radius:20px;background:var(--gray-100);font-size:.78rem;font-weight:500;transition:.2s}
 .nav-link:hover{background:var(--blue-50);color:var(--blue-700);text-decoration:none}
