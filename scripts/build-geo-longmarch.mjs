@@ -1,0 +1,689 @@
+import { readFile, writeFile } from 'node:fs/promises';
+
+const quiz = {
+  elements: [
+    {
+      type: 'mc',
+      q: '老班长说一张能用的军用地图必须具备哪三样东西？',
+      options: ['方向、比例尺、图例', '颜色、纸张、标题', '河流、山峰、村庄', '经线、纬线、海拔'],
+      answer: 0,
+      explanation: '正确答案是方向、比例尺、图例。颜色和标题能帮助阅读，但不是地图三要素；河流、山峰、村庄是地图内容；经纬线和海拔只出现在部分地图中。',
+      difficulty: 'L1',
+      tags: ['中考高频']
+    },
+    {
+      type: 'fill',
+      q: '一张地图缺少方向、比例尺、图例中的任意一项，读图时就容易判断失误。地图三要素是方向、___、图例。',
+      answer: '比例尺',
+      hint: '它负责把图上距离换成实地距离',
+      explanation: '比例尺表示图上距离比实地距离缩小的程度，是计算行军距离和选择地图的重要依据。',
+      difficulty: 'L1',
+      tags: ['基础概念']
+    },
+    {
+      type: 'mc',
+      q: '龙云送来的地图为什么比缴获的破图更有用？',
+      options: ['三要素完整，能判断方向、距离和符号含义', '纸张更厚，不容易破', '颜色更鲜艳，便于携带', '只画了山峰，没有村庄干扰'],
+      answer: 0,
+      explanation: '完整地图必须能帮助使用者判断方向、计算距离、理解图例。纸张和颜色不是决定地图能否用于行军决策的关键。',
+      difficulty: 'L2',
+      tags: ['读图应用']
+    }
+  ],
+  direction: [
+    {
+      type: 'mc',
+      q: '一般地图没有指向标和经纬网时，通常怎样定向？',
+      options: ['上北下南，左西右东', '上南下北，左东右西', '箭头指东', '文字朝向就是北'],
+      answer: 0,
+      explanation: '一般地图采用“上北下南，左西右东”。但如果地图上有指向标或经纬网，要优先按它们判断方向。',
+      difficulty: 'L1',
+      tags: ['中考高频']
+    },
+    {
+      type: 'mc',
+      q: '一张赤水河地图上指向标箭头斜向右上，箭头所指方向表示什么？',
+      options: ['北方', '东方', '南方', '行军方向'],
+      answer: 0,
+      explanation: '指向标箭头永远指北。它不一定朝页面上方，也不一定表示行军方向，这是考试常见陷阱。',
+      difficulty: 'L2',
+      tags: ['易错陷阱']
+    },
+    {
+      type: 'fill',
+      q: '在经纬网地图上，经线指示___方向，纬线指示东西方向。',
+      answer: '南北',
+      hint: '经线连接南北两极',
+      explanation: '经线连接南北两极，指示南北方向；纬线与赤道平行，指示东西方向。',
+      difficulty: 'L1',
+      tags: ['经纬网']
+    }
+  ],
+  scale: [
+    {
+      type: 'fill',
+      q: '比例尺 = 图上距离 ÷ ___距离。',
+      answer: '实地',
+      hint: '地图外真实世界中的距离',
+      explanation: '比例尺是图上距离与实地距离之比。计算时必须先统一单位。',
+      difficulty: 'L1',
+      tags: ['必背公式']
+    },
+    {
+      type: 'mc',
+      q: '图上距离3厘米，实地距离15千米，比例尺应为多少？',
+      options: ['1:5000', '1:50000', '1:500000', '1:5000000'],
+      answer: 2,
+      explanation: '15千米=1,500,000厘米，3:1,500,000=1:500,000。比例尺计算最容易错在单位换算。',
+      difficulty: 'L2',
+      tags: ['比例尺计算']
+    },
+    {
+      type: 'mc',
+      q: '红军要研究一个渡口附近村道和桥梁，最适合选哪类比例尺地图？',
+      options: ['大比例尺地图', '小比例尺地图', '世界地图', '只看文字说明'],
+      answer: 0,
+      explanation: '大比例尺地图表示范围小、内容详细，适合研究渡口、村道、桥梁等局部细节。小比例尺地图范围大但内容简略。',
+      difficulty: 'L3',
+      tags: ['综合应用']
+    }
+  ],
+  legend: [
+    {
+      type: 'mc',
+      q: '地图上用“▲”表示山峰，这种符号和说明属于什么？',
+      options: ['图例', '比例尺', '方向标', '注记'],
+      answer: 0,
+      explanation: '图例是地图符号的说明。“▲”表示山峰属于图例；地图上的文字和数字通常叫注记。',
+      difficulty: 'L1',
+      tags: ['基础概念']
+    },
+    {
+      type: 'mc',
+      q: '老班长在图上标出“泸定桥”“1200m”，这些文字和数字属于什么？',
+      options: ['注记', '图例', '方向', '比例尺'],
+      answer: 0,
+      explanation: '地图上的文字和数字叫注记，用来标明地名、高程、河流名称等信息。图例是符号的说明。',
+      difficulty: 'L1',
+      tags: ['图例注记']
+    },
+    {
+      type: 'mc',
+      q: '读军事交通图时，先看图例的主要目的是什么？',
+      options: ['弄清符号代表的地理事物', '计算所有村庄人口', '改变地图方向', '判断纸张大小'],
+      answer: 0,
+      explanation: '图例是地图语言。只有先读懂符号，才能判断道路、桥梁、河流、山峰等地物。',
+      difficulty: 'L2',
+      tags: ['读图应用']
+    }
+  ],
+  mapChoice: [
+    {
+      type: 'mc',
+      q: '要查遵义到赤水的大致位置关系，应该优先选择什么地图？',
+      options: ['区域交通图或政区图', '校园平面图', '世界气候图', '矿产分布图'],
+      answer: 0,
+      explanation: '判断城市与路线的位置关系，应选择覆盖该区域的交通图或政区图。校园平面图范围太小，专题图用途不匹配。',
+      difficulty: 'L1',
+      tags: ['选择地图']
+    },
+    {
+      type: 'mc',
+      q: '想研究夹金山登山路线坡度，最适合的地图是？',
+      options: ['等高线地形图', '中国政区图', '世界地图', '人口分布图'],
+      answer: 0,
+      explanation: '等高线地形图能显示海拔、坡度和地形部位，是研究登山路线的核心地图。',
+      difficulty: 'L2',
+      tags: ['地图实战']
+    },
+    {
+      type: 'sort',
+      q: '请按选择地图的一般步骤排序。',
+      items: ['明确用途', '确定范围', '选择比例尺和专题内容', '读取图例并提取信息'],
+      explanation: '选择地图先明确要解决什么问题，再确定空间范围，然后选择比例尺和专题内容，最后读图提取信息。',
+      difficulty: 'L3',
+      tags: ['综合应用']
+    }
+  ],
+  height: [
+    {
+      type: 'mc',
+      q: '海拔是指某点高出哪里的垂直距离？',
+      options: ['海平面', '山脚', '河谷', '附近村庄'],
+      answer: 0,
+      explanation: '海拔又称绝对高度，是地面某点高出海平面的垂直距离。',
+      difficulty: 'L1',
+      tags: ['基础概念']
+    },
+    {
+      type: 'fill',
+      q: '甲地海拔850米，乙地海拔350米，两地相对高度是___米。',
+      answer: '500',
+      hint: '相对高度=两地海拔差',
+      explanation: '850-350=500米。相对高度表示两个地点之间的高度差。',
+      difficulty: 'L2',
+      tags: ['计算题']
+    },
+    {
+      type: 'mc',
+      q: '泸定桥两岸高差很大，地图上最直接体现这种起伏差异的是？',
+      options: ['海拔数值和等高线', '地图标题', '纸张颜色', '比例尺文字'],
+      answer: 0,
+      explanation: '海拔数值表示高度，等高线展示同高点连线，二者能直接表现地势起伏。',
+      difficulty: 'L2',
+      tags: ['读图应用']
+    }
+  ],
+  contour: [
+    {
+      type: 'mc',
+      q: '等高线是把什么相同的各点连接成的线？',
+      options: ['海拔', '气温', '人口', '降水'],
+      answer: 0,
+      explanation: '等高线连接海拔相同的各点。等高线越密，单位水平距离内高差越大，坡度越陡。',
+      difficulty: 'L1',
+      tags: ['中考高频']
+    },
+    {
+      type: 'fill',
+      q: '相邻两条等高线之间的高度差叫___。',
+      answer: '等高距',
+      hint: '等高线之间的固定高差',
+      explanation: '等高距是相邻两条等高线之间的高度差。同一幅等高线图中等高距通常相同。',
+      difficulty: 'L1',
+      tags: ['基础概念']
+    },
+    {
+      type: 'mc',
+      q: '同一幅等高线图中，等高线越密集表示坡度怎样？',
+      options: ['越陡', '越缓', '一定是平原', '一定是河流'],
+      answer: 0,
+      explanation: '等高线密集表示短距离内高度变化大，所以坡度陡；等高线稀疏表示坡度缓。',
+      difficulty: 'L2',
+      tags: ['坡度判读']
+    }
+  ],
+  landformParts: [
+    {
+      type: 'mc',
+      q: '等高线闭合且数值向中心增大，表示什么地形部位？',
+      options: ['山峰', '山谷', '鞍部', '陡崖'],
+      answer: 0,
+      explanation: '闭合等高线中心数值高，表示山峰；中心数值低则可能是盆地或洼地。',
+      difficulty: 'L1',
+      tags: ['等高线判读']
+    },
+    {
+      type: 'mc',
+      q: '等高线向低处凸出表示什么？',
+      options: ['山脊', '山谷', '陡崖', '平原'],
+      answer: 0,
+      explanation: '口诀是“凸低为脊，凸高为谷”。向低处凸出的是山脊，向高处凸出的是山谷。',
+      difficulty: 'L2',
+      tags: ['中考高频']
+    },
+    {
+      type: 'mc',
+      q: '河流通常发育在什么地形部位？',
+      options: ['山谷', '山脊', '山顶', '陡崖顶部'],
+      answer: 0,
+      explanation: '山谷是水流汇集的低处，河流常沿山谷发育。山脊是分水岭，通常不是河流所在位置。',
+      difficulty: 'L3',
+      tags: ['综合应用']
+    }
+  ],
+  slope: [
+    {
+      type: 'mc',
+      q: '夹金山登山路线中，哪条路线更省力？',
+      options: ['等高线稀疏处', '等高线最密处', '陡崖处', '闭合等高线中心'],
+      answer: 0,
+      explanation: '等高线稀疏表示坡度较缓，登山更省力；等高线密集表示坡陡，危险且费力。',
+      difficulty: 'L1',
+      tags: ['坡度判读']
+    },
+    {
+      type: 'mc',
+      q: '如果两条路线水平距离相同，A线穿过5条等高线，B线穿过2条等高线，哪条更陡？',
+      options: ['A线', 'B线', '一样陡', '无法判断'],
+      answer: 0,
+      explanation: '水平距离相同，穿过等高线越多表示高差越大，坡度越陡。',
+      difficulty: 'L2',
+      tags: ['读图计算']
+    },
+    {
+      type: 'mc',
+      q: '行军扎营应尽量避开哪类区域？',
+      options: ['等高线重叠或特别密集区域', '等高线稀疏缓坡', '河谷附近开阔地', '山脚交通线附近'],
+      answer: 0,
+      explanation: '等高线重叠是陡崖，特别密集说明坡度很陡，容易发生坠落或落石风险，不适合扎营。',
+      difficulty: 'L3',
+      tags: ['地图实战']
+    }
+  ],
+  hypsometric: [
+    {
+      type: 'mc',
+      q: '分层设色地形图中，绿色通常表示什么？',
+      options: ['低海拔平原', '高山积雪', '深海', '陡崖'],
+      answer: 0,
+      explanation: '分层设色地形图常用绿色表示低海拔平原，黄色表示丘陵或高原边缘，褐色表示山地，白色表示高山积雪。',
+      difficulty: 'L1',
+      tags: ['分层设色']
+    },
+    {
+      type: 'mc',
+      q: '翻越夹金山时，图上由绿到黄、褐、白的变化主要表示什么变化？',
+      options: ['海拔逐渐升高', '人口逐渐增多', '河流逐渐变宽', '比例尺逐渐变大'],
+      answer: 0,
+      explanation: '分层设色通过颜色表达海拔高度变化。由绿到黄、褐、白一般表示海拔升高，接近高山积雪带。',
+      difficulty: 'L2',
+      tags: ['读图应用']
+    },
+    {
+      type: 'sort',
+      q: '请按常见分层设色地形图中海拔由低到高排序。',
+      items: ['绿色平原', '黄色丘陵或高原', '褐色山地', '白色积雪高山'],
+      explanation: '常见颜色顺序是绿色低地、黄色中等海拔、褐色高山地、白色雪线以上地区。',
+      difficulty: 'L2',
+      tags: ['颜色判读']
+    }
+  ],
+  profile: [
+    {
+      type: 'mc',
+      q: '地形剖面图主要用来表示什么？',
+      options: ['沿某条线的地势起伏', '城市人口数量', '地图符号含义', '方向标朝向'],
+      answer: 0,
+      explanation: '地形剖面图像把地形沿某条线切开，能直观显示沿线的高低起伏和坡度变化。',
+      difficulty: 'L1',
+      tags: ['剖面图']
+    },
+    {
+      type: 'sort',
+      q: '请排列绘制地形剖面图的一般步骤。',
+      items: ['画剖面线', '标出剖面线与等高线交点高度', '建立水平和垂直坐标', '连接各点形成起伏曲线'],
+      explanation: '先在等高线图上画剖面线，再读取交点高程，建立坐标，最后把各点连接成剖面曲线。',
+      difficulty: 'L2',
+      tags: ['方法步骤']
+    },
+    {
+      type: 'mc',
+      q: '沿AB线经过山谷再到山峰，剖面线形态最可能是？',
+      options: ['先低后高', '一直水平', '只下降不升高', '无法出现起伏'],
+      answer: 0,
+      explanation: '从山谷到山峰，海拔会由低变高，剖面线应表现出上升趋势。真实题目要结合等高线数值判断。',
+      difficulty: 'L3',
+      tags: ['真题风格']
+    }
+  ],
+  basicTerrain: [
+    {
+      type: 'mc',
+      q: '海拔较低、地面宽广平坦的地形类型是？',
+      options: ['平原', '山地', '丘陵', '盆地'],
+      answer: 0,
+      explanation: '平原一般海拔较低，地面宽广平坦。山地海拔高、起伏大；丘陵起伏较小；盆地四周高中间低。',
+      difficulty: 'L1',
+      tags: ['五种地形']
+    },
+    {
+      type: 'mc',
+      q: '四周高中间低的地形类型是？',
+      options: ['盆地', '高原', '山地', '平原'],
+      answer: 0,
+      explanation: '盆地的典型特征是四周高中间低，像一个大盆。四川盆地就是常见例子。',
+      difficulty: 'L1',
+      tags: ['地形类型']
+    },
+    {
+      type: 'mc',
+      q: '夹金山属于哪类基本地形？',
+      options: ['山地', '平原', '盆地', '低洼平原'],
+      answer: 0,
+      explanation: '夹金山海拔高、坡度大、地势起伏明显，属于山地。长征翻越雪山体现了山地地形对行军的影响。',
+      difficulty: 'L2',
+      tags: ['实际应用']
+    }
+  ],
+  comprehensive: [
+    {
+      type: 'mc',
+      q: '长征地图大考中，判断行军路线首先应综合使用哪些信息？',
+      options: ['方向、比例尺、图例、等高线', '纸张厚度和颜色', '标题字体大小', '地图边框花纹'],
+      answer: 0,
+      explanation: '地图实战需要联合使用方向、比例尺、图例、等高线等信息，才能判断路线、距离、地形和风险。',
+      difficulty: 'L2',
+      tags: ['综合应用']
+    },
+    {
+      type: 'mc',
+      q: '某路线图上距离6厘米，比例尺1:100000，实地距离是多少？',
+      options: ['0.6千米', '6千米', '60千米', '600千米'],
+      answer: 1,
+      explanation: '1:100000表示图上1厘米代表实地1千米，6厘米代表6千米。',
+      difficulty: 'L2',
+      tags: ['比例尺计算']
+    },
+    {
+      type: 'mc',
+      q: '侦察队要避开暴露的山脊和危险陡崖，同时沿缓坡前进，应重点查看什么？',
+      options: ['等高线形态和疏密', '地图出版年份', '注记字体', '图框颜色'],
+      answer: 0,
+      explanation: '山脊、山谷、陡崖由等高线形态判断；坡度陡缓由等高线疏密判断。这是综合读图核心。',
+      difficulty: 'L3',
+      tags: ['压轴题型']
+    }
+  ],
+  mapping: [
+    {
+      type: 'mc',
+      q: '绘制校园平面图时，必须保留哪三要素？',
+      options: ['方向、比例尺、图例', '照片、颜色、口号', '校训、班级、姓名', '天气、气温、风向'],
+      answer: 0,
+      explanation: '校园平面图也是地图，必须包含方向、比例尺、图例，才能让别人准确读懂位置和距离。',
+      difficulty: 'L1',
+      tags: ['实践活动']
+    },
+    {
+      type: 'mc',
+      q: '校园制图时，用1厘米代表10米，属于哪种比例尺表示方式？',
+      options: ['文字式', '数字式', '线段式', '等高距'],
+      answer: 0,
+      explanation: '“图上1厘米代表实地10米”是文字式比例尺。换成数字式为1:1000。',
+      difficulty: 'L2',
+      tags: ['比例尺互转']
+    },
+    {
+      type: 'fill',
+      q: '校园平面图中，若图上1厘米代表实地10米，则数字式比例尺是1:___。',
+      answer: '1000',
+      hint: '10米=1000厘米',
+      explanation: '10米=1000厘米，所以图上1厘米代表实地1000厘米，数字式比例尺为1:1000。',
+      difficulty: 'L3',
+      tags: ['实践计算']
+    }
+  ]
+};
+
+const GEO_DATA = [
+  {
+    id: 'geo-2-1-1',
+    unit: '第二章 地图',
+    chapter: '场景一 遵义出发',
+    section: '地图的语言——三要素',
+    page: 'P16',
+    category: 'geo',
+    keypoints: ['地图三要素是方向、比例尺、图例', '方向用于判断位置关系，比例尺用于换算距离，图例用于理解符号', '缺少三要素会导致读图误判', '完整地图才能支持行军路线决策'],
+    examPoints: ['地图三要素', '图例识别', '读图基础'],
+    textbookColumns: ['「读图」地图的语言', '「活动」绘制校园平面图'],
+    gameScene: '遵义城外，红军缴获的地图缺了关键标记。龙云送来的军用地图让老班长看见了方向、距离和符号。',
+    gameDesign: '「龙鳞拼图」：拖拽方向鳞、比例鳞、图例鳞到地图正确位置，修复完整行军图。',
+    gameType: 'drag-assembly',
+    difficulty: '★',
+    examFrequency: '★★★★★',
+    sceneTag: '场景一·龙云献图',
+    free: true,
+    quiz: quiz.elements
+  },
+  {
+    id: 'geo-2-1-2',
+    unit: '第二章 地图',
+    chapter: '场景二 四渡赤水',
+    section: '地图上的方向',
+    page: 'P17-18',
+    category: 'geo',
+    keypoints: ['一般地图按上北下南、左西右东定向', '有指向标时箭头指北，要按指向标定向', '经纬网地图中经线指南北、纬线指东西', '野外可用太阳、北极星、树冠和年轮辅助定向'],
+    examPoints: ['指向标判读', '经纬网定向', '野外定向'],
+    textbookColumns: ['「活动」在校园里辨别方向', '「阅读」野外辨别方向的方法'],
+    gameScene: '四渡赤水前夜，队伍要摸黑转向。老班长让你根据指向标和北极星判断下一段行军方向。',
+    gameDesign: '「夜渡赤水」：根据指向标、星空和河流位置限时选择正确行军方向。',
+    gameType: 'click-timer',
+    difficulty: '★',
+    examFrequency: '★★★★★',
+    sceneTag: '场景二·夜渡赤水',
+    free: true,
+    quiz: quiz.direction
+  },
+  {
+    id: 'geo-2-1-3',
+    unit: '第二章 地图',
+    chapter: '场景二 四渡赤水',
+    section: '比例尺计算与表示',
+    page: 'P16-19',
+    category: 'geo',
+    keypoints: ['比例尺=图上距离÷实地距离', '数字式、线段式、文字式是比例尺三种表示法', '比例尺计算必须统一单位', '分母越小比例尺越大', '大比例尺范围小但内容详细，小比例尺范围大但内容简略'],
+    examPoints: ['比例尺公式', '单位换算', '比例尺大小比较'],
+    textbookColumns: ['「活动」比较不同比例尺地图', '「练习」图上距离和实地距离换算'],
+    gameScene: '赤水河边，侦察员量出图上3厘米。老班长要你换算实地距离，判断天亮前能不能赶到渡口。',
+    gameDesign: '「比例尺急行军」：拖动比例尺滑块，观察路线细节和范围变化，完成距离换算。',
+    gameType: 'slider-simulate',
+    difficulty: '★★',
+    examFrequency: '★★★★★',
+    sceneTag: '场景二·急行军',
+    free: true,
+    quiz: quiz.scale
+  },
+  {
+    id: 'geo-2-1-4',
+    unit: '第二章 地图',
+    chapter: '场景一 遵义出发',
+    section: '图例和注记',
+    page: 'P19',
+    category: 'geo',
+    keypoints: ['图例是地图上各种符号的说明', '注记是地图上的文字和数字', '常见图例包括山峰、河流、铁路、公路、居民点、国界等', '读图前先看图例能避免符号误判'],
+    examPoints: ['图例识别', '注记判读', '地图信息提取'],
+    textbookColumns: ['「读图」常见图例', '「活动」识别地图符号'],
+    gameScene: '龙云地图上密密麻麻全是符号。老班长说：看不懂图例，就像听不懂命令。',
+    gameDesign: '「图例配对大作战」：把山峰、河流、桥梁、村庄等符号与含义快速配对。',
+    gameType: 'drag-match',
+    difficulty: '★',
+    examFrequency: '★★★★',
+    sceneTag: '场景一·读懂符号',
+    free: true,
+    quiz: quiz.legend
+  },
+  {
+    id: 'geo-2-1-5',
+    unit: '第二章 地图',
+    chapter: '场景二 四渡赤水',
+    section: '选择适用的地图',
+    page: 'P20',
+    category: 'geo',
+    keypoints: ['不同任务要选择不同类型的地图', '交通图适合查路线，政区图适合查行政区域，地形图适合判读地势', '选择地图要考虑用途、范围、比例尺和专题内容', '大范围任务适合小比例尺，局部细节适合大比例尺'],
+    examPoints: ['选择适用地图', '比例尺与用途', '地图类型判断'],
+    textbookColumns: ['「活动」根据需要选择地图', '「练习」旅游和出行地图选择'],
+    gameScene: '四渡赤水每次渡河点不同。老班长摊开交通图和地形图，让你判断哪张图最能帮队伍脱身。',
+    gameDesign: '「选图参谋」：根据任务目标选择政区图、交通图或地形图，并说明理由。',
+    gameType: 'route-choice',
+    difficulty: '★★',
+    examFrequency: '★★★',
+    sceneTag: '场景二·选图参谋',
+    free: false,
+    quiz: quiz.mapChoice
+  },
+  {
+    id: 'geo-2-2-1',
+    unit: '第二章 地图',
+    chapter: '场景三 飞夺泸定桥',
+    section: '海拔与相对高度',
+    page: 'P24',
+    category: 'geo',
+    keypoints: ['海拔是某点高出海平面的垂直距离', '相对高度是两个地点海拔之差', '海拔和相对高度能描述地势起伏', '读地形图要先看高程数值'],
+    examPoints: ['海拔概念', '相对高度计算', '地势起伏判读'],
+    textbookColumns: ['「读图」海拔和相对高度', '「练习」计算两地相对高度'],
+    gameScene: '泸定桥两岸峡谷深切，侦察兵报来两岸高程。你要算出高差，判断攀爬风险。',
+    gameDesign: '「峡谷高差速算」：读取两岸海拔，快速计算相对高度并选择安全落脚点。',
+    gameType: 'calc-quiz',
+    difficulty: '★',
+    examFrequency: '★★★★',
+    sceneTag: '场景三·大渡河峡谷',
+    free: false,
+    quiz: quiz.height
+  },
+  {
+    id: 'geo-2-2-2',
+    unit: '第二章 地图',
+    chapter: '场景三 飞夺泸定桥',
+    section: '等高线与等高距',
+    page: 'P24-26',
+    category: 'geo',
+    keypoints: ['等高线连接海拔相同的各点', '等高距是相邻等高线之间的高度差', '同一幅图中等高距通常相同', '等高线疏密可以判断坡度陡缓'],
+    examPoints: ['等高线概念', '等高距', '坡度陡缓'],
+    textbookColumns: ['「读图」等高线地形图', '「活动」制作等高线模型'],
+    gameScene: '大渡河边的地形图一圈一圈像指纹。老班长让你看懂这些线，找出峡谷最险处。',
+    gameDesign: '「等高线侦察」：点击等高线密集区和稀疏区，判断陡坡与缓坡。',
+    gameType: 'drag-classify',
+    difficulty: '★★',
+    examFrequency: '★★★★★',
+    sceneTag: '场景三·峡谷侦察',
+    free: false,
+    quiz: quiz.contour
+  },
+  {
+    id: 'geo-2-2-3',
+    unit: '第二章 地图',
+    chapter: '场景三 飞夺泸定桥',
+    section: '五种地形部位判读',
+    page: 'P26-27',
+    category: 'geo',
+    keypoints: ['山峰：闭合等高线中心高', '山脊：等高线向低处凸出，口诀“凸低为脊”', '山谷：等高线向高处凸出，口诀“凸高为谷”', '鞍部：两个山峰之间的低洼处', '陡崖：等高线重叠处'],
+    examPoints: ['五种地形部位', '凸低为脊凸高为谷', '读图判读'],
+    textbookColumns: ['「读图」等高线地形部位', '「活动」制作地形模型'],
+    gameScene: '泸定桥附近山势险急。老班长把五处地形标出来，让你找山峰、山脊、山谷、鞍部和陡崖。',
+    gameDesign: '「五兽寻踪」：在等高线图上点击五种地形部位，全部找对解锁泸定桥路线。',
+    gameType: 'phaser-contour',
+    difficulty: '★★★',
+    examFrequency: '★★★★★',
+    sceneTag: '场景三·五兽寻踪',
+    free: false,
+    quiz: quiz.landformParts
+  },
+  {
+    id: 'geo-2-2-4',
+    unit: '第二章 地图',
+    chapter: '场景四 翻越夹金山',
+    section: '坡度陡缓判读',
+    page: 'P27',
+    category: 'geo',
+    keypoints: ['等高线密集表示坡陡', '等高线稀疏表示坡缓', '登山路线应尽量选择缓坡', '陡崖和密集等高线区域风险高'],
+    examPoints: ['坡度判读', '登山路线选择', '等高线疏密'],
+    textbookColumns: ['「读图」坡度陡缓比较', '「练习」选择登山路线'],
+    gameScene: '夹金山风雪压顶，近路很陡，远路较缓。你要用等高线判断哪条路线能让队伍活着翻过去。',
+    gameDesign: '「雪山选路」：调节坡度阈值，高亮安全、警示、危险区域，选出登山路线。',
+    gameType: 'route-choice',
+    difficulty: '★★',
+    examFrequency: '★★★★',
+    sceneTag: '场景四·雪山选路',
+    free: false,
+    quiz: quiz.slope
+  },
+  {
+    id: 'geo-2-2-5',
+    unit: '第二章 地图',
+    chapter: '场景四 翻越夹金山',
+    section: '分层设色地形图',
+    page: 'P28-29',
+    category: 'geo',
+    keypoints: ['分层设色用颜色表示不同海拔', '绿色通常表示低海拔平原', '黄色或浅褐色表示丘陵、高原或中等海拔地区', '褐色表示高海拔山地，白色常表示积雪高山', '蓝色可表示海洋深度'],
+    examPoints: ['分层设色颜色含义', '海拔判读', '地形图综合'],
+    textbookColumns: ['「读图」分层设色地形图', '「活动」判读颜色代表的海拔'],
+    gameScene: '夹金山地图从绿色山脚变成褐色山脊，再到白色雪顶。老班长说：颜色也会报告海拔。',
+    gameDesign: '「色彩解码师」：把颜色、高度和地形类型拖入对应区域，解码雪山地形。',
+    gameType: 'drag-classify',
+    difficulty: '★★',
+    examFrequency: '★★★★',
+    sceneTag: '场景四·色彩解码',
+    free: false,
+    quiz: quiz.hypsometric
+  },
+  {
+    id: 'geo-2-2-6',
+    unit: '第二章 地图',
+    chapter: '场景四 翻越夹金山',
+    section: '地形剖面图',
+    page: 'P30-31',
+    category: 'geo',
+    keypoints: ['地形剖面图沿某条线展示地势起伏', '绘制时先画剖面线，再读取交点高程', '剖面图能直观看出山峰、山谷、陡坡和缓坡', '剖面图常用于比较路线难度'],
+    examPoints: ['地形剖面图', '剖面线判读', '真题压轴'],
+    textbookColumns: ['「活动」绘制地形剖面图', '「练习」选择正确剖面图'],
+    gameScene: '翻雪山前，测绘员沿A-B线把夹金山“切开”。你要看剖面曲线，判断哪里最难走。',
+    gameDesign: '「切山大师」：在地形图上拖动剖面线，实时生成地形剖面曲线。',
+    gameType: 'phaser-profile',
+    difficulty: '★★★',
+    examFrequency: '★★★',
+    sceneTag: '场景四·切山大师',
+    free: false,
+    quiz: quiz.profile
+  },
+  {
+    id: 'geo-2-2-7',
+    unit: '第二章 地图',
+    chapter: '场景四 翻越夹金山',
+    section: '五种基本地形类型',
+    page: 'P29',
+    category: 'geo',
+    keypoints: ['平原：海拔较低，地面平坦', '高原：海拔较高，边缘较陡，内部相对平坦', '山地：海拔较高，起伏大', '丘陵：海拔较低，起伏和缓', '盆地：四周高中间低'],
+    examPoints: ['五种基本地形', '地形类型判读', '分层设色图'],
+    textbookColumns: ['「读图」五种基本地形', '「活动」比较地形景观'],
+    gameScene: '从山脚到雪顶，队伍看见平地、丘陵和高山。老班长让你用地形特征给它们归类。',
+    gameDesign: '「地形归队」：把平原、高原、山地、丘陵、盆地拖到对应特征框。',
+    gameType: 'drag-classify',
+    difficulty: '★★',
+    examFrequency: '★★★',
+    sceneTag: '场景四·地形归队',
+    free: false,
+    quiz: quiz.basicTerrain
+  },
+  {
+    id: 'geo-2-3-1',
+    unit: '第二章 地图',
+    chapter: '场景五 到达陕北',
+    section: '地图信息综合提取',
+    page: 'P32-35',
+    category: 'geo',
+    keypoints: ['综合读图要联合方向、比例尺、图例、等高线信息', '先明确任务，再提取地图中的有效信息', '路线选择要兼顾距离、坡度、水源和安全', '中考综合题常把比例尺和等高线放在同一幅图中考查'],
+    examPoints: ['综合读图', '路线选择', '中考压轴'],
+    textbookColumns: ['「活动」地图信息提取', '「练习」综合读图回答问题'],
+    gameScene: '到达陕北吴起镇，老班长摊开长征全程图：每次转向、每条河、每座山，都藏着地图答案。',
+    gameDesign: '「长征地图大考」：10道综合题沿长征路线推进，答对点亮终点五角星。',
+    gameType: 'click-timer',
+    difficulty: '★★★',
+    examFrequency: '★★★★★',
+    sceneTag: '场景五·长征地图大考',
+    free: false,
+    quiz: quiz.comprehensive
+  },
+  {
+    id: 'geo-2-3-2',
+    unit: '第二章 地图',
+    chapter: '场景五 到达陕北',
+    section: '绘制校园平面图',
+    page: 'P20',
+    category: 'geo',
+    keypoints: ['绘制平面图也要包含方向、比例尺、图例', '先确定范围和主要地物，再选择合适比例尺', '图例符号要简明清楚', '实践制图能检验地图三要素是否真正掌握'],
+    examPoints: ['绘制平面图', '地图三要素应用', '实践活动'],
+    textbookColumns: ['「活动」绘制校园平面图', '「实践」社区路线图'],
+    gameScene: '长征结束，老班长给你最后任务：画一张自己的校园地图，做一个合格小向导。',
+    gameDesign: '「校园制图师」：根据校园场景和测量数据，组装方向、比例尺、图例完整的平面图。',
+    gameType: 'drag-assembly',
+    difficulty: '★★',
+    examFrequency: '★★★',
+    sceneTag: '场景五·合格向导',
+    free: false,
+    quiz: quiz.mapping
+  }
+];
+
+const indexPath = 'index.html';
+const indexHtml = await readFile(indexPath, 'utf8');
+const nextGeo = `const GEO_DATA = ${JSON.stringify(GEO_DATA)};`;
+const updated = indexHtml.replace(/const GEO_DATA = \[[\s\S]*?\];\r?\nconst ALL_DATA =/, `${nextGeo}\nconst ALL_DATA =`);
+
+if (updated === indexHtml) {
+  throw new Error('Could not replace GEO_DATA in index.html');
+}
+
+await writeFile('data/geo_data.json', `${JSON.stringify(GEO_DATA, null, 2)}\n`, 'utf8');
+await writeFile(indexPath, updated, 'utf8');
+console.log(`Generated ${GEO_DATA.length} long-march geography items`);

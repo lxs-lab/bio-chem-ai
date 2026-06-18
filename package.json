@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "build:geo": "node scripts/build-geo-longmarch.mjs",
     "sync:resources": "node scripts/sync-resources.mjs",
     "check:data": "node scripts/check-data.mjs"
   },
