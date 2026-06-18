@@ -86,13 +86,13 @@ function openPdf() {
         paywall.innerHTML = `
             <div class="pp-icon">🔒</div>
             <div class="pp-text">教材PDF属于付费内容<br>请先解锁全部课程后查看</div>
-            <a href="../index.html" class="pp-btn" style="display:inline-block;padding:10px 24px;background:var(--blue-600);color:#fff;border-radius:20px;text-decoration:none;font-weight:600;font-size:.85rem">🏠 前往主页解锁</a>
+            <a href="../../index.html" class="pp-btn" style="display:inline-block;padding:10px 24px;background:var(--blue-600);color:#fff;border-radius:20px;text-decoration:none;font-weight:600;font-size:.85rem">🏠 前往主页解锁</a>
             <div class="pp-hint">解锁后可查看教材对应页码</div>
         `;
     } else {
         paywall.style.display = 'none';
         iframe.style.display = 'block';
-        iframe.src = '../pdf/' + window._pdfFile + '#page=' + window._pdfPage + '&view=FitH';
+        iframe.src = '../../pdf/' + encodeURIComponent(window._pdfFile) + '#page=' + window._pdfPage + '&view=FitH';
     }
     
     modal.style.display = 'flex';
