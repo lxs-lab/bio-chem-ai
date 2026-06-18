@@ -631,13 +631,13 @@ function renderSyllabus() {
       var sections = unitData.chapters[chName];
       var chId = 'syllabus-ch-' + unitIdx + '-' + chIdx;
       html += '<div class="chapter-node" id="' + chId + '">' +
-          '<div class="cn-header" onclick="event.stopPropagation();toggleSyllabusChapter('' + chId + '')">' +
+          '<div class="cn-header" onclick="event.stopPropagation();toggleSyllabusChapter(\'' + chId + '\')">' +
             '<span class="cn-title">' + chName + '</span>' +
             '<span class="cn-arrow">▼</span>' +
           '</div>' +
           '<div class="cn-sections">';
       sections.forEach(function(s) {
-        html += '<div class="section-item" onclick="event.stopPropagation();navigateTo('learning','' + s.category + '');scrollToCard('' + s.id + '')">' +
+        html += '<div class="section-item" onclick="event.stopPropagation();navigateTo(\'learning\',\'' + s.category + '\');scrollToCard(\'' + s.id + '\')">' +
               '<span class="si-dot"></span>' +
               '<span>' + s.section + '</span>' +
               '<span class="si-page">' + s.page + '</span>' +
@@ -761,7 +761,7 @@ function renderKnowledge() {
     items.forEach(function(d) {
       var locked = !d.free && !isUnlocked;
       var quizCount = d.quiz ? d.quiz.length : 0;
-      html += '<div class="kcard" id="card-' + d.id + '" onclick="toggleCard('' + d.id + '')">' +
+      html += '<div class="kcard" id="card-' + d.id + '" onclick="toggleCard(\'' + d.id + '\')">' +
         '<div class="kc-top">' +
           '<span class="kc-num">' + d.page + '</span>' +
           (locked?'<span class="kc-lock">🔒 需解锁</span>':'') +
@@ -780,8 +780,8 @@ function renderKnowledge() {
           '<h4>教材栏目</h4>' +
           '<ul>' + (d.textbookColumns||[]).map(function(c){return '<li>'+c+'</li>';}).join('') + '</ul>' +
           '<div class="btns">' +
-            '<button class="btn-sm btn-green" onclick="event.stopPropagation();openQuiz('' + d.id + '')">📝 随堂测验</button>' +
-            (!locked?'<button class="btn-sm btn-outline" onclick="event.stopPropagation();openGameByType('' + d.gameType + '')">🎮 沙盘游戏</button>':'') +
+            '<button class="btn-sm btn-green" onclick="event.stopPropagation();openQuiz(\'' + d.id + '\')">📝 随堂测验</button>' +
+            (!locked?'<button class="btn-sm btn-outline" onclick="event.stopPropagation();openGameByType(\'' + d.gameType + '\')">🎮 沙盘游戏</button>':'') +
           '</div>' +
         '</div>' +
       '</div>';
@@ -973,14 +973,14 @@ function openGameModal(gidx) {
 function closeGame() { document.getElementById('gameModal').classList.remove('show'); }
 
 function renderGame(g) {
-  if (g===0) return \`<p style="color:var(--text2)">把物品拖到正确的分类框</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="g0-bins"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px" id="g0-items"></div><p id="g0-score" style="text-align:center;margin-top:10px;font-weight:600"></p>\`;
-  if (g===1) return \`<p style="color:var(--text2)">拖拽细胞器到正确位置组装植物细胞</p><div id="g1-area" style="width:300px;height:300px;border:2px dashed var(--border);border-radius:50%;margin:10px auto;position:relative"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px" id="g1-parts"></div><p id="g1-msg" style="text-align:center;margin-top:8px;font-weight:600"></p>\`;
-  if (g===2) return \`<p style="text-align:center;font-size:3rem" id="g3-skewer">🍢</p><div style="margin:10px 0"><label>🪵 可燃物: <span id="g3-fuel-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-fuel" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>💨 氧气: <span id="g3-o2-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-o2" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>🌡 温度: <span id="g3-temp-val">200°C</span></label><input type="range" min="0" max="300" value="200" id="g3-temp" oninput="updateG3()" style="width:100%"></div><p id="g3-feedback" style="text-align:center;font-weight:600;margin-top:8px"></p><p id="g3-detail" style="text-align:center;font-size:.8rem;color:var(--text3);margin-top:4px"></p>\`;
-  if (g===3) return \`<p style="text-align:center;font-size:1.5rem;margin:10px 0" id="g4-question"></p><div style="display:flex;gap:12px;justify-content:center;margin-top:8px"><button class="btn-sm btn-blue" onclick="answerG4('physical')" style="background:var(--blue);color:#fff">🔄 物理变化</button><button class="btn-sm btn-warm" onclick="answerG4('chemical')">⚡ 化学变化</button></div><p id="g4-score" style="text-align:center;margin-top:8px;font-weight:600"></p><p id="g4-timer" style="text-align:center;color:var(--text3)"></p>\`;
-  if (g===4) return \`<p style="text-align:center;font-size:1.2rem;font-weight:600;margin:10px 0" id="g5-eq"></p><input class="quiz-fill-input" id="g5-input" placeholder="填系数，用逗号分隔，如 1,2,1,2"><button class="btn-sm btn-warm" onclick="checkG5()" style="margin-top:8px">检查</button><p id="g5-result" style="text-align:center;margin-top:8px;font-weight:600"></p>\`;
-  if (g===5) return \`<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:320px;margin:0 auto" id="g6-grid"></div><p id="g6-info" style="text-align:center;margin-top:10px;font-weight:600"></p>\`;
-  if (g===6) return \`<p style="font-size:1rem;text-align:center" id="g7-q"></p><input class="quiz-fill-input" id="g7-input" placeholder="输入你的答案"><button class="btn-sm btn-warm" onclick="checkG7()" style="margin-top:8px">提交</button><p id="g7-result" style="text-align:center;margin-top:8px;font-weight:600"></p>\`;
-  if (g===7) return \`<p style="text-align:center;font-size:5rem;margin:16px 0" id="g8-display">💎</p><p id="g8-name" style="text-align:center;font-weight:600">金刚石</p><p id="g8-desc" style="text-align:center;font-size:.8rem;color:var(--text3)">最硬的天然物质</p><div style="text-align:center;margin-top:12px"><button class="btn-sm btn-warm" onclick="transformG8()">🔄 改变原子排列</button></div>\`;
+  if (g===0) return `<p style="color:var(--text2)">把物品拖到正确的分类框</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="g0-bins"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px" id="g0-items"></div><p id="g0-score" style="text-align:center;margin-top:10px;font-weight:600"></p>`;
+  if (g===1) return `<p style="color:var(--text2)">拖拽细胞器到正确位置组装植物细胞</p><div id="g1-area" style="width:300px;height:300px;border:2px dashed var(--border);border-radius:50%;margin:10px auto;position:relative"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px" id="g1-parts"></div><p id="g1-msg" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===2) return `<p style="text-align:center;font-size:3rem" id="g3-skewer">🍢</p><div style="margin:10px 0"><label>🪵 可燃物: <span id="g3-fuel-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-fuel" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>💨 氧气: <span id="g3-o2-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-o2" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>🌡 温度: <span id="g3-temp-val">200°C</span></label><input type="range" min="0" max="300" value="200" id="g3-temp" oninput="updateG3()" style="width:100%"></div><p id="g3-feedback" style="text-align:center;font-weight:600;margin-top:8px"></p><p id="g3-detail" style="text-align:center;font-size:.8rem;color:var(--text3);margin-top:4px"></p>`;
+  if (g===3) return `<p style="text-align:center;font-size:1.5rem;margin:10px 0" id="g4-question"></p><div style="display:flex;gap:12px;justify-content:center;margin-top:8px"><button class="btn-sm btn-blue" onclick="answerG4('physical')" style="background:var(--blue);color:#fff">🔄 物理变化</button><button class="btn-sm btn-warm" onclick="answerG4('chemical')">⚡ 化学变化</button></div><p id="g4-score" style="text-align:center;margin-top:8px;font-weight:600"></p><p id="g4-timer" style="text-align:center;color:var(--text3)"></p>`;
+  if (g===4) return `<p style="text-align:center;font-size:1.2rem;font-weight:600;margin:10px 0" id="g5-eq"></p><input class="quiz-fill-input" id="g5-input" placeholder="填系数，用逗号分隔，如 1,2,1,2"><button class="btn-sm btn-warm" onclick="checkG5()" style="margin-top:8px">检查</button><p id="g5-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===5) return `<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:320px;margin:0 auto" id="g6-grid"></div><p id="g6-info" style="text-align:center;margin-top:10px;font-weight:600"></p>`;
+  if (g===6) return `<p style="font-size:1rem;text-align:center" id="g7-q"></p><input class="quiz-fill-input" id="g7-input" placeholder="输入你的答案"><button class="btn-sm btn-warm" onclick="checkG7()" style="margin-top:8px">提交</button><p id="g7-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===7) return `<p style="text-align:center;font-size:5rem;margin:16px 0" id="g8-display">💎</p><p id="g8-name" style="text-align:center;font-weight:600">金刚石</p><p id="g8-desc" style="text-align:center;font-size:.8rem;color:var(--text3)">最硬的天然物质</p><div style="text-align:center;margin-top:12px"><button class="btn-sm btn-warm" onclick="transformG8()">🔄 改变原子排列</button></div>`;
   return '';
 }
 function initGame(g) {
