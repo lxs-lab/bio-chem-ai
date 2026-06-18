@@ -387,7 +387,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
         <div class="cc-stats">
           <div class="cc-stat">📖 <strong>8</strong> 个知识点</div>
           <div class="cc-stat">📝 <strong>16</strong> 练习题</div>
-          <div class="cc-stat">🎮 <strong>1</strong> 个游戏</div>
+          <div class="cc-stat">🎮 <strong>7</strong> 个游戏设计</div>
         </div>
       </div>
     </div>
@@ -398,12 +398,12 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
         <div class="feature-item">
           <div class="fi-icon">🤖</div>
           <div class="fi-title">AI 智能问答</div>
-          <div class="fi-desc">夜市大厨阿火为你解答生化问题，用生活类比讲透知识点</div>
+          <div class="fi-desc">AI助教为你解答生物、化学、地理问题，用生活类比讲透知识点</div>
         </div>
         <div class="feature-item">
           <div class="fi-icon">🎮</div>
           <div class="fi-title">沙盘互动游戏</div>
-          <div class="fi-desc">8款原创HTML5游戏，在玩中学，让抽象概念变得触手可及</div>
+          <div class="fi-desc">多款原创HTML5游戏，在玩中学，让抽象概念变得触手可及</div>
         </div>
         <div class="feature-item">
           <div class="fi-icon">📝</div>
@@ -428,11 +428,17 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
           <div class="sc-desc">2022年版 · 教育部制定</div>
           <button class="btn-sm btn-warm" onclick="openPdf('pdf/义务教育化学课程标准2022版.pdf','义务教育化学课程标准 2022版')">📖 在线预览</button>
         </div>
+        <div class="standard-card">
+          <div class="sc-icon">🗺️</div>
+          <div class="sc-title">地理地图专题能力</div>
+          <div class="sc-desc">地图阅读 · 地形判读 · 空间思维</div>
+          <button class="btn-sm btn-outline" onclick="navigateTo('syllabus','geo')">📋 查看大纲</button>
+        </div>
       </div>
     </div>
 
     <div class="home-footer">
-      智慧学堂 v3.0 | 基于人教版初中生物·化学教材 | 夜市学堂出品
+      智慧学堂 v3.2 | 基于人教版初中生物·化学·地理教材 | 夜市学堂出品
     </div>
   </div>
 </div>
@@ -492,12 +498,12 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 
     <div class="lp-container">
       <div class="lp-hero">
-        <h2>在夜市里学生物化学</h2>
-        <p>烤串火候学燃烧反应，发面馒头学细胞分裂——把知识变成生活</p>
+        <h2 id="lpHeroTitle">在夜市里学生物化学</h2>
+        <p id="lpHeroSubtitle">烤串火候学燃烧反应，发面馒头学细胞分裂——把知识变成生活</p>
         <div class="lp-stats">
           <div class="lp-stat"><div class="num" id="stat-know">20</div><div class="lbl">知识点</div></div>
           <div class="lp-stat"><div class="num" id="stat-quiz">79</div><div class="lbl">练习题</div></div>
-          <div class="lp-stat"><div class="num">8</div><div class="lbl">沙盘游戏</div></div>
+          <div class="lp-stat"><div class="num" id="stat-games">8</div><div class="lbl">游戏设计</div></div>
           <div class="lp-stat"><div class="num" id="stat-score">0</div><div class="lbl">我的积分</div></div>
         </div>
       </div>
@@ -511,7 +517,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
           <div><div class="name">夜市大厨 · 阿火</div><div class="role">20年老厨师 · 生化知识隐藏大师</div></div>
         </div>
         <div class="chat-body" id="chatBody">
-          <div class="chat-msg ai">嘿！我是阿火。烤串20年了，有啥不懂的生物化学问题尽管问——我用夜市的道理给你讲明白！</div>
+          <div class="chat-msg ai">嘿！我是阿火。烤串20年了，有啥不懂的生物、化学、地理问题尽管问——我用生活里的道理给你讲明白！</div>
         </div>
         <div class="chat-input-row">
           <input class="chat-input" id="chatInput" placeholder="问阿火一个问题..." onkeydown="if(event.key==='Enter')sendMessage()">
@@ -735,7 +741,7 @@ function renderSyllabus() {
   document.getElementById('syllabusUnitMap').innerHTML = html;
 
   // Render standards section
-  renderSyllabusStandards(isBio);
+  renderSyllabusStandards(currentSubject);
 }
 
 function toggleSyllabusUnit(idx) {
@@ -758,9 +764,11 @@ function scrollToCard(id) {
   }, 500);
 }
 
-function renderSyllabusStandards(isBio) {
+function renderSyllabusStandards(subject) {
   var stdCards = document.getElementById('syllabusStandards');
   var stdKps = document.getElementById('syllabusKeypoints');
+  var isBio = subject === 'bio';
+  var isChem = subject === 'chem';
   
   if (isBio) {
     stdCards.innerHTML = '<div class="std-ref-card">' +
@@ -776,7 +784,7 @@ function renderSyllabusStandards(isBio) {
       '<span class="std-keypoint">生物体的结构层次</span>' +
       '<span class="std-keypoint">生物的多样性</span>' +
       '<span class="std-keypoint">生物与环境</span>';
-  } else {
+  } else if (isChem) {
     stdCards.innerHTML = '<div class="std-ref-card">' +
       '<div class="src-icon">📙</div>' +
       '<div class="src-title">化学课程标准 (2022版)</div>' +
@@ -790,12 +798,30 @@ function renderSyllabusStandards(isBio) {
       '<span class="std-keypoint">物质的性质与应用</span>' +
       '<span class="std-keypoint">物质的组成与结构</span>' +
       '<span class="std-keypoint">物质的化学变化</span>';
+  } else {
+    stdCards.innerHTML = '<div class="std-ref-card">' +
+      '<div class="src-icon">🗺️</div>' +
+      '<div class="src-title">地理七上 · 地图专题</div>' +
+      '<div class="src-desc">围绕地图阅读、比例尺换算、图例识别、等高线地形判读组织学习任务</div>' +
+      '<button class="btn-sm btn-outline" onclick="showToast(\'地理课标PDF尚未上传，当前先提供地图专题能力框架\', false)">📌 能力框架</button>' +
+      '</div>';
+    stdKps.innerHTML = '<span class="std-keypoint">区域认知</span>' +
+      '<span class="std-keypoint">综合思维</span>' +
+      '<span class="std-keypoint">地理实践力</span>' +
+      '<span class="std-keypoint">地图三要素</span>' +
+      '<span class="std-keypoint">比例尺换算</span>' +
+      '<span class="std-keypoint">等高线判读</span>' +
+      '<span class="std-keypoint">地形剖面图</span>';
   }
 }
 
 function viewStandards() {
-  var isBio = currentSubject === 'bio';
-  var pdf = isBio ? 'pdf/义务教育生物学课程标准2022版.pdf' : 'pdf/义务教育化学课程标准2022版.pdf';
+  if (currentSubject === 'geo') {
+    showToast('地理课标PDF尚未上传，已在页面下方展示地图专题能力框架', false);
+    document.querySelector('.syllabus-standards').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  var pdf = currentSubject === 'bio' ? 'pdf/义务教育生物学课程标准2022版.pdf' : 'pdf/义务教育化学课程标准2022版.pdf';
   window.open(pdf, '_blank');
 }
 
@@ -807,7 +833,15 @@ function startLearning() {
 function updateLearningHeader() {
   var isBio = currentSubject === 'bio';
   var isChem = currentSubject === 'chem';
+  var data = currentSubject === 'bio' ? BIO_DATA : currentSubject === 'chem' ? CHEM_DATA : GEO_DATA;
+  var quizCount = data.reduce(function(s,d) { return s + (d.quiz ? d.quiz.length : 0); }, 0);
+  var gameCount = new Set(data.filter(function(d) { return d.gameType; }).map(function(d) { return d.gameType; })).size;
   document.getElementById('lpTitle').textContent = isBio ? '🌿 生物七上' : isChem ? '⚗️ 化学九上' : '🗺️ 地理七上';
+  document.getElementById('lpHeroTitle').textContent = isBio ? '在夜市里学生物' : isChem ? '在夜市里学化学' : '在地图里学地理';
+  document.getElementById('lpHeroSubtitle').textContent = isBio ? '发面馒头学细胞分裂，夜市摊位学观察调查——把生命知识变成生活' : isChem ? '烤串火候学燃烧反应，铁签生锈学化学变化——把物质变化讲清楚' : '用方向、比例尺、图例和等高线读懂世界——把地图变成会说话的工具';
+  document.getElementById('stat-know').textContent = data.length;
+  document.getElementById('stat-quiz').textContent = quizCount;
+  document.getElementById('stat-games').textContent = gameCount;
   document.querySelectorAll('.lp-tab').forEach(function(t, i) {
     var sub = t.getAttribute('onclick').match(/switchSubject\('(\w+)'\)/);
     t.classList.toggle('active', sub && sub[1] === currentSubject);
@@ -817,9 +851,6 @@ function updateLearningHeader() {
 function switchSubject(sub) {
   currentSubject = sub;
   updateLearningHeader();
-  var data = sub === 'bio' ? BIO_DATA : sub === 'chem' ? CHEM_DATA : GEO_DATA;
-  document.getElementById('stat-know').textContent = data.length;
-  document.getElementById('stat-quiz').textContent = data.reduce(function(s,d) { return s + (d.quiz?d.quiz.length:0); }, 0);
   renderKnowledge();
   localStorage.setItem('bioChemLastSubject', sub);
 }
@@ -1317,7 +1348,7 @@ async function sendMessage() {
     var res = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
       body:JSON.stringify({model:'deepseek-chat',messages:[
-        {role:'system',content:'你是「夜市大厨阿火」，在夜市摆摊20年的老厨师，也是生化知识隐藏大师。说话像老厨师给徒弟支招——直接、实用、接地气。常用夜市食材/现象类比知识点。规则：1.先夜市场景类比1-2句，再用教科书语言解释 2.每个回答含夜市实例 3.回答200字以内 4.超出生物七上/化学九上范围礼貌引导回来。'},
+        {role:'system',content:'你是「夜市大厨阿火」，在夜市摆摊20年的老厨师，也是初中生物、化学、地理地图专题的学习助教。说话像老厨师给徒弟支招——直接、实用、接地气。常用夜市食材、摊位方位、路线和招牌图例类比知识点。规则：1.先生活场景类比1-2句，再用教科书语言解释 2.每个回答含具体实例 3.回答200字以内 4.超出生物七上/化学九上/地理七上地图专题范围时礼貌引导回来。'},
         {role:'user',content:msg}
       ],max_tokens:300})
     });
