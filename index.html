@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智慧学堂 - 初中生物化学 AI 教学</title>
+<title>鏅烘収瀛﹀爞 - 鍒濅腑鐢熺墿鍖栧 AI 鏁欏</title>
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 <style>
 :root {
@@ -19,6 +19,12 @@
   --green-deep: #4a8659;
   --blue: #4a90b8;
   --blue-light: #e3f0f8;
+  --brown: #8B6914;
+  --brown-light: #f5efe0;
+  --brown-deep: #6B4E0A;
+  --teal: #2E8B85;
+  --teal-light: #e0f5f4;
+  --geo-gradient: linear-gradient(135deg,#8B6914,#2E8B85);
   --purple: #8b6baa;
   --purple-light: #f3edf8;
   --text: #3d3226;
@@ -64,6 +70,10 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 .course-card .cc-stats{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
 .course-card .cc-stat{font-size:.75rem;color:var(--text3)}
 .course-card .cc-stat strong{color:var(--warm);font-size:.9rem}
+.course-card.bio-card{border-top:3px solid var(--green)}
+.course-card.chem-card{border-top:3px solid var(--blue)}
+.course-card.geo-card{border-top:3px solid var(--brown)}
+.course-card.geo-card .cc-subject{color:var(--teal)}
 
 .features-section{max-width:900px;margin:48px auto;padding:0 20px}
 .features-section h2{text-align:center;font-size:1.4rem;font-weight:700;margin-bottom:28px;color:var(--text)}
@@ -107,6 +117,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 .unit-card-header .uh-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
 .unit-card-header .uh-icon.bio{background:var(--green-light);color:var(--green)}
 .unit-card-header .uh-icon.chem{background:var(--blue-light);color:var(--blue)}
+.unit-card-header .uh-icon.geo{background:var(--brown-light);color:var(--brown)}
 .unit-card-header .uh-title{font-weight:700;font-size:.95rem;color:var(--text)}
 .unit-card-header .uh-count{font-size:.75rem;color:var(--text3)}
 .unit-card-header .uh-arrow{font-size:.8rem;color:var(--text3);transition:transform .3s}
@@ -169,6 +180,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 .unit-title .icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem}
 .unit-title .icon.bio{background:var(--green-light);color:var(--green)}
 .unit-title .icon.chem{background:var(--blue-light);color:var(--blue)}
+.unit-title .icon.geo{background:var(--brown-light);color:var(--brown)}
 
 .knowledge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:24px}
 .kcard{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);cursor:pointer;transition:var(--transition);position:relative;overflow:hidden}
@@ -188,7 +200,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 .kcard .kc-detail h4{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:6px}
 .kcard .kc-detail ul{list-style:none;padding:0;margin:0 0 10px}
 .kcard .kc-detail ul li{font-size:.8rem;color:var(--text2);padding:3px 0;padding-left:16px;position:relative}
-.kcard .kc-detail ul li:before{content:'·';position:absolute;left:4px;color:var(--warm2);font-weight:700}
+.kcard .kc-detail ul li:before{content:'路';position:absolute;left:4px;color:var(--warm2);font-weight:700}
 .kcard .kc-detail .night{background:var(--warm-light);border-radius:var(--radius-sm);padding:10px 14px;font-size:.8rem;color:var(--warm);margin-bottom:10px;line-height:1.5}
 .kcard .kc-detail .btns{display:flex;gap:8px;flex-wrap:wrap}
 
@@ -336,79 +348,91 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 <div class="view active" id="view-home">
   <div class="home-page">
     <div class="home-hero">
-      <div class="logo-icon">🏮</div>
-      <h1>初中生物化学 · <span class="hl">智慧学堂</span></h1>
-      <p class="subtitle">以夜市为教室，用生活现象理解科学原理——让知识像烤串一样有滋味</p>
-      <div class="hero-badge">📚 基于2022版义务教育课程标准 | 🎓 人教版教材同步</div>
+      <div class="logo-icon">馃彯</div>
+      <h1>鍒濅腑鐢熺墿鍖栧鍦扮悊 路 <span class="hl">鏅烘収瀛﹀爞</span></h1>
+      <p class="subtitle">浠ュ甯備负鏁欏锛岀敤鐢熸椿鐜拌薄鐞嗚В绉戝鍘熺悊鈥斺€旇鐭ヨ瘑鍍忕儰涓蹭竴鏍锋湁婊嬪懗</p>
+      <div class="hero-badge">馃摎 鍩轰簬2022鐗堜箟鍔℃暀鑲茶绋嬫爣鍑?| 馃帗 浜烘暀鐗堟暀鏉愬悓姝?/div>
     </div>
 
     <div class="course-cards">
       <div class="course-card bio-card" onclick="navigateTo('syllabus','bio')">
-        <div class="cc-icon">🧬</div>
-        <div class="cc-subject">GRADE 7 · BOOK 1</div>
-        <div class="cc-title">生物学 七年级上册</div>
-        <div class="cc-desc">从认识生物开始，走进细胞世界，探索生物体的结构层次和生物多样性。</div>
+        <div class="cc-icon">馃К</div>
+        <div class="cc-subject">GRADE 7 路 BOOK 1</div>
+        <div class="cc-title">鐢熺墿瀛?涓冨勾绾т笂鍐?/div>
+        <div class="cc-desc">浠庤璇嗙敓鐗╁紑濮嬶紝璧拌繘缁嗚優涓栫晫锛屾帰绱㈢敓鐗╀綋鐨勭粨鏋勫眰娆″拰鐢熺墿澶氭牱鎬с€?/div>
         <div class="cc-stats">
-          <div class="cc-stat">📖 <strong>20</strong> 个知识点</div>
-          <div class="cc-stat">📝 <strong>42</strong> 练习题</div>
-          <div class="cc-stat">🎮 <strong>4</strong> 个游戏</div>
+          <div class="cc-stat">馃摉 <strong>20</strong> 涓煡璇嗙偣</div>
+          <div class="cc-stat">馃摑 <strong>42</strong> 缁冧範棰?/div>
+          <div class="cc-stat">馃幃 <strong>4</strong> 涓父鎴?/div>
         </div>
       </div>
 
       <div class="course-card chem-card" onclick="navigateTo('syllabus','chem')">
-        <div class="cc-icon">⚗️</div>
-        <div class="cc-subject">GRADE 9 · BOOK 1</div>
-        <div class="cc-title">化学 九年级上册</div>
-        <div class="cc-desc">走进化学世界，认识物质变化、空气组成、水的奥秘和碳的多样形态。</div>
+        <div class="cc-icon">鈿楋笍</div>
+        <div class="cc-subject">GRADE 9 路 BOOK 1</div>
+        <div class="cc-title">鍖栧 涔濆勾绾т笂鍐?/div>
+        <div class="cc-desc">璧拌繘鍖栧涓栫晫锛岃璇嗙墿璐ㄥ彉鍖栥€佺┖姘旂粍鎴愩€佹按鐨勫ゥ绉樺拰纰崇殑澶氭牱褰㈡€併€?/div>
         <div class="cc-stats">
-          <div class="cc-stat">📖 <strong>19</strong> 个知识点</div>
-          <div class="cc-stat">📝 <strong>37</strong> 练习题</div>
-          <div class="cc-stat">🎮 <strong>4</strong> 个游戏</div>
+          <div class="cc-stat">馃摉 <strong>19</strong> 涓煡璇嗙偣</div>
+          <div class="cc-stat">馃摑 <strong>37</strong> 缁冧範棰?/div>
+          <div class="cc-stat">馃幃 <strong>4</strong> 涓父鎴?/div>
+        </div>
+      </div>
+
+      <div class="course-card geo-card" onclick="navigateTo('syllabus','geo')">
+        <div class="cc-icon">馃椇锔?/div>
+        <div class="cc-subject">GRADE 7 路 BOOK 1</div>
+        <div class="cc-title">鍦扮悊 涓冨勾绾т笂鍐?/div>
+        <div class="cc-desc">瀛︿細鐪嬪湴鍥撅紒鎺屾彙鏂瑰悜銆佹瘮渚嬪昂銆佸浘渚嬨€佺瓑楂樼嚎鍦板舰鍥锯€斺€旀墦寮€鎺㈢储涓栫晫鐨勯挜鍖欍€?/div>
+        <div class="cc-stats">
+          <div class="cc-stat">馃摉 <strong>8</strong> 涓煡璇嗙偣</div>
+          <div class="cc-stat">馃摑 <strong>16</strong> 缁冧範棰?/div>
+          <div class="cc-stat">馃幃 <strong>1</strong> 涓父鎴?/div>
         </div>
       </div>
     </div>
 
     <div class="features-section">
-      <h2>✨ 学习功能</h2>
+      <h2>鉁?瀛︿範鍔熻兘</h2>
       <div class="feature-grid">
         <div class="feature-item">
-          <div class="fi-icon">🤖</div>
-          <div class="fi-title">AI 智能问答</div>
-          <div class="fi-desc">夜市大厨阿火为你解答生化问题，用生活类比讲透知识点</div>
+          <div class="fi-icon">馃</div>
+          <div class="fi-title">AI 鏅鸿兘闂瓟</div>
+          <div class="fi-desc">澶滃競澶у帹闃跨伀涓轰綘瑙ｇ瓟鐢熷寲闂锛岀敤鐢熸椿绫绘瘮璁查€忕煡璇嗙偣</div>
         </div>
         <div class="feature-item">
-          <div class="fi-icon">🎮</div>
-          <div class="fi-title">沙盘互动游戏</div>
-          <div class="fi-desc">8款原创HTML5游戏，在玩中学，让抽象概念变得触手可及</div>
+          <div class="fi-icon">馃幃</div>
+          <div class="fi-title">娌欑洏浜掑姩娓告垙</div>
+          <div class="fi-desc">8娆惧師鍒汬TML5娓告垙锛屽湪鐜╀腑瀛︼紝璁╂娊璞℃蹇靛彉寰楄Е鎵嬪彲鍙?/div>
         </div>
         <div class="feature-item">
-          <div class="fi-icon">📝</div>
-          <div class="fi-title">随堂测验系统</div>
-          <div class="fi-desc">选择题、填空题、排序题三大题型，即时反馈，巩固学习效果</div>
+          <div class="fi-icon">馃摑</div>
+          <div class="fi-title">闅忓爞娴嬮獙绯荤粺</div>
+          <div class="fi-desc">閫夋嫨棰樸€佸～绌洪銆佹帓搴忛涓夊ぇ棰樺瀷锛屽嵆鏃跺弽棣堬紝宸╁浐瀛︿範鏁堟灉</div>
         </div>
       </div>
     </div>
 
     <div class="standards-section">
-      <h2>📋 课程标准</h2>
+      <h2>馃搵 璇剧▼鏍囧噯</h2>
       <div class="standards-cards">
         <div class="standard-card">
-          <div class="sc-icon">📘</div>
-          <div class="sc-title">义务教育生物学课程标准</div>
-          <div class="sc-desc">2022年版 · 教育部制定</div>
-          <button class="btn-sm btn-warm" onclick="openPdf('pdf/义务教育生物学课程标准2022版.pdf','义务教育生物学课程标准 2022版')">📖 在线预览</button>
+          <div class="sc-icon">馃摌</div>
+          <div class="sc-title">涔夊姟鏁欒偛鐢熺墿瀛﹁绋嬫爣鍑?/div>
+          <div class="sc-desc">2022骞寸増 路 鏁欒偛閮ㄥ埗瀹?/div>
+          <button class="btn-sm btn-warm" onclick="openPdf('pdf/涔夊姟鏁欒偛鐢熺墿瀛﹁绋嬫爣鍑?022鐗?pdf','涔夊姟鏁欒偛鐢熺墿瀛﹁绋嬫爣鍑?2022鐗?)">馃摉 鍦ㄧ嚎棰勮</button>
         </div>
         <div class="standard-card">
-          <div class="sc-icon">📙</div>
-          <div class="sc-title">义务教育化学课程标准</div>
-          <div class="sc-desc">2022年版 · 教育部制定</div>
-          <button class="btn-sm btn-warm" onclick="openPdf('pdf/义务教育化学课程标准2022版.pdf','义务教育化学课程标准 2022版')">📖 在线预览</button>
+          <div class="sc-icon">馃摍</div>
+          <div class="sc-title">涔夊姟鏁欒偛鍖栧璇剧▼鏍囧噯</div>
+          <div class="sc-desc">2022骞寸増 路 鏁欒偛閮ㄥ埗瀹?/div>
+          <button class="btn-sm btn-warm" onclick="openPdf('pdf/涔夊姟鏁欒偛鍖栧璇剧▼鏍囧噯2022鐗?pdf','涔夊姟鏁欒偛鍖栧璇剧▼鏍囧噯 2022鐗?)">馃摉 鍦ㄧ嚎棰勮</button>
         </div>
       </div>
     </div>
 
     <div class="home-footer">
-      智慧学堂 v3.0 | 基于人教版初中生物·化学教材 | 夜市学堂出品
+      鏅烘収瀛﹀爞 v3.0 | 鍩轰簬浜烘暀鐗堝垵涓敓鐗┞峰寲瀛︽暀鏉?| 澶滃競瀛﹀爞鍑哄搧
     </div>
   </div>
 </div>
@@ -418,16 +442,16 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
   <div class="syllabus-page">
     <div class="syllabus-header">
       <div class="breadcrumb">
-        <a onclick="navigateTo('home')">🏮 首页</a>
-        <span class="sep">›</span>
-        <span class="current" id="syllabusBreadcrumb">课程大纲</span>
+        <a onclick="navigateTo('home')">馃彯 棣栭〉</a>
+        <span class="sep">鈥?/span>
+        <span class="current" id="syllabusBreadcrumb">璇剧▼澶х翰</span>
       </div>
     </div>
     <div class="syllabus-body">
       <div class="syllabus-hero">
-        <div class="sh-icon" id="syllabusIcon">🧬</div>
-        <h2 id="syllabusTitle">生物学 七年级上册</h2>
-        <p id="syllabusSubtitle">人教版 · 2024版 · 课程知识结构</p>
+        <div class="sh-icon" id="syllabusIcon">馃К</div>
+        <h2 id="syllabusTitle">鐢熺墿瀛?涓冨勾绾т笂鍐?/h2>
+        <p id="syllabusSubtitle">浜烘暀鐗?路 2024鐗?路 璇剧▼鐭ヨ瘑缁撴瀯</p>
       </div>
 
       <div class="unit-stats-row" id="syllabusStats"></div>
@@ -435,12 +459,12 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
       <div class="unit-map" id="syllabusUnitMap"></div>
 
       <div class="syllabus-actions">
-        <button class="btn-sm btn-outline btn-lg" onclick="viewStandards()">📋 查看课标</button>
-        <button class="btn-sm btn-warm btn-lg" onclick="startLearning()">🚀 开始学习</button>
+        <button class="btn-sm btn-outline btn-lg" onclick="viewStandards()">馃搵 鏌ョ湅璇炬爣</button>
+        <button class="btn-sm btn-warm btn-lg" onclick="startLearning()">馃殌 寮€濮嬪涔?/button>
       </div>
 
       <div class="syllabus-standards">
-        <h3>📋 课程标准参考</h3>
+        <h3>馃搵 璇剧▼鏍囧噯鍙傝€?/h3>
         <div class="std-ref-cards" id="syllabusStandards"></div>
         <div class="std-keypoints" id="syllabusKeypoints"></div>
       </div>
@@ -452,28 +476,29 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 <div class="view" id="view-learning">
   <div class="learning-page">
     <div class="lp-header">
-      <button class="lp-back" onclick="navigateTo('syllabus',currentSubject)">← 大纲</button>
-      <button class="lp-back" onclick="navigateTo('home')">🏮 首页</button>
-      <div class="lp-title" id="lpTitle">🌿 生物七上</div>
+      <button class="lp-back" onclick="navigateTo('syllabus',currentSubject)">鈫?澶х翰</button>
+      <button class="lp-back" onclick="navigateTo('home')">馃彯 棣栭〉</button>
+      <div class="lp-title" id="lpTitle">馃尶 鐢熺墿涓冧笂</div>
       <div class="lp-tabs">
-        <button class="lp-tab active" onclick="switchSubject('bio')">🌿 生物七上</button>
-        <button class="lp-tab" onclick="switchSubject('chem')">⚗️ 化学九上</button>
+        <button class="lp-tab active" onclick="switchSubject('bio')">馃尶 鐢熺墿涓冧笂</button>
+        <button class="lp-tab" onclick="switchSubject('chem')">鈿楋笍 鍖栧涔濅笂</button>
+        <button class="lp-tab" onclick="switchSubject('geo')">馃椇锔?鍦扮悊涓冧笂</button>
       </div>
       <div class="lp-header-actions">
-        <button class="btn-icon-sm" onclick="toggleSettings()" title="设置">⚙️</button>
-        <button class="btn-icon-sm" onclick="document.querySelector('.chat-section').scrollIntoView({behavior:'smooth'})">💬</button>
+        <button class="btn-icon-sm" onclick="toggleSettings()" title="璁剧疆">鈿欙笍</button>
+        <button class="btn-icon-sm" onclick="document.querySelector('.chat-section').scrollIntoView({behavior:'smooth'})">馃挰</button>
       </div>
     </div>
 
     <div class="lp-container">
       <div class="lp-hero">
-        <h2>在夜市里学生物化学</h2>
-        <p>烤串火候学燃烧反应，发面馒头学细胞分裂——把知识变成生活</p>
+        <h2>鍦ㄥ甯傞噷瀛︾敓鐗╁寲瀛?/h2>
+        <p>鐑や覆鐏€欏鐕冪儳鍙嶅簲锛屽彂闈㈤澶村缁嗚優鍒嗚鈥斺€旀妸鐭ヨ瘑鍙樻垚鐢熸椿</p>
         <div class="lp-stats">
-          <div class="lp-stat"><div class="num" id="stat-know">20</div><div class="lbl">知识点</div></div>
-          <div class="lp-stat"><div class="num" id="stat-quiz">79</div><div class="lbl">练习题</div></div>
-          <div class="lp-stat"><div class="num">8</div><div class="lbl">沙盘游戏</div></div>
-          <div class="lp-stat"><div class="num" id="stat-score">0</div><div class="lbl">我的积分</div></div>
+          <div class="lp-stat"><div class="num" id="stat-know">20</div><div class="lbl">鐭ヨ瘑鐐?/div></div>
+          <div class="lp-stat"><div class="num" id="stat-quiz">79</div><div class="lbl">缁冧範棰?/div></div>
+          <div class="lp-stat"><div class="num">8</div><div class="lbl">娌欑洏娓告垙</div></div>
+          <div class="lp-stat"><div class="num" id="stat-score">0</div><div class="lbl">鎴戠殑绉垎</div></div>
         </div>
       </div>
 
@@ -482,15 +507,15 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
       <!-- AI Chat -->
       <div class="chat-section">
         <div class="chat-header">
-          <div class="avatar">👨‍🍳</div>
-          <div><div class="name">夜市大厨 · 阿火</div><div class="role">20年老厨师 · 生化知识隐藏大师</div></div>
+          <div class="avatar">馃懆鈥嶐煃?/div>
+          <div><div class="name">澶滃競澶у帹 路 闃跨伀</div><div class="role">20骞磋€佸帹甯?路 鐢熷寲鐭ヨ瘑闅愯棌澶у笀</div></div>
         </div>
         <div class="chat-body" id="chatBody">
-          <div class="chat-msg ai">嘿！我是阿火。烤串20年了，有啥不懂的生物化学问题尽管问——我用夜市的道理给你讲明白！</div>
+          <div class="chat-msg ai">鍢匡紒鎴戞槸闃跨伀銆傜儰涓?0骞翠簡锛屾湁鍟ヤ笉鎳傜殑鐢熺墿鍖栧闂灏界闂€斺€旀垜鐢ㄥ甯傜殑閬撶悊缁欎綘璁叉槑鐧斤紒</div>
         </div>
         <div class="chat-input-row">
-          <input class="chat-input" id="chatInput" placeholder="问阿火一个问题..." onkeydown="if(event.key==='Enter')sendMessage()">
-          <button class="btn-sm btn-warm" onclick="sendMessage()">发送</button>
+          <input class="chat-input" id="chatInput" placeholder="闂樋鐏竴涓棶棰?.." onkeydown="if(event.key==='Enter')sendMessage()">
+          <button class="btn-sm btn-warm" onclick="sendMessage()">鍙戦€?/button>
         </div>
       </div>
     </div>
@@ -499,53 +524,54 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 
 <!-- Floating bottom bar (shown on learning page) -->
 <div class="floating-bar" id="floatingBar" style="display:none">
-  <button onclick="openGameModal(0)">🎮 生物普查员</button>
-  <button onclick="openGameModal(1)">🧬 细胞工厂</button>
-  <button onclick="openGameModal(2)">🔥 烤串火候</button>
-  <button onclick="openGameModal(5)">🔬 元素周期</button>
-  <button onclick="openGameModal(4)">📝 方程配平</button>
+  <button onclick="openGameModal(0)">馃幃 鐢熺墿鏅煡鍛?/button>
+  <button onclick="openGameModal(1)">馃К 缁嗚優宸ュ巶</button>
+  <button onclick="openGameModal(2)">馃敟 鐑や覆鐏€?/button>
+  <button onclick="openGameModal(5)">馃敩 鍏冪礌鍛ㄦ湡</button>
+  <button onclick="openGeoGame()">馃椇锔?绛夐珮绾垮瀹?/button>
+  <button onclick="openGameModal(4)">馃摑 鏂圭▼閰嶅钩</button>
 </div>
 
 <!-- Quiz Modal -->
 <div class="modal-overlay" id="quizModal"><div class="modal">
   <div class="modal-header">
-    <h3 id="quizTitle">随堂测验</h3>
-    <button class="modal-close" onclick="closeQuiz()">✕</button>
+    <h3 id="quizTitle">闅忓爞娴嬮獙</h3>
+    <button class="modal-close" onclick="closeQuiz()">鉁?/button>
   </div>
   <div class="modal-body">
     <div class="quiz-progress"><div class="bar"><div class="bar-fill" id="quizProgressFill" style="width:0%"></div></div><span class="txt" id="quizProgressTxt">0/0</span></div>
-    <div class="quiz-type-badge mc" id="quizTypeBadge">选择题</div>
+    <div class="quiz-type-badge mc" id="quizTypeBadge">閫夋嫨棰?/div>
     <div class="quiz-q" id="quizQ"></div>
     <div class="quiz-img" id="quizImg"></div>
     <div id="quizOptions"></div>
     <div class="quiz-feedback" id="quizFeedback"><span id="quizFeedbackIcon"></span> <span id="quizFeedbackText"></span><div class="explanation" id="quizExplanation"></div></div>
-    <div style="text-align:center;margin-top:16px"><button class="btn-sm btn-warm" id="quizNextBtn" onclick="nextQuiz()" style="display:none">下一题 →</button></div>
+    <div style="text-align:center;margin-top:16px"><button class="btn-sm btn-warm" id="quizNextBtn" onclick="nextQuiz()" style="display:none">涓嬩竴棰?鈫?/button></div>
   </div>
 </div></div>
 
 <!-- Quiz Result Modal -->
 <div class="modal-overlay" id="quizResultModal"><div class="modal">
-  <div class="modal-header"><h3>测验完成！</h3><button class="modal-close" onclick="closeQuizResult()">✕</button></div>
+  <div class="modal-header"><h3>娴嬮獙瀹屾垚锛?/h3><button class="modal-close" onclick="closeQuizResult()">鉁?/button></div>
   <div class="modal-body"><div class="quiz-result" id="quizResultContent"></div></div>
 </div></div>
 
 <!-- Game Modal -->
 <div class="modal-overlay" id="gameModal"><div class="modal">
-  <div class="modal-header"><h3 id="gameTitle">沙盘游戏</h3><button class="modal-close" onclick="closeGame()">✕</button></div>
+  <div class="modal-header"><h3 id="gameTitle">娌欑洏娓告垙</h3><button class="modal-close" onclick="closeGame()">鉁?/button></div>
   <div class="modal-body"><div class="game-frame" id="gameContent"></div></div>
 </div></div>
 
 <!-- Settings Modal -->
 <div class="modal-overlay" id="settingsModal"><div class="modal">
-  <div class="modal-header"><h3>设置</h3><button class="modal-close" onclick="toggleSettings()">✕</button></div>
+  <div class="modal-header"><h3>璁剧疆</h3><button class="modal-close" onclick="toggleSettings()">鉁?/button></div>
   <div class="modal-body settings-body">
     <label>DeepSeek API Key</label>
     <input type="password" id="apiKeyInput" placeholder="sk-xxxxxxxxxxxxxxxx">
-    <div style="margin-top:8px"><button class="btn-sm btn-warm" onclick="saveApiKey()">保存密钥</button> <span style="font-size:.75rem;color:var(--text3);margin-left:8px">去 platform.deepseek.com 申请</span></div>
-    <label style="margin-top:16px">解锁码</label>
-    <input type="text" id="unlockInput" placeholder="输入解锁码">
-    <div style="margin-top:8px"><button class="btn-sm btn-green" onclick="unlock()">解锁全部</button> <span style="font-size:.75rem;color:var(--text3);margin-left:8px">¥29.9/月，联系购买</span></div>
-    <p style="font-size:.75rem;color:var(--text3);margin-top:4px">测试码：<code style="background:var(--bg2);padding:2px 6px;border-radius:4px">NIGHTSCHOOL2026</code></p>
+    <div style="margin-top:8px"><button class="btn-sm btn-warm" onclick="saveApiKey()">淇濆瓨瀵嗛挜</button> <span style="font-size:.75rem;color:var(--text3);margin-left:8px">鍘?platform.deepseek.com 鐢宠</span></div>
+    <label style="margin-top:16px">瑙ｉ攣鐮?/label>
+    <input type="text" id="unlockInput" placeholder="杈撳叆瑙ｉ攣鐮?>
+    <div style="margin-top:8px"><button class="btn-sm btn-green" onclick="unlock()">瑙ｉ攣鍏ㄩ儴</button> <span style="font-size:.75rem;color:var(--text3);margin-left:8px">楼29.9/鏈堬紝鑱旂郴璐拱</span></div>
+    <p style="font-size:.75rem;color:var(--text3);margin-top:4px">娴嬭瘯鐮侊細<code style="background:var(--bg2);padding:2px 6px;border-radius:4px">NIGHTSCHOOL2026</code></p>
   </div>
 </div></div>
 
@@ -553,12 +579,12 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 
 <!-- PDF Viewer Modal -->
 <div class="modal-overlay" id="pdfModal"><div class="modal pdf-modal">
-  <div class="modal-header"><h3 id="pdfTitle">教材查看器</h3><button class="modal-close" onclick="closePdf()">✕</button></div>
+  <div class="modal-header"><h3 id="pdfTitle">鏁欐潗鏌ョ湅鍣?/h3><button class="modal-close" onclick="closePdf()">鉁?/button></div>
   <div class="modal-body">
     <div class="pdf-toolbar">
-      <button class="btn-sm btn-outline" onclick="pdfZoomOut()">🔍−</button>
-      <button class="btn-sm btn-outline" onclick="pdfZoomIn()">🔍+</button>
-      <button class="btn-sm btn-outline" onclick="pdfReset()">↺ 重置</button>
+      <button class="btn-sm btn-outline" onclick="pdfZoomOut()">馃攳鈭?/button>
+      <button class="btn-sm btn-outline" onclick="pdfZoomIn()">馃攳+</button>
+      <button class="btn-sm btn-outline" onclick="pdfReset()">鈫?閲嶇疆</button>
       <span id="pdfInfo"></span>
     </div>
     <iframe id="pdfFrame" class="pdf-frame" src=""></iframe>
@@ -567,9 +593,10 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 
 <script>
 // ============ DATA ============
-const BIO_DATA = [{"id":"bio-1-1-1","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第一节 观察周边环境中的生物","page":"P2-6","category":"bio","keypoints":["观察是科学探究的基本方法（有目的、有计划、按顺序）","调查方法：制定方案→如实记录→分类整理","区分生物与非生物","按植物/动物/真菌/细菌/病毒分类","调查时不捕捉或伤害生物"],"examPoints":["调查方法步骤","科学观察法","生物分类基础"],"textbookColumns":["「观察·思考」观察校园生物","「科学方法」观察","「思维训练」发现问题提出问题"],"nightMarketCase":"夜市=生态调查基地——植物（蔬菜/葱/香菜）、动物（鱼/虾/鸭）、真菌（蘑菇/木耳）、微生物（酵母/霉菌）","gameDesign":"「夜市生物普查员」：给一张夜市全景图，学生拖拽贴标签分类，统计后生成分类饼图","gameType":"drag-classify","free":true,"quiz":[{"type":"mc","q":"科学观察的基本要求是什么？","options":["随便看看就行","有目的、有计划、按一定顺序观察","只用眼睛看","不需要记录"],"answer":1,"explanation":"科学观察必须有目的、有计划、按顺序进行，并如实记录。"},{"type":"mc","q":"在夜市调查中，蘑菇属于哪类生物？","options":["植物","动物","真菌","微生物"],"answer":2,"explanation":"蘑菇属于真菌，不是植物——真菌是独立的生物类群。"},{"type":"fill","q":"科学调查的基本步骤是：制定方案 → ___ → 分类整理","answer":"如实记录","hint":"调查时要'诚实地记下来'","explanation":"调查步骤：制定方案→如实记录→分类整理。"}]},{"id":"bio-1-1-2","unit":"第一单元 生物和细胞","chapter":"第一章 认识生物","section":"第二节 生物的特征","page":"P7-11","category":"bio","keypoints":["生物7个特征：①需要营养②能呼吸③能排出废物④能对外界刺激反应⑤能生长繁殖⑥有遗传变异⑦由细胞构成（病毒除外）","区分生石花（生物）vs钟乳石（非生物）","机器人不是生物（无生命活动）"],"examPoints":["判断某物是否为生物","列举生物共同特征"],"textbookColumns":["「想一想」机器人是生物吗？","「观察·思考」生物vs非生物（生石花/钟乳石）","「练习」含羞草/鲸/狮追斑马"],"nightMarketCase":"夜市活虾vs死虾：活虾游动蹦跶（对刺激反应），死虾不动——生物与非生物的直观区分","gameDesign":"「找不同」游戏：展示夜市摊位图，限时点击哪些是生物/非生物，计分排名","gameType":"click-timer","free":true,"quiz":[{"type":"mc","q":"以下哪个不是生物的基本特征？","options":["需要营养","能生长繁殖","能制造氧气","能对外界刺激作出反应"],"answer":2,"explanation":"制造氧气不是所有生物的共同特征，只有能光合作用的生物才制造氧气。"},{"type":"mc","q":"机器人为什么不是生物？","options":["不会动","没有生命活动，不能生长繁殖","是金属做的","不需要能量"],"answer":1,"explanation":"机器人缺乏生命活动——不能生长、繁殖、新陈代谢，不符合生物的基本特征。"}]},{"id":"bio-1-2-1","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第一节 学习使用显微镜","page":"P12-17","category":"bio","keypoints":["显微镜结构：目镜/物镜/镜筒/载物台/遮光器/反光镜/粗准焦螺旋/细准焦螺旋","低倍镜→高倍镜顺序","物像与标本上下左右均颠倒","放大倍数=目镜×物镜","胡克1665年发现细胞"],"examPoints":["显微镜各部件功能","放大倍数计算","物像移动方向","胡克"],"textbookColumns":["「想一想」两个凸透镜组合=显微镜原理","「实验·探究」练习使用显微镜","「科学·技术·社会」显微镜发展史"],"nightMarketCase":"肉的肌肉纤维在显微镜下像一束束钢丝绳——远比肉眼看到的复杂","gameDesign":"「虚拟显微镜操作」：拖拽粗细调焦旋钮模拟对焦，找到隐藏在模糊图像中的细胞","gameType":"drag-focus","free":true,"quiz":[{"type":"mc","q":"显微镜的放大倍数如何计算？","options":["目镜+物镜","目镜×物镜","目镜÷物镜","物镜÷目镜"],"answer":1,"explanation":"放大倍数=目镜放大倍数×物镜放大倍数。"},{"type":"mc","q":"显微镜下看到的物像是怎样的？","options":["与标本相同","左右颠倒","上下左右均颠倒","只有上下颠倒"],"answer":2,"explanation":"显微镜成像是倒像，物像与标本上下左右均颠倒。"},{"type":"fill","q":"如果用10×目镜和40×物镜，总放大倍数是___倍","answer":"400","hint":"目镜倍数 × 物镜倍数","explanation":"10×40=400倍。"}]},{"id":"bio-1-2-2","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第二节 植物细胞","page":"P18-22","category":"bio","keypoints":["玻片标本三种：装片/切片/涂片","制作洋葱内表皮临时装片7步（擦→滴→撕→展→盖→染→吸）","植物细胞结构：细胞壁/细胞膜/细胞质/细胞核/液泡/叶绿体/线粒体","西瓜甘甜因液泡含糖"],"examPoints":["装片制作步骤","植物细胞各结构功能","动植物区别"],"textbookColumns":["「实验·探究」制作洋葱内表皮临时装片","「练习」荷叶碧+荷花红"],"nightMarketCase":"青菜为什么绿？叶绿体里有叶绿素。西瓜甜=液泡含糖多","gameDesign":"「细胞装配工厂」：拖拽细胞结构零件到正确位置组装植物细胞，完成后叶绿体发光","gameType":"drag-assembly","free":false,"quiz":[{"type":"mc","q":"植物细胞特有的结构是什么？","options":["细胞膜和细胞质","细胞壁、叶绿体和液泡","细胞核和线粒体","只有细胞壁"],"answer":1,"explanation":"细胞壁、叶绿体和液泡是植物细胞特有的结构，动物细胞没有。"},{"type":"sort","q":"请排列制作洋葱内表皮临时装片的正确步骤","items":["用纱布擦净载玻片和盖玻片","在载玻片中央滴一滴清水","撕取洋葱内表皮","将内表皮展平","盖上盖玻片","用碘液染色","用吸水纸吸引"],"explanation":"7步顺序：擦→滴→撕→展→盖→染→吸。每一步都不能乱！"}]},{"id":"bio-1-2-3","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第三节 动物细胞","page":"P23-27","category":"bio","keypoints":["动物细胞：细胞膜/细胞质/细胞核/线粒体（无细胞壁/叶绿体/液泡）","细胞膜控制物质进出","四种动物细胞形态：上皮/神经/肌/软骨细胞","施莱登和施旺创立细胞学说"],"examPoints":["动植物细胞异同","细胞学说","选择透过性"],"textbookColumns":["「实验·探究」观察人口腔上皮细胞","「科学家的故事」施莱登施旺与细胞学说"],"nightMarketCase":"烤肉纤维由成千上万个动物细胞构成，烤熟后细胞死亡、线粒体停止工作","gameDesign":"「植物/动物细胞大比拼」：点击相同结构变绿，不同结构变红弹出说明","gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"动物细胞不具有的结构是？","options":["细胞膜","细胞核","线粒体","细胞壁"],"answer":3,"explanation":"动物细胞没有细胞壁——细胞壁是植物细胞特有的结构。"},{"type":"mc","q":"细胞学说的创立者是谁？","options":["胡克和列文虎克","施莱登和施旺","达尔文和林奈","巴斯德和科赫"],"answer":1,"explanation":"施莱登（植物学家）和施旺（动物学家）共同创立了细胞学说。"}]},{"id":"bio-1-2-4","unit":"第一单元 生物和细胞","chapter":"第二章 认识细胞","section":"第四节 细胞的生活","page":"P28-32","category":"bio","keypoints":["细胞膜控制物质进出（选择透过性）","叶绿体光合→有机物（化学能）","线粒体分解有机物→供能","细胞核含DNA控制遗传——克隆羊多莉证明（供核母羊决定性状）"],"examPoints":["细胞物质组成","细胞核作用","叶绿体/线粒体功能","克隆技术"],"textbookColumns":["「资料分析」多莉克隆羊","「练习」DNA主要在细胞核"],"nightMarketCase":"腌菜变软：高浓度食盐水→细胞失水（渗透），细胞膜选择透过性在腌菜摊天天上演","gameDesign":"「腌菜实验模拟」：调节食盐浓度滑块，观察细胞吸水/失水动态变化","gameType":"slider-simulate","free":false,"quiz":[{"type":"mc","q":"细胞中被称为动力工厂的结构是？","options":["细胞核","叶绿体","线粒体","液泡"],"answer":2,"explanation":"线粒体通过呼吸作用分解有机物释放能量，是细胞的动力工厂。"},{"type":"mc","q":"克隆羊多莉的性状主要与哪只羊相同？","options":["提供卵细胞的羊","提供细胞核的羊","代孕的羊","三只羊各占一部分"],"answer":1,"explanation":"细胞核含有DNA遗传物质，供核母羊决定了多莉的性状。"}]},{"id":"bio-1-3-1","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第一节 细胞通过分裂产生新细胞","page":"P33-37","category":"bio","keypoints":["细胞生长（体积增大）→分裂（一分为二）","分裂过程：核→质→膜（植物加壁）","染色体=DNA+蛋白质，分裂前DNA复制","癌细胞：分裂失控+可转移"],"examPoints":["分裂过程和意义","染色体变化","DNA复制","癌细胞"],"textbookColumns":["「科学·技术·社会」癌细胞——脱缰之马"],"nightMarketCase":"发面馒头为什么膨大？酵母菌不断分裂繁殖产生CO₂使面团膨大","gameDesign":"「细胞分裂动画暂停题」：播放分裂动画，随机暂停判断阶段","gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"细胞分裂过程中，最先分裂的是？","options":["细胞膜","细胞质","细胞核","细胞壁"],"answer":2,"explanation":"细胞分裂时，细胞核先分裂，然后是细胞质，最后是细胞膜。"},{"type":"fill","q":"染色体是由___和蛋白质组成的","answer":"DNA","hint":"遗传物质的双螺旋结构","explanation":"染色体=DNA+蛋白质，DNA是遗传物质。"}]},{"id":"bio-1-3-2","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第二节 动物体的结构层次","page":"P38-42","category":"bio","keypoints":["细胞→组织→器官→系统→动物体（5层）","四种基本组织：上皮/结缔/肌肉/神经","器官由多种组织构成","八大系统构成人体"],"examPoints":["结构层次（5层）","四种组织特征","器官定义"],"textbookColumns":["「观察·思考」胃的组织构成"],"nightMarketCase":"烤串=肌肉组织+结缔组织（筋膜），受神经支配——动物结构层次在烤串中完美体现","gameDesign":"「结构层次拼图」：5张图按顺序连线，胃的四种组织拖拽组合","gameType":"drag-sequence","free":false,"quiz":[{"type":"sort","q":"请排列动物体结构层次从微观到宏观的正确顺序","items":["细胞","组织","器官","系统","动物体"],"explanation":"动物体结构层次：细胞→组织→器官→系统→动物体，共5个层次。"},{"type":"mc","q":"胃壁中的肌肉层属于什么组织？","options":["上皮组织","结缔组织","肌肉组织","神经组织"],"answer":2,"explanation":"胃壁的肌肉层由平滑肌构成，属于肌肉组织，负责胃的蠕动。"}]},{"id":"bio-1-3-3","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第三节 植物体的结构层次","page":"P43-45","category":"bio","keypoints":["细胞→组织→器官→植物体（4层，无系统）","植物组织：分生/保护/薄壁/输导/机械","六大器官：根茎叶（营养器官）/花果实种子（生殖器官）"],"examPoints":["植物结构层次（4层）","六大器官","五种组织"],"textbookColumns":["「练习」油菜六大器官标注"],"nightMarketCase":"夜市蔬菜六大器官齐全：花/果/根（萝卜）/叶/茎（莴笋）/种子（花生）","gameDesign":"「器官分类器」：拖拽各种蔬菜到根/茎/叶/花/果实/种子6个框","gameType":"drag-classify","free":false,"quiz":[{"type":"mc","q":"植物体的结构层次比动物体少哪一个层次？","options":["细胞","组织","器官","系统"],"answer":3,"explanation":"植物体没有系统这个层次——细胞→组织→器官→植物体，只有4层。"},{"type":"fill","q":"萝卜是植物的___器官（填根/茎/叶/花/果实/种子）","answer":"根","hint":"属于营养器官","explanation":"萝卜是植物的根（贮藏根），属于营养器官。"}]},{"id":"bio-1-3-4","unit":"第一单元 生物和细胞","chapter":"第三章 从细胞到生物体","section":"第四节 单细胞生物","page":"P46-49","category":"bio","keypoints":["单细胞生物：草履虫/眼虫/衣藻/变形虫/酵母菌/大肠杆菌","草履虫结构：纤毛/表膜/口沟/食物泡/胞肛/伸缩泡/大核/小核","草履虫趋性实验（肉汁趋之/食盐避之）","赤潮与人类关系"],"examPoints":["单细胞代表","草履虫结构功能","趋性实验"],"textbookColumns":["「实验·探究」观察草履虫并探究其趋性","「练习」草履虫每天吞食43000个细菌"],"nightMarketCase":"一小包酵母含数十亿酵母细胞——每一个都是完整的生命","gameDesign":"「草履虫进食挑战」：控制草履虫移动，用纤毛将细菌颗粒推入口沟→食物泡→消化→胞肛排出","gameType":"interactive-feed","free":false,"quiz":[{"type":"mc","q":"以下哪个不是单细胞生物？","options":["草履虫","酵母菌","水螅","眼虫"],"answer":2,"explanation":"水螅是多细胞动物（腔肠动物），而草履虫、酵母菌、眼虫都是单细胞生物。"},{"type":"mc","q":"草履虫用于运动的结构是？","options":["鞭毛","纤毛","伪足","口沟"],"answer":1,"explanation":"草履虫体表密布纤毛，通过纤毛的摆动在水中运动。"}]},{"id":"bio-2-1-1","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第一节 藻类、苔藓植物和蕨类植物","page":"P62-66","category":"bio","keypoints":["无种子植物进化：藻类→苔藓→蕨类","藻类（水生/无根茎叶分化）","苔藓（有茎叶无真根/空气质量指示植物）","蕨类（有根茎叶/孢子繁殖）","鱼缸绿膜是藻类"],"examPoints":["三类植物区别和代表","苔藓作为空气指示植物"],"textbookColumns":["「想一想」鱼缸绿膜怎么来的？","「观察·思考」藻类/苔藓/蕨类结构比较"],"nightMarketCase":"蕨菜烤肉卷：夜市蕨菜=蕨类植物——比种子植物更古老的活化石","gameDesign":"「植物进化时间轴」：点击不同地质年代出现对应植物代表","gameType":"timeline-click","free":false,"quiz":[{"type":"mc","q":"以下哪类植物可以作为空气质量的指示植物？","options":["藻类","苔藓植物","蕨类植物","种子植物"],"answer":1,"explanation":"苔藓植物叶片只有一层细胞，对空气污染敏感，是良好的空气指示植物。"},{"type":"mc","q":"鱼缸壁上的绿膜是什么？","options":["苔藓","霉菌","藻类","细菌"],"answer":2,"explanation":"鱼缸绿膜是藻类大量繁殖形成的，藻类需要阳光和水中的营养。"}]},{"id":"bio-2-1-2","unit":"第二单元 多种多样的生物","chapter":"第一章 藻类与植物的类群","section":"第二节 种子植物","page":"P67-73","category":"bio","keypoints":["种子结构：种皮+胚（胚芽/胚轴/胚根/子叶）+胚乳","菜豆（双子叶/无胚乳）vs玉米（单子叶/有胚乳）","裸子植物（松/银杏/种子裸露无果皮）","被子植物（有果皮/最高等植物）"],"examPoints":["种子结构","裸子vs被子","单双子叶区别"],"textbookColumns":["「实验·探究」观察菜豆和玉米种子结构","「练习」松球果不是果实"],"nightMarketCase":"糖炒栗子（被子/有果皮）vs烤松子（裸子/种子裸露）——一口吃出进化差别","gameDesign":"「种子解剖台」：虚拟解剖菜豆和玉米种子，拖拽标签标注各结构","gameType":"drag-label","free":false,"quiz":[{"type":"mc","q":"裸子植物和被子植物的主要区别是什么？","options":["有无根","有无茎","种子外有无果皮包被","有无叶"],"answer":2,"explanation":"裸子植物种子裸露无果皮包被，被子植物种子有果皮包被。"},{"type":"mc","q":"菜豆种子属于什么类型？","options":["单子叶有胚乳","双子叶无胚乳","单子叶无胚乳","裸子植物"],"answer":1,"explanation":"菜豆是双子叶植物，种子无胚乳，营养物质储存在子叶中。"}]},{"id":"bio-2-2-1","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第一节 无脊椎动物","page":"P74-81","category":"bio","keypoints":["无脊椎动物类群：腔肠/扁形/线形/环节/软体/节肢","节肢动物是最大动物类群","鲍鱼和鱿鱼=软体动物不是鱼"],"examPoints":["各类群特征","节肢动物特点","区分软体vs鱼类"],"textbookColumns":["「想一想」鲍鱼和鱿鱼为什么不是鱼？"],"nightMarketCase":"夜市虾蟹=节肢动物（身体分节/外骨骼/足分节）。鱿鱼=软体动物不是鱼","gameDesign":"「动物分类大闯关」：从腔肠→扁形→线形→环节→软体→节肢逐级解锁","gameType":"level-unlock","free":false,"quiz":[{"type":"mc","q":"为什么鲍鱼和鱿鱼不是鱼？","options":["它们不会游泳","它们属于软体动物","它们没有鳍","它们是两栖动物"],"answer":1,"explanation":"鲍鱼和鱿鱼属于软体动物门，身体柔软，与鱼类（脊椎动物）是完全不同的类群。"},{"type":"mc","q":"动物界中最大的类群是？","options":["软体动物","环节动物","节肢动物","脊椎动物"],"answer":2,"explanation":"节肢动物是动物界种类最多、数量最大的类群，包括昆虫、虾蟹、蜘蛛等。"}]},{"id":"bio-2-2-2","unit":"第二单元 多种多样的生物","chapter":"第二章 动物的类群","section":"第二节 脊椎动物","page":"P82-97","category":"bio","keypoints":["鱼（鳃呼吸/体表鳞/四大家鱼：青草鲢鳙）","两栖（幼体水生鳃→成体肺+皮肤）","爬行（肺呼吸/体表鳞甲/陆地产卵）","鸟（肺+气囊双重呼吸/体表羽/恒温）","哺乳（胎生哺乳/体表毛/恒温）"],"examPoints":["五类脊椎动物特征和代表","进化顺序","恒温vs变温"],"textbookColumns":["「观察·思考」鱼/蛙/蜥蜴/鸟/哺乳动物特征比较","「练习」鸟双重呼吸"],"nightMarketCase":"夜市一摊可巡礼五类脊椎动物：鱼→蛙腿→蛇肉串→鸽子→羊肉串","gameDesign":"「脊椎动物进化跑道」：五类动物按进化排列跑道，点击查看特征卡片","gameType":"click-learn","free":false,"quiz":[{"type":"mc","q":"以下哪类动物是恒温动物？","options":["鱼和蛙","鸟和哺乳动物","蛇和蜥蜴","鱼和爬行动物"],"answer":1,"explanation":"鸟类和哺乳动物是恒温动物，鱼类、两栖类和爬行类都是变温动物。"},{"type":"sort","q":"请按进化顺序排列脊椎动物类群（从低等到高等）","items":["鱼类","两栖类","爬行类","鸟类","哺乳类"],"explanation":"进化顺序：鱼→两栖→爬行→鸟→哺乳，正好也是夜市食材的进化巡礼！"}]},{"id":"bio-2-3-1","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第一节 微生物的分布","page":"P98-102","category":"bio","keypoints":["微生物=个体微小/结构简单的生物统称","细菌和真菌广泛分布","菌落：细菌（小/光滑/颜色浅）vs真菌（大/绒毛状/多彩）","生存条件：水/适宜温度/有机物"],"examPoints":["微生物概念","菌落区别","分布特点"],"textbookColumns":["「实验·探究」检测环境中的细菌和真菌","「练习」真空包装防腐败"],"nightMarketCase":"用培养基检测夜市不同位置的微生物——砧板vs洗后蔬菜vs手","gameDesign":"「微生物侦探」：在不同场景虚拟取样→培养→对比菌落数量→排名积分","gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"细菌菌落和真菌菌落外观上最大的区别是什么？","options":["颜色相同","细菌菌落小且光滑，真菌菌落大且绒毛状","细菌菌落更大","没有区别"],"answer":1,"explanation":"细菌菌落一般较小、表面光滑、颜色较浅；真菌菌落较大、呈绒毛状或絮状。"},{"type":"mc","q":"微生物生存不需要的条件是？","options":["水","适宜温度","有机物","阳光"],"answer":3,"explanation":"大多数微生物不需要阳光，它们需要水、适宜温度和有机物即可生存繁殖。"}]},{"id":"bio-2-3-2","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第二节 细菌","page":"P103-108","category":"bio","keypoints":["细菌形态：球菌/杆菌/螺旋菌","结构：细胞壁/膜/质/DNA（无真正核膜→原核生物）","有些有荚膜（保护）/鞭毛（运动）","分裂繁殖极快","芽孢=休眠体（非繁殖体）","有益（酸奶/泡菜）和有害（致病）"],"examPoints":["细菌形态结构","原核vs真核","分裂繁殖","芽孢"],"textbookColumns":["「科学·技术·社会」巴斯德与巴氏消毒法"],"nightMarketCase":"夜市放久食物发臭变黏——细菌大量繁殖。乳酸菌做酸奶=有益菌","gameDesign":"「细菌繁殖速度挑战」：1个细菌20分钟分裂1次，计算3小时后数量","gameType":"calc-quiz","free":false,"quiz":[{"type":"mc","q":"细菌属于什么类型的生物？","options":["真核生物","原核生物","病毒","真菌"],"answer":1,"explanation":"细菌没有成形的细胞核（无核膜），遗传物质DNA集中在核区，属于原核生物。"},{"type":"fill","q":"一个细菌每20分钟分裂一次，3小时后有___个细菌","answer":"512","hint":"3小时=180分钟，180÷20=9代，2⁹=512","explanation":"2⁹=512。这就是指数增长的力量！"}]},{"id":"bio-2-3-3","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第三节 真菌","page":"P109-113","category":"bio","keypoints":["真菌=真核生物","酵母菌（单细胞/出芽生殖）","霉菌（多细胞/菌丝/孢子繁殖）","蘑菇木耳（大型真菌）","腐乳=毛霉功劳","橘子发霉=青霉"],"examPoints":["真菌与细菌区别","酵母菌/霉菌特征","发酵应用"],"textbookColumns":["「实验·探究」观察酵母菌和霉菌","「练习」蘑菇不是植物"],"nightMarketCase":"发面靠酵母菌——分解葡萄糖产生CO₂使面团膨胀。腐乳=毛霉发酵","gameDesign":"「发酵食品工坊」：选择食材+微生物，制作发酵食品（馒头/酸奶/酱油/葡萄酒）","gameType":"choice-simulate","free":false,"quiz":[{"type":"mc","q":"真菌与细菌最本质的区别是什么？","options":["大小不同","真菌有真正的细胞核（真核），细菌没有","真菌会动","细菌更大"],"answer":1,"explanation":"真菌是真核生物，有成形的细胞核；细菌是原核生物，没有真正的细胞核。"},{"type":"mc","q":"蘑菇属于什么生物类群？","options":["植物","动物","真菌","细菌"],"answer":2,"explanation":"蘑菇属于真菌（大型真菌），不是植物——真菌没有叶绿体，不能进行光合作用。"}]},{"id":"bio-2-3-4","unit":"第二单元 多种多样的生物","chapter":"第三章 微生物","section":"第四节 病毒","page":"P114-119","category":"bio","keypoints":["病毒无细胞结构=蛋白质外壳+DNA或RNA","必须寄生活细胞","伊万诺夫斯基发现烟草花叶病毒","分类：动物/植物/细菌病毒（噬菌体）","HIV侵入细胞","有益：噬菌体治疗"],"examPoints":["病毒结构特点","与细胞关系","噬菌体","发现史"],"textbookColumns":["「资料分析」烟草花叶病毒发现史","「练习」病毒不能独立生活"],"nightMarketCase":"病毒比细菌更小，肉眼完全看不见——洗手是防御病毒的第一道防线","gameDesign":"「病毒入侵模拟」：播放病毒识别→注入→复制→释放动画","gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"病毒的结构组成是什么？","options":["细胞壁+细胞膜","蛋白质外壳+遗传物质（DNA或RNA）","细胞核+细胞质","只有蛋白质"],"answer":1,"explanation":"病毒没有细胞结构，仅由蛋白质外壳和内部的遗传物质组成。"},{"type":"mc","q":"病毒能独立生活吗？","options":["能","不能，必须寄生在活细胞中","有时能有时不能","在空气中能"],"answer":1,"explanation":"病毒不能独立生活，必须寄生在活细胞中才能进行复制。"}]},{"id":"bio-2-4-1","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第一节 尝试对生物进行分类","page":"P122-127","category":"bio","keypoints":["分类依据：形态结构/生理功能/生殖方式","植物按有无种子→有无果皮分类","动物按有无脊柱→具体特征分类","检索表（二歧分类法）","《本草纲目》纲目分类体系"],"examPoints":["分类方法","检索表使用","分类依据"],"textbookColumns":["「观察·思考」对植物和动物进行分类","「练习」检索表填空"],"nightMarketCase":"夜市食材自然分类：植物（蔬菜/水果）vs动物（鱼/肉），再细分到种","gameDesign":"「分类树挑战」：逐级点击分类从界到种，附检索表互动填写","gameType":"click-tree","free":false,"quiz":[{"type":"mc","q":"二歧分类法（检索表）的特点是什么？","options":["一次只能选一种","每次在两个对立特征中选择一个","随意选择","按颜色分类"],"answer":1,"explanation":"检索表每次提供两个对立特征，选择其中一个继续，直到确定生物类别。"},{"type":"fill","q":"生物分类的7个等级从大到小是：界→门→纲→目→___→属→种","answer":"科","hint":"'科'排在目之后、属之前","explanation":"分类等级：界→门→纲→目→科→属→种，共7级。"}]},{"id":"bio-2-4-2","unit":"第二单元 多种多样的生物","chapter":"第四章 生物分类的方法","section":"第二节 从种到界","page":"P128-134","category":"bio","keypoints":["分类等级（高→低）：界→门→纲→目→科→属→种","种是最基本分类单位","等级越高共同特征越少","林奈双名法（属名+种名）","狼的分类：动物界→脊索动物门→哺乳纲→食肉目→犬科→犬属→狼种"],"examPoints":["分类等级关系","双名法","狼的分类实例"],"textbookColumns":["「观察·思考」狼的分类等级图示"],"nightMarketCase":"鲫鱼和鲤鱼同属鲤科不同种——亲缘关系近但不同种","gameDesign":"「族谱连线」：展示分类框，学生连线对应生物，完成后显示进化树","gameType":"drag-connect","free":false,"quiz":[{"type":"mc","q":"生物分类的基本单位是？","options":["界","门","属","种"],"answer":3,"explanation":"种（物种）是生物分类的最基本单位，同种的生物可以自然交配产生可育后代。"},{"type":"mc","q":"林奈双名法中的学名由哪两部分组成？","options":["界名+门名","属名+种名","科名+属名","目名+科名"],"answer":1,"explanation":"林奈双名法：学名=属名+种名，如Homo sapiens（智人）。"}]}];
-const CHEM_DATA = [{"id":"chem-0","unit":"绪论","chapter":"","section":"化学使世界变得更加绚丽多彩","page":"P1-6","category":"chem","keypoints":["化学研究物质组成/结构/性质/转化及应用","从分子层次认识物质","古代化学实践：陶器/青铜器/酿酒/造纸/火药","拉瓦锡/道尔顿/阿伏加德罗/门捷列夫","我国成就：结晶牛胰岛素/稀土分离/碳化硅反射镜"],"examPoints":["化学定义","化学史重要人物"],"textbookColumns":["「资料」新石器彩陶→商青铜→东汉酿酒→《天工开物》"],"nightMarketCase":"夜市就是化学实验室：烤串（燃烧）、腌制（渗透）、发面（发酵）、饮料（CO₂溶解）","gameDesign":"「夜市化学找茬」：给出夜市场景，限时点击哪些是化学变化/物理变化","gameType":"click-timer","free":true,"equations":[],"quiz":[{"type":"mc","q":"化学研究的核心层次是什么？","options":["宏观物体","分子和原子层次","天体层次","生态层次"],"answer":1,"explanation":"化学是从分子、原子层次上研究物质的组成、结构、性质及其变化规律的科学。"},{"type":"mc","q":"以下哪位科学家提出了元素周期律？","options":["拉瓦锡","道尔顿","门捷列夫","阿伏加德罗"],"answer":2,"explanation":"门捷列夫发现了元素周期律并编制了第一张元素周期表。"}]},{"id":"chem-1-1","unit":"第一单元 走进化学世界","chapter":"课题1","section":"物质的变化和性质","page":"P8-13","category":"chem","keypoints":["物理变化：无新物质生成","化学变化：有新物质生成（发光/放热/气泡/颜色变化/沉淀）","物理/化学性质是固有属性"],"examPoints":["物理vs化学变化判断","物理vs化学性质"],"textbookColumns":["「实验1-1」水的沸腾和胆矾研碎","「实验1-2」石灰石与盐酸反应"],"nightMarketCase":"生肉→褐色=美拉德反应（化学变化）；木炭切割=物理变化；炭火燃烧=化学变化","gameDesign":"「变化分类快问快答」：限时3秒判断物理/化学变化，连对加速","gameType":"click-timer","equations":[],"free":true,"quiz":[{"type":"mc","q":"以下哪个是化学变化？","options":["冰融化成水","铁生锈","木棍折断","食盐溶于水"],"answer":1,"explanation":"铁生锈生成了新物质（氧化铁），属于化学变化；其余都没有新物质生成。"},{"type":"sort","q":"请将以下过程分类为物理变化或化学变化","items":["铁生锈(化学)","水结冰(物理)","蜡烛燃烧(化学)","玻璃破碎(物理)","食物腐败(化学)","食盐溶解(物理)"],"explanation":"生成新物质的是化学变化，没有生成新物质的是物理变化。注意括号内是正确答案！"}]},{"id":"chem-1-2","unit":"第一单元 走进化学世界","chapter":"课题2","section":"化学实验与科学探究","page":"P14-25","category":"chem","keypoints":["科学探究6步：提出问题→猜想假设→制定计划→进行实验→收集证据→得出结论","常用仪器：试管/烧杯/酒精灯/量筒/胶头滴管/铁架台","酒精灯外焰加热、灯帽熄灭","量筒读数平视","禁止品尝、扇闻"],"examPoints":["仪器名称和使用","探究步骤","安全操作"],"textbookColumns":["「实验1-3」蜡烛燃烧探究","「探究」吸入与呼出气体比较"],"nightMarketCase":"夜市厨师=化学探究者：看火焰颜色知燃料种类，加盖灭火=隔绝氧气","gameDesign":"「虚拟实验室」：拖拽组装正确实验装置，错误操作触发安全警报","gameType":"drag-assembly","equations":[],"free":true,"quiz":[{"type":"mc","q":"酒精灯加热应该用哪个部分？","options":["焰心","内焰","外焰","任何部分"],"answer":2,"explanation":"外焰温度最高，加热时应使用外焰。焰心温度最低。"},{"type":"fill","q":"量筒读数时视线应与___液面___保持水平","answer":"凹,最低处","hint":"读液体体积要平视","explanation":"量筒读数时视线应与凹液面最低处保持水平，俯视偏大、仰视偏小。"}]},{"id":"chem-2-1","unit":"第二单元 空气和氧气","chapter":"课题1","section":"我们周围的空气","page":"P30-37","category":"chem","keypoints":["空气组成（体积分数）：N₂78%/O₂21%/稀有气体0.94%/CO₂0.03%","纯净物vs混合物","红磷燃烧测定O₂含量（水面上升约1/5）"],"examPoints":["空气成分及体积分数","纯净物与混合物","测定O₂含量实验"],"textbookColumns":["「实验2-1」红磷燃烧测O₂含量","「练习」氮气化学性质不活泼"],"nightMarketCase":"炭火鼓风机原理：增加O₂供给（占空气仅21%），O₂越多燃烧越旺","gameDesign":"「空气成分调配员」：修改N₂/O₂/CO₂比例，观察对蜡烛火焰的影响","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"空气中体积分数最大的气体是？","options":["氧气","氮气","二氧化碳","稀有气体"],"answer":1,"explanation":"氮气约占空气体积的78%，氧气约21%，氮气是最多的。"},{"type":"fill","q":"红磷燃烧测定氧气实验，水面上升约___","answer":"1/5","hint":"氧气占空气体积的多少？","explanation":"氧气约占空气体积的1/5，所以红磷消耗完氧气后水面上升约1/5。"}]},{"id":"chem-2-2","unit":"第二单元 空气和氧气","chapter":"课题2","section":"氧气","page":"P38-42","category":"chem","keypoints":["C+O₂→CO₂（白光）","S+O₂→SO₂（蓝紫色火焰）","3Fe+2O₂→Fe₃O₄（火星四射）","4P+5O₂→2P₂O₅","化合反应=多变一"],"examPoints":["O₂的化学性质","物质在O₂中燃烧现象","化合反应"],"textbookColumns":["「实验2-2」木炭/硫/铁丝在O₂中燃烧","「练习」铁丝燃烧底部铺沙防炸裂"],"nightMarketCase":"铁签会生锈：铁在潮湿空气中缓慢氧化（4Fe+3O₂→2Fe₂O₃）","gameDesign":"「氧气浓度实验台」：调节氧气浓度0%-100%，观察燃烧速度变化","gameType":"slider-simulate","equations":["C+O₂=CO₂","S+O₂=SO₂","3Fe+2O₂=Fe₃O₄","4P+5O₂=2P₂O₅"],"free":false,"quiz":[{"type":"mc","q":"铁丝在氧气中燃烧的现象是？","options":["发出白光","火星四射，生成黑色固体","产生蓝紫色火焰","产生大量白烟"],"answer":1,"explanation":"铁丝在氧气中剧烈燃烧，火星四射，生成黑色的四氧化三铁（Fe₃O₄）。"},{"type":"fill","q":"化合反应的特点是'多变___'","answer":"一","hint":"两种或多种物质变成一种","explanation":"化合反应是由两种或两种以上物质生成一种物质的反应。"}]},{"id":"chem-2-3","unit":"第二单元 空气和氧气","chapter":"课题3","section":"制取氧气","page":"P43-49","category":"chem","keypoints":["2KMnO₄→K₂MnO₄+MnO₂+O₂↑（加热）","2H₂O₂→2H₂O+O₂↑（MnO₂催化）","催化剂：改变反应速率但自身质量和化学性质不变","工业制O₂：液化空气分馏","收集：排水法/向上排空气法"],"examPoints":["制O₂方法和装置","催化剂概念","收集方法"],"textbookColumns":["「探究」催化剂（MnO₂/Fe₂O₃对比）","「练习」催化剂一变两不变"],"nightMarketCase":"双氧水消毒的泡泡：血液中的酶催化H₂O₂分解出O₂气泡","gameDesign":"「制氧气装置拼图」：组装正确实验装置，选择正确收集方法","gameType":"drag-assembly","equations":["2KMnO₄→K₂MnO₄+MnO₂+O₂↑","2H₂O₂→2H₂O+O₂↑"],"free":false,"quiz":[{"type":"mc","q":"催化剂在反应前后不变的是什么？","options":["质量和化学性质","质量和物理性质","只质量不变","只化学性质不变"],"answer":0,"explanation":"催化剂在反应前后质量和化学性质都不变，即一变两不变——改变反应速率，质量和化学性质不变。"},{"type":"mc","q":"收集氧气可以用什么方法？","options":["只能用排水法","只能用排空气法","排水法或向上排空气法","向下排空气法"],"answer":2,"explanation":"氧气不易溶于水可用排水法，密度比空气大可用向上排空气法。"}]},{"id":"chem-3-1","unit":"第三单元 物质构成的奥秘","chapter":"课题1","section":"分子和原子","page":"P56-64","category":"chem","keypoints":["分子=保持物质化学性质的最小粒子","原子=化学变化中的最小粒子","分子特性：不断运动/分子间有间隔（热胀冷缩）","化学变化微观实质：分子→原子→重新组合→新分子"],"examPoints":["分子/原子概念和特性","化学变化微观本质"],"textbookColumns":["「实验3-1」品红扩散","「探究」分子运动（氨水+酚酞）"],"nightMarketCase":"烤鱼香味飘远：香味分子不断运动扩散","gameDesign":"「分子运动追踪游戏」：调节温度滑块，观察香味分子扩散","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"保持二氧化碳化学性质的最小粒子是？","options":["碳原子","氧原子","二氧化碳分子","碳和氧原子"],"answer":2,"explanation":"分子是保持物质化学性质的最小粒子，CO₂的化学性质由CO₂分子保持。"},{"type":"mc","q":"化学变化的微观本质是什么？","options":["分子变大","分子分裂为原子，原子重新组合","原子分裂","物质消失"],"answer":1,"explanation":"化学变化中，分子分裂成原子，原子再重新组合成新的分子。"}]},{"id":"chem-3-2","unit":"第三单元 物质构成的奥秘","chapter":"课题2","section":"原子结构","page":"P65-71","category":"chem","keypoints":["原子=原子核（质子+中子）+电子","质子数=核外电子数=原子序数","核外电子分层排布（KLMN…）","最外层电子数决定化学性质","相对原子质量≈质子数+中子数"],"examPoints":["原子结构","质子/中子/电子关系","相对原子质量"],"textbookColumns":["「资料」张青莲测相对原子质量","「练习」原子结构示意图绘制"],"nightMarketCase":"食盐的原子密码：Na(11号/最外层1e⁻易失)→Na⁺，Cl(17号/最外层7e⁻易得)→Cl⁻","gameDesign":"「原子结构搭积木」：给定质子数/中子数，搭建原子模型","gameType":"drag-assembly","equations":[],"free":false,"quiz":[{"type":"mc","q":"在原子中，与质子数相等的是？","options":["中子数","核外电子数","相对原子质量","最外层电子数"],"answer":1,"explanation":"原子中质子数=核外电子数=核电荷数=原子序数。"},{"type":"fill","q":"钠（Na）的最外层有___个电子，它容易___（填得或失）电子","answer":"1,失","hint":"Na是11号元素，电子排布2-8-1","explanation":"Na最外层1个电子，容易失去变为Na⁺，达到稳定结构。"}]},{"id":"chem-3-3","unit":"第三单元 物质构成的奥秘","chapter":"课题3","section":"元素","page":"P72-77","category":"chem","keypoints":["元素=质子数相同的一类原子总称","元素周期表（横排=周期/竖排=族）","地壳含量前4：O>Si>Al>Fe","常见元素符号20个","门捷列夫发现周期律"],"examPoints":["元素定义","元素符号","地壳含量排序","周期表结构"],"textbookColumns":["「科学·技术·社会」门捷列夫与元素周期表"],"nightMarketCase":"铁锅补铁的真相：Fe²⁺离子是生物必需微量元素","gameDesign":"「元素周期表闯关」：点击格子弹出夜市物品关联","gameType":"click-learn","equations":[],"free":false,"quiz":[{"type":"mc","q":"地壳中含量最高的元素是？","options":["硅(Si)","铝(Al)","氧(O)","铁(Fe)"],"answer":2,"explanation":"地壳中元素含量排序：O>Si>Al>Fe>Ca，氧是含量最高的元素。"},{"type":"mc","q":"元素周期表中横排叫什么？","options":["族","周期","行","列"],"answer":1,"explanation":"元素周期表横排叫周期（共7个周期），竖排叫族（共18个族）。"}]},{"id":"chem-4-1","unit":"第四单元 自然界的水","chapter":"课题1","section":"水资源及其利用","page":"P82-90","category":"chem","keypoints":["地球淡水仅2.53%","硬水vs软水（含钙镁化合物）","净水方法：沉淀→过滤→吸附→消毒","活性炭吸附色素异味","蒸馏可得纯水"],"examPoints":["水资源现状","硬水软化","净水方法步骤"],"textbookColumns":["「实验4-1」过滤操作","「实验4-2」硬水检验（肥皂水）"],"nightMarketCase":"夜市洗碗/洗食材/制饮料消耗大量淡水。硬水地区洗碗易留水垢","gameDesign":"「节水决策游戏」：经营虚拟夜市摊，计算耗水量","gameType":"choice-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"硬水和软水的区别是什么？","options":["颜色不同","是否含较多钙镁化合物","温度不同","密度不同"],"answer":1,"explanation":"硬水含有较多可溶性钙镁化合物，软水不含或含较少。肥皂水检验——泡沫少的是硬水。"},{"type":"sort","q":"请排列净水的正确步骤","items":["沉淀","过滤","吸附","消毒"],"explanation":"净水步骤：沉淀（除去大颗粒）→过滤（除去小颗粒）→吸附（除色素异味）→消毒（杀菌）。"}]},{"id":"chem-4-2","unit":"第四单元 自然界的水","chapter":"课题2","section":"水的组成","page":"P91-95","category":"chem","keypoints":["电解水：2H₂O→2H₂↑+O₂↑","正极O₂（少）/负极H₂（多），体积比1:2","H₂燃烧：2H₂+O₂→2H₂O","水由氢氧元素组成"],"examPoints":["电解水实验现象和体积比","水的组成"],"textbookColumns":["「实验4-3」电解水","「资料」氢气的性质和用途"],"nightMarketCase":"氢能源是未来夜市燃料：电解水制氢，氢气燃烧产生水无污染","gameDesign":"「电解水实验」：调节电压观察正负极气泡产生","gameType":"slider-simulate","equations":["2H₂O=2H₂↑+O₂↑","2H₂+O₂=2H₂O"],"free":false,"quiz":[{"type":"mc","q":"电解水时，正极产生的气体是？","options":["氢气","氧气","水蒸气","氮气"],"answer":1,"explanation":"电解水正极产生氧气，负极产生氢气，正极气体体积约为负极的一半（1:2）。"},{"type":"fill","q":"水是由___元素和___元素组成的","answer":"氢,氧","hint":"电解水生成的就是这两种气体","explanation":"水是由氢元素和氧元素组成的化合物，不是由氢气和氧气组成的混合物。"}]},{"id":"chem-4-3","unit":"第四单元 自然界的水","chapter":"课题3","section":"物质组成的表示","page":"P96-103","category":"chem","keypoints":["化学式表示物质组成","化合价规则：代数和为0","元素质量分数=相对原子质量×个数÷相对分子质量×100%"],"examPoints":["化学式书写","化合价","元素质量分数计算"],"textbookColumns":["「练习」常见物质化学式","「方法导引」化合价口诀"],"nightMarketCase":"可乐=H₂O+CO₂+C₆H₁₂O₆——成分表就是化学式应用。食盐=NaCl","gameDesign":"「化学式配对游戏」：拖拽化学式匹配夜市食品","gameType":"drag-match","equations":[],"free":false,"quiz":[{"type":"mc","q":"化合物中各元素化合价的代数和等于多少？","options":["1","0","-1","不确定"],"answer":1,"explanation":"化合物中，各元素化合价的代数和等于0，这是化合价的基本规则。"},{"type":"fill","q":"NaCl中钠是___价，氯是___价","answer":"+1,-1","hint":"钠通常为+1价，氯通常为-1价","explanation":"NaCl中Na为+1价，Cl为-1价，代数和为0。"}]},{"id":"chem-5-1","unit":"第五单元 化学反应的定量关系","chapter":"课题1","section":"质量守恒定律","page":"P110-116","category":"chem","keypoints":["参加反应各物质质量总和=生成各物质质量总和","微观原因：原子种类/个数/质量不变","红磷燃烧验证（密封体系）","化学方程式配平原则：原子守恒"],"examPoints":["质量守恒定律内容和微观本质","验证实验"],"textbookColumns":["「实验5-1」红磷燃烧验证","「实验5-2」铁钉+硫酸铜"],"nightMarketCase":"100g生肉烤后70g——如果密封烤，质量守恒！水分和CO₂没跑掉。","gameDesign":"「密封烤肉实验」：开放/密封环境下烤肉，对比质量变化","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"质量守恒定律的微观本质是什么？","options":["分子种类不变","原子种类、数目、质量不变","物质状态不变","分子数目不变"],"answer":1,"explanation":"化学反应前后，原子的种类、数目、质量都不变，所以总质量守恒。"},{"type":"fill","q":"红磷燃烧实验必须在___体系中才能验证质量守恒","answer":"密封","hint":"如果不密封，生成的烟会跑掉","explanation":"有气体参与或生成的反应，必须在密封体系中进行才能验证质量守恒。"}]},{"id":"chem-5-2","unit":"第五单元 化学反应的定量关系","chapter":"课题2","section":"化学方程式","page":"P117-122","category":"chem","keypoints":["化学方程式意义：①反应物/生成物/条件②各物质质量比③微粒个数比","配平方法：最小公倍数法","计算：已知一种物质质量求另一种"],"examPoints":["化学方程式配平","根据方程式计算"],"textbookColumns":["「练习」多种方程式配平","「方法导引」书写步骤"],"nightMarketCase":"C+O₂→CO₂——夜市炭火的化学本质。CH₄+2O₂→CO₂+2H₂O——天然气灶","gameDesign":"「方程式配平挑战」：给出未配平方程式，学生填系数配平","gameType":"fill-blank","equations":["C+O₂=CO₂","CH₄+2O₂=CO₂+2H₂O"],"free":false,"quiz":[{"type":"mc","q":"化学方程式配平的原则是什么？","options":["分子数相等","原子种类和数目不变","体积相等","颜色相同"],"answer":1,"explanation":"配平化学方程式的原则是反应前后各原子种类和数目不变，即原子守恒。"}]},{"id":"chem-6-1","unit":"第六单元 碳和碳的氧化物","chapter":"课题1","section":"碳单质的多样性","page":"P128-135","category":"chem","keypoints":["同素异形体：金刚石（最硬）/石墨（最软导电）/C₆₀（足球烯）","木炭/活性炭吸附性（疏松多孔）","常温化学性质不活泼（古代字画不褪色）","高温：C+O₂→CO₂；C+2CuO→2Cu+CO₂↑（还原反应）"],"examPoints":["同素异形体","吸附性","碳的化学性质","还原反应"],"textbookColumns":["「实验6-1」木炭吸附红墨水","「实验6-2」木炭还原氧化铜"],"nightMarketCase":"木炭（无定形碳/多孔）吸附性强+燃烧温度高。石墨=铅笔芯。钻石=金刚石","gameDesign":"「碳的变身游戏」：拖拽碳原子调整排列，变出金刚石/石墨/C₆₀","gameType":"drag-transform","equations":["C+O₂=CO₂","C+2CuO=2Cu+CO₂↑"],"free":false,"quiz":[{"type":"mc","q":"金刚石和石墨性质差异大的原因是什么？","options":["组成元素不同","碳原子排列方式不同","颜色不同","来源不同"],"answer":1,"explanation":"金刚石和石墨都是碳单质，但碳原子排列方式不同——金刚石是正四面体网状，石墨是层状。"},{"type":"mc","q":"活性炭能吸附色素和异味是因为什么？","options":["化学反应","疏松多孔的结构","磁力吸引","高温作用"],"answer":1,"explanation":"活性炭具有疏松多孔的结构，表面积很大，可以吸附色素和异味分子。"}]},{"id":"chem-6-2","unit":"第六单元 碳和碳的氧化物","chapter":"课题2","section":"碳的氧化物","page":"P136-144","category":"chem","keypoints":["CO₂：不支持燃烧/与水→H₂CO₃/与Ca(OH)₂→CaCO₃↓（检验）","温室效应（CO₂/CH₄/O₃/氟利昂）","CO：有毒（与Hb结合致缺氧）/可燃/还原性"],"examPoints":["CO₂性质和检验","温室效应","CO毒性","低碳行动"],"textbookColumns":["「实验6-3」倾倒CO₂灭火","「实验6-5」CO₂与水反应（石蕊纸花）"],"nightMarketCase":"木炭烤串要通风：密闭空间炭火不充分燃烧产生CO（有毒！）","gameDesign":"「CO中毒预警」：模拟不同通风条件下炭火燃烧，实时显示CO浓度","gameType":"slider-simulate","equations":["CO₂+H₂O=H₂CO₃","CO₂+Ca(OH)₂=CaCO₃↓+H₂O","2CO+O₂=2CO₂"],"free":false,"quiz":[{"type":"mc","q":"检验CO₂的常用方法是什么？","options":["用燃着的木条","通入澄清石灰水","闻气味","看颜色"],"answer":1,"explanation":"CO₂能使澄清石灰水变浑浊（生成CaCO₃沉淀），这是检验CO₂的特效方法。"},{"type":"mc","q":"CO中毒的原因是什么？","options":["CO有毒臭味","CO与血红蛋白结合，使血液无法运氧气","CO腐蚀器官","CO使人窒息"],"answer":1,"explanation":"CO与血红蛋白的结合力比O₂强200多倍，使血红蛋白失去运输氧气的能力。"}]},{"id":"chem-6-3","unit":"第六单元 碳和碳的氧化物","chapter":"课题3","section":"二氧化碳的实验室制取","page":"P145-150","category":"chem","keypoints":["大理石+稀盐酸→CaCl₂+H₂O+CO₂↑","不用稀硫酸（CaSO₄沉淀包裹）","收集：向上排空气法","检验：澄清石灰水变浑浊","验满：燃着木条熄灭"],"examPoints":["制CO₂装置和操作","检验方法","气体制取一般思路"],"textbookColumns":["「探究」设计CO₂制取装置","「方法导引」制取气体的一般思路"],"nightMarketCase":"碳酸饮料=CO₂的溶液：可乐含大量溶解CO₂，开瓶气泡析出","gameDesign":"「碳酸饮料配方师」：调节CO₂压力和温度，观察溶解量变化","gameType":"slider-simulate","equations":["CaCO₃+2HCl=CaCl₂+H₂O+CO₂↑"],"free":false,"quiz":[{"type":"mc","q":"实验室制取CO₂为什么不用稀硫酸？","options":["稀硫酸太贵","生成CaSO₄沉淀覆盖大理石，阻止反应","反应太慢","产生有毒气体"],"answer":1,"explanation":"稀硫酸与大理石反应生成微溶的CaSO₄，覆盖在大理石表面阻止反应继续进行。"},{"type":"fill","q":"检验CO₂是否集满的方法：将燃着的木条放在___，木条___说明已满","answer":"瓶口,熄灭","hint":"不是伸入瓶中，是放在瓶口","explanation":"CO₂不支持燃烧，将燃着的木条放在瓶口（不是瓶中），熄灭则已满。"}]},{"id":"chem-7-1","unit":"第七单元 能源的合理利用与开发","chapter":"课题1","section":"燃料的燃烧","page":"P158-168","category":"chem","keypoints":["燃烧三要素：可燃物+O₂+温度≥着火点","灭火原理=破坏任一条件","控制变量法探究燃烧条件","白磷40℃着火/红磷260℃","充分燃烧条件：足够空气+足够大接触面","CaO+H₂O→Ca(OH)₂放热"],"examPoints":["燃烧条件","灭火方法","爆炸极限","控制变量法"],"textbookColumns":["「探究」燃烧条件（白磷红磷对比）","「实验7-1」CaO与水放热"],"nightMarketCase":"夜市烤串=精准控制三要素——加炭（可燃物）/鼓风（O₂）/烤架高度（温度）","gameDesign":"「烤串火候控制台」：调节可燃物/O₂/温度三变量，烤出完美烤串","gameType":"slider-simulate","equations":["CaO+H₂O=Ca(OH)₂"],"free":false,"quiz":[{"type":"mc","q":"燃烧必须同时具备的三个条件是什么？","options":["可燃物、氧气、达到着火点","可燃物、水、光照","氧气、高温、催化剂","可燃物、氮气、高温"],"answer":0,"explanation":"燃烧三要素：可燃物、氧气（或空气）、温度达到着火点，三者缺一不可。"},{"type":"mc","q":"油锅起火，最恰当的灭火方法是什么？","options":["用水浇","盖上锅盖","用风扇吹","端走油锅"],"answer":1,"explanation":"盖上锅盖可以隔绝氧气（破坏燃烧条件之一），是油锅起火最安全有效的方法。"}]},{"id":"chem-7-2","unit":"第七单元 能源的合理利用与开发","chapter":"课题2","section":"化石能源的合理利用","page":"P169-177","category":"chem","keypoints":["化石能源：煤/石油/天然气（不可再生）","天然气主要含CH₄（甲烷）","CH₄+2O₂→CO₂+2H₂O","化石能源燃烧→CO₂/SO₂/NOₓ污染","清洁能源：太阳能/风能/氢能"],"examPoints":["化石能源种类和问题","酸雨成因","新能源","CH₄性质"],"textbookColumns":["「实验7-2」甲烷燃烧","「资料」可燃冰/我国清洁发电体系"],"nightMarketCase":"早年夜市用煤（高污染SO₂酸雨）→现在天然气（较清洁）→未来氢能（零排放）","gameDesign":"「能源时间机器」：穿越不同年代夜市，体验不同燃料的效率/污染/成本","gameType":"timeline-click","equations":["CH₄+2O₂=CO₂+2H₂O"],"free":false,"quiz":[{"type":"mc","q":"天然气的主要成分是什么？","options":["CO","CH₄","H₂","CO₂"],"answer":1,"explanation":"天然气的主要成分是甲烷（CH₄），是最简单的有机物。"},{"type":"mc","q":"酸雨形成的主要原因是燃烧化石燃料排放什么气体？","options":["CO₂和CO","SO₂和NOₓ","O₂和N₂","H₂O和CO₂"],"answer":1,"explanation":"煤和石油中含硫和氮，燃烧产生SO₂和NOₓ，在大气中形成硫酸和硝酸导致酸雨。"}]}];
-const ALL_DATA = [...BIO_DATA, ...CHEM_DATA];
+const BIO_DATA = [{"id":"bio-1-1-1","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗竴绔?璁よ瘑鐢熺墿","section":"绗竴鑺?瑙傚療鍛ㄨ竟鐜涓殑鐢熺墿","page":"P2-6","category":"bio","keypoints":["瑙傚療鏄瀛︽帰绌剁殑鍩烘湰鏂规硶锛堟湁鐩殑銆佹湁璁″垝銆佹寜椤哄簭锛?,"璋冩煡鏂规硶锛氬埗瀹氭柟妗堚啋濡傚疄璁板綍鈫掑垎绫绘暣鐞?,"鍖哄垎鐢熺墿涓庨潪鐢熺墿","鎸夋鐗?鍔ㄧ墿/鐪熻弻/缁嗚弻/鐥呮瘨鍒嗙被","璋冩煡鏃朵笉鎹曟崏鎴栦激瀹崇敓鐗?],"examPoints":["璋冩煡鏂规硶姝ラ","绉戝瑙傚療娉?,"鐢熺墿鍒嗙被鍩虹"],"textbookColumns":["銆岃瀵熉锋€濊€冦€嶈瀵熸牎鍥敓鐗?,"銆岀瀛︽柟娉曘€嶈瀵?,"銆屾€濈淮璁粌銆嶅彂鐜伴棶棰樻彁鍑洪棶棰?],"nightMarketCase":"澶滃競=鐢熸€佽皟鏌ュ熀鍦扳€斺€旀鐗╋紙钄彍/钁?棣欒彍锛夈€佸姩鐗╋紙楸?铏?楦級銆佺湡鑿岋紙铇戣弴/鏈ㄨ€筹級銆佸井鐢熺墿锛堥叺姣?闇夎弻锛?,"gameDesign":"銆屽甯傜敓鐗╂櫘鏌ュ憳銆嶏細缁欎竴寮犲甯傚叏鏅浘锛屽鐢熸嫋鎷借创鏍囩鍒嗙被锛岀粺璁″悗鐢熸垚鍒嗙被楗煎浘","gameType":"drag-classify","free":true,"quiz":[{"type":"mc","q":"绉戝瑙傚療鐨勫熀鏈姹傛槸浠€涔堬紵","options":["闅忎究鐪嬬湅灏辫","鏈夌洰鐨勩€佹湁璁″垝銆佹寜涓€瀹氶『搴忚瀵?,"鍙敤鐪肩潧鐪?,"涓嶉渶瑕佽褰?],"answer":1,"explanation":"绉戝瑙傚療蹇呴』鏈夌洰鐨勩€佹湁璁″垝銆佹寜椤哄簭杩涜锛屽苟濡傚疄璁板綍銆?},{"type":"mc","q":"鍦ㄥ甯傝皟鏌ヤ腑锛岃槕鑿囧睘浜庡摢绫荤敓鐗╋紵","options":["妞嶇墿","鍔ㄧ墿","鐪熻弻","寰敓鐗?],"answer":2,"explanation":"铇戣弴灞炰簬鐪熻弻锛屼笉鏄鐗┾€斺€旂湡鑿屾槸鐙珛鐨勭敓鐗╃被缇ゃ€?},{"type":"fill","q":"绉戝璋冩煡鐨勫熀鏈楠ゆ槸锛氬埗瀹氭柟妗?鈫?___ 鈫?鍒嗙被鏁寸悊","answer":"濡傚疄璁板綍","hint":"璋冩煡鏃惰'璇氬疄鍦拌涓嬫潵'","explanation":"璋冩煡姝ラ锛氬埗瀹氭柟妗堚啋濡傚疄璁板綍鈫掑垎绫绘暣鐞嗐€?}]},{"id":"bio-1-1-2","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗竴绔?璁よ瘑鐢熺墿","section":"绗簩鑺?鐢熺墿鐨勭壒寰?,"page":"P7-11","category":"bio","keypoints":["鐢熺墿7涓壒寰侊細鈶犻渶瑕佽惀鍏烩憽鑳藉懠鍚糕憿鑳芥帓鍑哄簾鐗┾懀鑳藉澶栫晫鍒烘縺鍙嶅簲鈶よ兘鐢熼暱绻佹畺鈶ユ湁閬椾紶鍙樺紓鈶︾敱缁嗚優鏋勬垚锛堢梾姣掗櫎澶栵級","鍖哄垎鐢熺煶鑺憋紙鐢熺墿锛塿s閽熶钩鐭筹紙闈炵敓鐗╋級","鏈哄櫒浜轰笉鏄敓鐗╋紙鏃犵敓鍛芥椿鍔級"],"examPoints":["鍒ゆ柇鏌愮墿鏄惁涓虹敓鐗?,"鍒椾妇鐢熺墿鍏卞悓鐗瑰緛"],"textbookColumns":["銆屾兂涓€鎯炽€嶆満鍣ㄤ汉鏄敓鐗╁悧锛?,"銆岃瀵熉锋€濊€冦€嶇敓鐗﹙s闈炵敓鐗╋紙鐢熺煶鑺?閽熶钩鐭筹級","銆岀粌涔犮€嶅惈缇炶崏/椴?鐙拷鏂戦┈"],"nightMarketCase":"澶滃競娲昏櫨vs姝昏櫨锛氭椿铏炬父鍔ㄨ功璺讹紙瀵瑰埡婵€鍙嶅簲锛夛紝姝昏櫨涓嶅姩鈥斺€旂敓鐗╀笌闈炵敓鐗╃殑鐩磋鍖哄垎","gameDesign":"銆屾壘涓嶅悓銆嶆父鎴忥細灞曠ず澶滃競鎽婁綅鍥撅紝闄愭椂鐐瑰嚮鍝簺鏄敓鐗?闈炵敓鐗╋紝璁″垎鎺掑悕","gameType":"click-timer","free":true,"quiz":[{"type":"mc","q":"浠ヤ笅鍝釜涓嶆槸鐢熺墿鐨勫熀鏈壒寰侊紵","options":["闇€瑕佽惀鍏?,"鑳界敓闀跨箒娈?,"鑳藉埗閫犳哀姘?,"鑳藉澶栫晫鍒烘縺浣滃嚭鍙嶅簲"],"answer":2,"explanation":"鍒堕€犳哀姘斾笉鏄墍鏈夌敓鐗╃殑鍏卞悓鐗瑰緛锛屽彧鏈夎兘鍏夊悎浣滅敤鐨勭敓鐗╂墠鍒堕€犳哀姘斻€?},{"type":"mc","q":"鏈哄櫒浜轰负浠€涔堜笉鏄敓鐗╋紵","options":["涓嶄細鍔?,"娌℃湁鐢熷懡娲诲姩锛屼笉鑳界敓闀跨箒娈?,"鏄噾灞炲仛鐨?,"涓嶉渶瑕佽兘閲?],"answer":1,"explanation":"鏈哄櫒浜虹己涔忕敓鍛芥椿鍔ㄢ€斺€斾笉鑳界敓闀裤€佺箒娈栥€佹柊闄堜唬璋紝涓嶇鍚堢敓鐗╃殑鍩烘湰鐗瑰緛銆?}]},{"id":"bio-1-2-1","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗簩绔?璁よ瘑缁嗚優","section":"绗竴鑺?瀛︿範浣跨敤鏄惧井闀?,"page":"P12-17","category":"bio","keypoints":["鏄惧井闀滅粨鏋勶細鐩暅/鐗╅暅/闀滅瓛/杞界墿鍙?閬厜鍣?鍙嶅厜闀?绮楀噯鐒﹁灪鏃?缁嗗噯鐒﹁灪鏃?,"浣庡€嶉暅鈫掗珮鍊嶉暅椤哄簭","鐗╁儚涓庢爣鏈笂涓嬪乏鍙冲潎棰犲€?,"鏀惧ぇ鍊嶆暟=鐩暅脳鐗╅暅","鑳″厠1665骞村彂鐜扮粏鑳?],"examPoints":["鏄惧井闀滃悇閮ㄤ欢鍔熻兘","鏀惧ぇ鍊嶆暟璁＄畻","鐗╁儚绉诲姩鏂瑰悜","鑳″厠"],"textbookColumns":["銆屾兂涓€鎯炽€嶄袱涓嚫閫忛暅缁勫悎=鏄惧井闀滃師鐞?,"銆屽疄楠屄锋帰绌躲€嶇粌涔犱娇鐢ㄦ樉寰暅","銆岀瀛β锋妧鏈风ぞ浼氥€嶆樉寰暅鍙戝睍鍙?],"nightMarketCase":"鑲夌殑鑲岃倝绾ょ淮鍦ㄦ樉寰暅涓嬪儚涓€鏉熸潫閽笣缁斥€斺€旇繙姣旇倝鐪肩湅鍒扮殑澶嶆潅","gameDesign":"銆岃櫄鎷熸樉寰暅鎿嶄綔銆嶏細鎷栨嫿绮楃粏璋冪劍鏃嬮挳妯℃嫙瀵圭劍锛屾壘鍒伴殣钘忓湪妯＄硦鍥惧儚涓殑缁嗚優","gameType":"drag-focus","free":true,"quiz":[{"type":"mc","q":"鏄惧井闀滅殑鏀惧ぇ鍊嶆暟濡備綍璁＄畻锛?,"options":["鐩暅+鐗╅暅","鐩暅脳鐗╅暅","鐩暅梅鐗╅暅","鐗╅暅梅鐩暅"],"answer":1,"explanation":"鏀惧ぇ鍊嶆暟=鐩暅鏀惧ぇ鍊嶆暟脳鐗╅暅鏀惧ぇ鍊嶆暟銆?},{"type":"mc","q":"鏄惧井闀滀笅鐪嬪埌鐨勭墿鍍忔槸鎬庢牱鐨勶紵","options":["涓庢爣鏈浉鍚?,"宸﹀彸棰犲€?,"涓婁笅宸﹀彸鍧囬鍊?,"鍙湁涓婁笅棰犲€?],"answer":2,"explanation":"鏄惧井闀滄垚鍍忔槸鍊掑儚锛岀墿鍍忎笌鏍囨湰涓婁笅宸﹀彸鍧囬鍊掋€?},{"type":"fill","q":"濡傛灉鐢?0脳鐩暅鍜?0脳鐗╅暅锛屾€绘斁澶у€嶆暟鏄痏__鍊?,"answer":"400","hint":"鐩暅鍊嶆暟 脳 鐗╅暅鍊嶆暟","explanation":"10脳40=400鍊嶃€?}]},{"id":"bio-1-2-2","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗簩绔?璁よ瘑缁嗚優","section":"绗簩鑺?妞嶇墿缁嗚優","page":"P18-22","category":"bio","keypoints":["鐜荤墖鏍囨湰涓夌锛氳鐗?鍒囩墖/娑傜墖","鍒朵綔娲嬭懕鍐呰〃鐨复鏃惰鐗?姝ワ紙鎿︹啋婊粹啋鎾曗啋灞曗啋鐩栤啋鏌撯啋鍚革級","妞嶇墿缁嗚優缁撴瀯锛氱粏鑳炲/缁嗚優鑶?缁嗚優璐?缁嗚優鏍?娑叉场/鍙剁豢浣?绾跨矑浣?,"瑗跨摐鐢樼敎鍥犳恫娉″惈绯?],"examPoints":["瑁呯墖鍒朵綔姝ラ","妞嶇墿缁嗚優鍚勭粨鏋勫姛鑳?,"鍔ㄦ鐗╁尯鍒?],"textbookColumns":["銆屽疄楠屄锋帰绌躲€嶅埗浣滄磱钁卞唴琛ㄧ毊涓存椂瑁呯墖","銆岀粌涔犮€嶈嵎鍙剁ⅶ+鑽疯姳绾?],"nightMarketCase":"闈掕彍涓轰粈涔堢豢锛熷彾缁夸綋閲屾湁鍙剁豢绱犮€傝タ鐡滅敎=娑叉场鍚硸澶?,"gameDesign":"銆岀粏鑳炶閰嶅伐鍘傘€嶏細鎷栨嫿缁嗚優缁撴瀯闆朵欢鍒版纭綅缃粍瑁呮鐗╃粏鑳烇紝瀹屾垚鍚庡彾缁夸綋鍙戝厜","gameType":"drag-assembly","free":false,"quiz":[{"type":"mc","q":"妞嶇墿缁嗚優鐗规湁鐨勭粨鏋勬槸浠€涔堬紵","options":["缁嗚優鑶滃拰缁嗚優璐?,"缁嗚優澹併€佸彾缁夸綋鍜屾恫娉?,"缁嗚優鏍稿拰绾跨矑浣?,"鍙湁缁嗚優澹?],"answer":1,"explanation":"缁嗚優澹併€佸彾缁夸綋鍜屾恫娉℃槸妞嶇墿缁嗚優鐗规湁鐨勭粨鏋勶紝鍔ㄧ墿缁嗚優娌℃湁銆?},{"type":"sort","q":"璇锋帓鍒楀埗浣滄磱钁卞唴琛ㄧ毊涓存椂瑁呯墖鐨勬纭楠?,"items":["鐢ㄧ罕甯冩摝鍑€杞界幓鐗囧拰鐩栫幓鐗?,"鍦ㄨ浇鐜荤墖涓ぎ婊翠竴婊存竻姘?,"鎾曞彇娲嬭懕鍐呰〃鐨?,"灏嗗唴琛ㄧ毊灞曞钩","鐩栦笂鐩栫幓鐗?,"鐢ㄧ娑叉煋鑹?,"鐢ㄥ惛姘寸焊鍚稿紩"],"explanation":"7姝ラ『搴忥細鎿︹啋婊粹啋鎾曗啋灞曗啋鐩栤啋鏌撯啋鍚搞€傛瘡涓€姝ラ兘涓嶈兘涔憋紒"}]},{"id":"bio-1-2-3","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗簩绔?璁よ瘑缁嗚優","section":"绗笁鑺?鍔ㄧ墿缁嗚優","page":"P23-27","category":"bio","keypoints":["鍔ㄧ墿缁嗚優锛氱粏鑳炶啘/缁嗚優璐?缁嗚優鏍?绾跨矑浣擄紙鏃犵粏鑳炲/鍙剁豢浣?娑叉场锛?,"缁嗚優鑶滄帶鍒剁墿璐ㄨ繘鍑?,"鍥涚鍔ㄧ墿缁嗚優褰㈡€侊細涓婄毊/绁炵粡/鑲?杞缁嗚優","鏂借幈鐧诲拰鏂芥椇鍒涚珛缁嗚優瀛﹁"],"examPoints":["鍔ㄦ鐗╃粏鑳炲紓鍚?,"缁嗚優瀛﹁","閫夋嫨閫忚繃鎬?],"textbookColumns":["銆屽疄楠屄锋帰绌躲€嶈瀵熶汉鍙ｈ厰涓婄毊缁嗚優","銆岀瀛﹀鐨勬晠浜嬨€嶆柦鑾辩櫥鏂芥椇涓庣粏鑳炲璇?],"nightMarketCase":"鐑よ倝绾ょ淮鐢辨垚鍗冧笂涓囦釜鍔ㄧ墿缁嗚優鏋勬垚锛岀儰鐔熷悗缁嗚優姝讳骸銆佺嚎绮掍綋鍋滄宸ヤ綔","gameDesign":"銆屾鐗?鍔ㄧ墿缁嗚優澶ф瘮鎷笺€嶏細鐐瑰嚮鐩稿悓缁撴瀯鍙樼豢锛屼笉鍚岀粨鏋勫彉绾㈠脊鍑鸿鏄?,"gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"鍔ㄧ墿缁嗚優涓嶅叿鏈夌殑缁撴瀯鏄紵","options":["缁嗚優鑶?,"缁嗚優鏍?,"绾跨矑浣?,"缁嗚優澹?],"answer":3,"explanation":"鍔ㄧ墿缁嗚優娌℃湁缁嗚優澹佲€斺€旂粏鑳炲鏄鐗╃粏鑳炵壒鏈夌殑缁撴瀯銆?},{"type":"mc","q":"缁嗚優瀛﹁鐨勫垱绔嬭€呮槸璋侊紵","options":["鑳″厠鍜屽垪鏂囪檸鍏?,"鏂借幈鐧诲拰鏂芥椇","杈惧皵鏂囧拰鏋楀","宸存柉寰峰拰绉戣但"],"answer":1,"explanation":"鏂借幈鐧伙紙妞嶇墿瀛﹀锛夊拰鏂芥椇锛堝姩鐗╁瀹讹級鍏卞悓鍒涚珛浜嗙粏鑳炲璇淬€?}]},{"id":"bio-1-2-4","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗簩绔?璁よ瘑缁嗚優","section":"绗洓鑺?缁嗚優鐨勭敓娲?,"page":"P28-32","category":"bio","keypoints":["缁嗚優鑶滄帶鍒剁墿璐ㄨ繘鍑猴紙閫夋嫨閫忚繃鎬э級","鍙剁豢浣撳厜鍚堚啋鏈夋満鐗╋紙鍖栧鑳斤級","绾跨矑浣撳垎瑙ｆ湁鏈虹墿鈫掍緵鑳?,"缁嗚優鏍稿惈DNA鎺у埗閬椾紶鈥斺€斿厠闅嗙緤澶氳帀璇佹槑锛堜緵鏍告瘝缇婂喅瀹氭€х姸锛?],"examPoints":["缁嗚優鐗╄川缁勬垚","缁嗚優鏍镐綔鐢?,"鍙剁豢浣?绾跨矑浣撳姛鑳?,"鍏嬮殕鎶€鏈?],"textbookColumns":["銆岃祫鏂欏垎鏋愩€嶅鑾夊厠闅嗙緤","銆岀粌涔犮€岲NA涓昏鍦ㄧ粏鑳炴牳"],"nightMarketCase":"鑵岃彍鍙樿蒋锛氶珮娴撳害椋熺洂姘粹啋缁嗚優澶辨按锛堟笚閫忥級锛岀粏鑳炶啘閫夋嫨閫忚繃鎬у湪鑵岃彍鎽婂ぉ澶╀笂婕?,"gameDesign":"銆岃厡鑿滃疄楠屾ā鎷熴€嶏細璋冭妭椋熺洂娴撳害婊戝潡锛岃瀵熺粏鑳炲惛姘?澶辨按鍔ㄦ€佸彉鍖?,"gameType":"slider-simulate","free":false,"quiz":[{"type":"mc","q":"缁嗚優涓绉颁负鍔ㄥ姏宸ュ巶鐨勭粨鏋勬槸锛?,"options":["缁嗚優鏍?,"鍙剁豢浣?,"绾跨矑浣?,"娑叉场"],"answer":2,"explanation":"绾跨矑浣撻€氳繃鍛煎惛浣滅敤鍒嗚В鏈夋満鐗╅噴鏀捐兘閲忥紝鏄粏鑳炵殑鍔ㄥ姏宸ュ巶銆?},{"type":"mc","q":"鍏嬮殕缇婂鑾夌殑鎬х姸涓昏涓庡摢鍙緤鐩稿悓锛?,"options":["鎻愪緵鍗电粏鑳炵殑缇?,"鎻愪緵缁嗚優鏍哥殑缇?,"浠ｅ瓡鐨勭緤","涓夊彧缇婂悇鍗犱竴閮ㄥ垎"],"answer":1,"explanation":"缁嗚優鏍稿惈鏈塂NA閬椾紶鐗╄川锛屼緵鏍告瘝缇婂喅瀹氫簡澶氳帀鐨勬€х姸銆?}]},{"id":"bio-1-3-1","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗笁绔?浠庣粏鑳炲埌鐢熺墿浣?,"section":"绗竴鑺?缁嗚優閫氳繃鍒嗚浜х敓鏂扮粏鑳?,"page":"P33-37","category":"bio","keypoints":["缁嗚優鐢熼暱锛堜綋绉澶э級鈫掑垎瑁傦紙涓€鍒嗕负浜岋級","鍒嗚杩囩▼锛氭牳鈫掕川鈫掕啘锛堟鐗╁姞澹侊級","鏌撹壊浣?DNA+铔嬬櫧璐紝鍒嗚鍓岲NA澶嶅埗","鐧岀粏鑳烇細鍒嗚澶辨帶+鍙浆绉?],"examPoints":["鍒嗚杩囩▼鍜屾剰涔?,"鏌撹壊浣撳彉鍖?,"DNA澶嶅埗","鐧岀粏鑳?],"textbookColumns":["銆岀瀛β锋妧鏈风ぞ浼氥€嶇檶缁嗚優鈥斺€旇劚缂颁箣椹?],"nightMarketCase":"鍙戦潰棣掑ご涓轰粈涔堣啫澶э紵閰垫瘝鑿屼笉鏂垎瑁傜箒娈栦骇鐢烠O鈧備娇闈㈠洟鑶ㄥぇ","gameDesign":"銆岀粏鑳炲垎瑁傚姩鐢绘殏鍋滈銆嶏細鎾斁鍒嗚鍔ㄧ敾锛岄殢鏈烘殏鍋滃垽鏂樁娈?,"gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"缁嗚優鍒嗚杩囩▼涓紝鏈€鍏堝垎瑁傜殑鏄紵","options":["缁嗚優鑶?,"缁嗚優璐?,"缁嗚優鏍?,"缁嗚優澹?],"answer":2,"explanation":"缁嗚優鍒嗚鏃讹紝缁嗚優鏍稿厛鍒嗚锛岀劧鍚庢槸缁嗚優璐紝鏈€鍚庢槸缁嗚優鑶溿€?},{"type":"fill","q":"鏌撹壊浣撴槸鐢盻__鍜岃泲鐧借川缁勬垚鐨?,"answer":"DNA","hint":"閬椾紶鐗╄川鐨勫弻铻烘棆缁撴瀯","explanation":"鏌撹壊浣?DNA+铔嬬櫧璐紝DNA鏄仐浼犵墿璐ㄣ€?}]},{"id":"bio-1-3-2","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗笁绔?浠庣粏鑳炲埌鐢熺墿浣?,"section":"绗簩鑺?鍔ㄧ墿浣撶殑缁撴瀯灞傛","page":"P38-42","category":"bio","keypoints":["缁嗚優鈫掔粍缁団啋鍣ㄥ畼鈫掔郴缁熲啋鍔ㄧ墿浣擄紙5灞傦級","鍥涚鍩烘湰缁勭粐锛氫笂鐨?缁撶紨/鑲岃倝/绁炵粡","鍣ㄥ畼鐢卞绉嶇粍缁囨瀯鎴?,"鍏ぇ绯荤粺鏋勬垚浜轰綋"],"examPoints":["缁撴瀯灞傛锛?灞傦級","鍥涚缁勭粐鐗瑰緛","鍣ㄥ畼瀹氫箟"],"textbookColumns":["銆岃瀵熉锋€濊€冦€嶈儍鐨勭粍缁囨瀯鎴?],"nightMarketCase":"鐑や覆=鑲岃倝缁勭粐+缁撶紨缁勭粐锛堢瓔鑶滐級锛屽彈绁炵粡鏀厤鈥斺€斿姩鐗╃粨鏋勫眰娆″湪鐑や覆涓畬缇庝綋鐜?,"gameDesign":"銆岀粨鏋勫眰娆℃嫾鍥俱€嶏細5寮犲浘鎸夐『搴忚繛绾匡紝鑳冪殑鍥涚缁勭粐鎷栨嫿缁勫悎","gameType":"drag-sequence","free":false,"quiz":[{"type":"sort","q":"璇锋帓鍒楀姩鐗╀綋缁撴瀯灞傛浠庡井瑙傚埌瀹忚鐨勬纭『搴?,"items":["缁嗚優","缁勭粐","鍣ㄥ畼","绯荤粺","鍔ㄧ墿浣?],"explanation":"鍔ㄧ墿浣撶粨鏋勫眰娆★細缁嗚優鈫掔粍缁団啋鍣ㄥ畼鈫掔郴缁熲啋鍔ㄧ墿浣擄紝鍏?涓眰娆°€?},{"type":"mc","q":"鑳冨涓殑鑲岃倝灞傚睘浜庝粈涔堢粍缁囷紵","options":["涓婄毊缁勭粐","缁撶紨缁勭粐","鑲岃倝缁勭粐","绁炵粡缁勭粐"],"answer":2,"explanation":"鑳冨鐨勮倢鑲夊眰鐢卞钩婊戣倢鏋勬垚锛屽睘浜庤倢鑲夌粍缁囷紝璐熻矗鑳冪殑锠曞姩銆?}]},{"id":"bio-1-3-3","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗笁绔?浠庣粏鑳炲埌鐢熺墿浣?,"section":"绗笁鑺?妞嶇墿浣撶殑缁撴瀯灞傛","page":"P43-45","category":"bio","keypoints":["缁嗚優鈫掔粍缁団啋鍣ㄥ畼鈫掓鐗╀綋锛?灞傦紝鏃犵郴缁燂級","妞嶇墿缁勭粐锛氬垎鐢?淇濇姢/钖勫/杈撳/鏈烘","鍏ぇ鍣ㄥ畼锛氭牴鑼庡彾锛堣惀鍏诲櫒瀹橈級/鑺辨灉瀹炵瀛愶紙鐢熸畺鍣ㄥ畼锛?],"examPoints":["妞嶇墿缁撴瀯灞傛锛?灞傦級","鍏ぇ鍣ㄥ畼","浜旂缁勭粐"],"textbookColumns":["銆岀粌涔犮€嶆补鑿滃叚澶у櫒瀹樻爣娉?],"nightMarketCase":"澶滃競钄彍鍏ぇ鍣ㄥ畼榻愬叏锛氳姳/鏋?鏍癸紙钀濆崪锛?鍙?鑼庯紙鑾寸瑡锛?绉嶅瓙锛堣姳鐢燂級","gameDesign":"銆屽櫒瀹樺垎绫诲櫒銆嶏細鎷栨嫿鍚勭钄彍鍒版牴/鑼?鍙?鑺?鏋滃疄/绉嶅瓙6涓","gameType":"drag-classify","free":false,"quiz":[{"type":"mc","q":"妞嶇墿浣撶殑缁撴瀯灞傛姣斿姩鐗╀綋灏戝摢涓€涓眰娆★紵","options":["缁嗚優","缁勭粐","鍣ㄥ畼","绯荤粺"],"answer":3,"explanation":"妞嶇墿浣撴病鏈夌郴缁熻繖涓眰娆♀€斺€旂粏鑳炩啋缁勭粐鈫掑櫒瀹樷啋妞嶇墿浣擄紝鍙湁4灞傘€?},{"type":"fill","q":"钀濆崪鏄鐗╃殑___鍣ㄥ畼锛堝～鏍?鑼?鍙?鑺?鏋滃疄/绉嶅瓙锛?,"answer":"鏍?,"hint":"灞炰簬钀ュ吇鍣ㄥ畼","explanation":"钀濆崪鏄鐗╃殑鏍癸紙璐棌鏍癸級锛屽睘浜庤惀鍏诲櫒瀹樸€?}]},{"id":"bio-1-3-4","unit":"绗竴鍗曞厓 鐢熺墿鍜岀粏鑳?,"chapter":"绗笁绔?浠庣粏鑳炲埌鐢熺墿浣?,"section":"绗洓鑺?鍗曠粏鑳炵敓鐗?,"page":"P46-49","category":"bio","keypoints":["鍗曠粏鑳炵敓鐗╋細鑽夊饱铏?鐪艰櫕/琛ｈ椈/鍙樺舰铏?閰垫瘝鑿?澶ц偁鏉嗚弻","鑽夊饱铏粨鏋勶細绾ゆ瘺/琛ㄨ啘/鍙ｆ矡/椋熺墿娉?鑳炶倹/浼哥缉娉?澶ф牳/灏忔牳","鑽夊饱铏秼鎬у疄楠岋紙鑲夋眮瓒嬩箣/椋熺洂閬夸箣锛?,"璧ゆ疆涓庝汉绫诲叧绯?],"examPoints":["鍗曠粏鑳炰唬琛?,"鑽夊饱铏粨鏋勫姛鑳?,"瓒嬫€у疄楠?],"textbookColumns":["銆屽疄楠屄锋帰绌躲€嶈瀵熻崏灞ヨ櫕骞舵帰绌跺叾瓒嬫€?,"銆岀粌涔犮€嶈崏灞ヨ櫕姣忓ぉ鍚為43000涓粏鑿?],"nightMarketCase":"涓€灏忓寘閰垫瘝鍚暟鍗佷嚎閰垫瘝缁嗚優鈥斺€旀瘡涓€涓兘鏄畬鏁寸殑鐢熷懡","gameDesign":"銆岃崏灞ヨ櫕杩涢鎸戞垬銆嶏細鎺у埗鑽夊饱铏Щ鍔紝鐢ㄧ氦姣涘皢缁嗚弻棰楃矑鎺ㄥ叆鍙ｆ矡鈫掗鐗╂场鈫掓秷鍖栤啋鑳炶倹鎺掑嚭","gameType":"interactive-feed","free":false,"quiz":[{"type":"mc","q":"浠ヤ笅鍝釜涓嶆槸鍗曠粏鑳炵敓鐗╋紵","options":["鑽夊饱铏?,"閰垫瘝鑿?,"姘磋瀰","鐪艰櫕"],"answer":2,"explanation":"姘磋瀰鏄缁嗚優鍔ㄧ墿锛堣厰鑲犲姩鐗╋級锛岃€岃崏灞ヨ櫕銆侀叺姣嶈弻銆佺溂铏兘鏄崟缁嗚優鐢熺墿銆?},{"type":"mc","q":"鑽夊饱铏敤浜庤繍鍔ㄧ殑缁撴瀯鏄紵","options":["闉瘺","绾ゆ瘺","浼冻","鍙ｆ矡"],"answer":1,"explanation":"鑽夊饱铏綋琛ㄥ瘑甯冪氦姣涳紝閫氳繃绾ゆ瘺鐨勬憜鍔ㄥ湪姘翠腑杩愬姩銆?}]},{"id":"bio-2-1-1","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗竴绔?钘荤被涓庢鐗╃殑绫荤兢","section":"绗竴鑺?钘荤被銆佽嫈钘撴鐗╁拰钑ㄧ被妞嶇墿","page":"P62-66","category":"bio","keypoints":["鏃犵瀛愭鐗╄繘鍖栵細钘荤被鈫掕嫈钘撯啋钑ㄧ被","钘荤被锛堟按鐢?鏃犳牴鑼庡彾鍒嗗寲锛?,"鑻旇棑锛堟湁鑼庡彾鏃犵湡鏍?绌烘皵璐ㄩ噺鎸囩ず妞嶇墿锛?,"钑ㄧ被锛堟湁鏍硅寧鍙?瀛㈠瓙绻佹畺锛?,"楸肩几缁胯啘鏄椈绫?],"examPoints":["涓夌被妞嶇墿鍖哄埆鍜屼唬琛?,"鑻旇棑浣滀负绌烘皵鎸囩ず妞嶇墿"],"textbookColumns":["銆屾兂涓€鎯炽€嶉奔缂哥豢鑶滄€庝箞鏉ョ殑锛?,"銆岃瀵熉锋€濊€冦€嶈椈绫?鑻旇棑/钑ㄧ被缁撴瀯姣旇緝"],"nightMarketCase":"钑ㄨ彍鐑よ倝鍗凤細澶滃競钑ㄨ彍=钑ㄧ被妞嶇墿鈥斺€旀瘮绉嶅瓙妞嶇墿鏇村彜鑰佺殑娲诲寲鐭?,"gameDesign":"銆屾鐗╄繘鍖栨椂闂磋酱銆嶏細鐐瑰嚮涓嶅悓鍦拌川骞翠唬鍑虹幇瀵瑰簲妞嶇墿浠ｈ〃","gameType":"timeline-click","free":false,"quiz":[{"type":"mc","q":"浠ヤ笅鍝被妞嶇墿鍙互浣滀负绌烘皵璐ㄩ噺鐨勬寚绀烘鐗╋紵","options":["钘荤被","鑻旇棑妞嶇墿","钑ㄧ被妞嶇墿","绉嶅瓙妞嶇墿"],"answer":1,"explanation":"鑻旇棑妞嶇墿鍙剁墖鍙湁涓€灞傜粏鑳烇紝瀵圭┖姘旀薄鏌撴晱鎰燂紝鏄壇濂界殑绌烘皵鎸囩ず妞嶇墿銆?},{"type":"mc","q":"楸肩几澹佷笂鐨勭豢鑶滄槸浠€涔堬紵","options":["鑻旇棑","闇夎弻","钘荤被","缁嗚弻"],"answer":2,"explanation":"楸肩几缁胯啘鏄椈绫诲ぇ閲忕箒娈栧舰鎴愮殑锛岃椈绫婚渶瑕侀槼鍏夊拰姘翠腑鐨勮惀鍏汇€?}]},{"id":"bio-2-1-2","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗竴绔?钘荤被涓庢鐗╃殑绫荤兢","section":"绗簩鑺?绉嶅瓙妞嶇墿","page":"P67-73","category":"bio","keypoints":["绉嶅瓙缁撴瀯锛氱鐨?鑳氾紙鑳氳娊/鑳氳酱/鑳氭牴/瀛愬彾锛?鑳氫钩","鑿滆眴锛堝弻瀛愬彾/鏃犺儦涔筹級vs鐜夌背锛堝崟瀛愬彾/鏈夎儦涔筹級","瑁稿瓙妞嶇墿锛堟澗/閾舵潖/绉嶅瓙瑁搁湶鏃犳灉鐨級","琚瓙妞嶇墿锛堟湁鏋滅毊/鏈€楂樼瓑妞嶇墿锛?],"examPoints":["绉嶅瓙缁撴瀯","瑁稿瓙vs琚瓙","鍗曞弻瀛愬彾鍖哄埆"],"textbookColumns":["銆屽疄楠屄锋帰绌躲€嶈瀵熻彍璞嗗拰鐜夌背绉嶅瓙缁撴瀯","銆岀粌涔犮€嶆澗鐞冩灉涓嶆槸鏋滃疄"],"nightMarketCase":"绯栫倰鏍楀瓙锛堣瀛?鏈夋灉鐨級vs鐑ゆ澗瀛愶紙瑁稿瓙/绉嶅瓙瑁搁湶锛夆€斺€斾竴鍙ｅ悆鍑鸿繘鍖栧樊鍒?,"gameDesign":"銆岀瀛愯В鍓栧彴銆嶏細铏氭嫙瑙ｅ墫鑿滆眴鍜岀帀绫崇瀛愶紝鎷栨嫿鏍囩鏍囨敞鍚勭粨鏋?,"gameType":"drag-label","free":false,"quiz":[{"type":"mc","q":"瑁稿瓙妞嶇墿鍜岃瀛愭鐗╃殑涓昏鍖哄埆鏄粈涔堬紵","options":["鏈夋棤鏍?,"鏈夋棤鑼?,"绉嶅瓙澶栨湁鏃犳灉鐨寘琚?,"鏈夋棤鍙?],"answer":2,"explanation":"瑁稿瓙妞嶇墿绉嶅瓙瑁搁湶鏃犳灉鐨寘琚紝琚瓙妞嶇墿绉嶅瓙鏈夋灉鐨寘琚€?},{"type":"mc","q":"鑿滆眴绉嶅瓙灞炰簬浠€涔堢被鍨嬶紵","options":["鍗曞瓙鍙舵湁鑳氫钩","鍙屽瓙鍙舵棤鑳氫钩","鍗曞瓙鍙舵棤鑳氫钩","瑁稿瓙妞嶇墿"],"answer":1,"explanation":"鑿滆眴鏄弻瀛愬彾妞嶇墿锛岀瀛愭棤鑳氫钩锛岃惀鍏荤墿璐ㄥ偍瀛樺湪瀛愬彾涓€?}]},{"id":"bio-2-2-1","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗簩绔?鍔ㄧ墿鐨勭被缇?,"section":"绗竴鑺?鏃犺剨妞庡姩鐗?,"page":"P74-81","category":"bio","keypoints":["鏃犺剨妞庡姩鐗╃被缇わ細鑵旇偁/鎵佸舰/绾垮舰/鐜妭/杞綋/鑺傝偄","鑺傝偄鍔ㄧ墿鏄渶澶у姩鐗╃被缇?,"椴嶉奔鍜岄笨楸?杞綋鍔ㄧ墿涓嶆槸楸?],"examPoints":["鍚勭被缇ょ壒寰?,"鑺傝偄鍔ㄧ墿鐗圭偣","鍖哄垎杞綋vs楸肩被"],"textbookColumns":["銆屾兂涓€鎯炽€嶉矋楸煎拰楸块奔涓轰粈涔堜笉鏄奔锛?],"nightMarketCase":"澶滃競铏捐煿=鑺傝偄鍔ㄧ墿锛堣韩浣撳垎鑺?澶栭楠?瓒冲垎鑺傦級銆傞笨楸?杞綋鍔ㄧ墿涓嶆槸楸?,"gameDesign":"銆屽姩鐗╁垎绫诲ぇ闂叧銆嶏細浠庤厰鑲犫啋鎵佸舰鈫掔嚎褰⑩啋鐜妭鈫掕蒋浣撯啋鑺傝偄閫愮骇瑙ｉ攣","gameType":"level-unlock","free":false,"quiz":[{"type":"mc","q":"涓轰粈涔堥矋楸煎拰楸块奔涓嶆槸楸硷紵","options":["瀹冧滑涓嶄細娓告吵","瀹冧滑灞炰簬杞綋鍔ㄧ墿","瀹冧滑娌℃湁槌?,"瀹冧滑鏄袱鏍栧姩鐗?],"answer":1,"explanation":"椴嶉奔鍜岄笨楸煎睘浜庤蒋浣撳姩鐗╅棬锛岃韩浣撴煍杞紝涓庨奔绫伙紙鑴婃鍔ㄧ墿锛夋槸瀹屽叏涓嶅悓鐨勭被缇ゃ€?},{"type":"mc","q":"鍔ㄧ墿鐣屼腑鏈€澶х殑绫荤兢鏄紵","options":["杞綋鍔ㄧ墿","鐜妭鍔ㄧ墿","鑺傝偄鍔ㄧ墿","鑴婃鍔ㄧ墿"],"answer":2,"explanation":"鑺傝偄鍔ㄧ墿鏄姩鐗╃晫绉嶇被鏈€澶氥€佹暟閲忔渶澶х殑绫荤兢锛屽寘鎷槅铏€佽櫨锜广€佽湗铔涚瓑銆?}]},{"id":"bio-2-2-2","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗簩绔?鍔ㄧ墿鐨勭被缇?,"section":"绗簩鑺?鑴婃鍔ㄧ墿","page":"P82-97","category":"bio","keypoints":["楸硷紙槌冨懠鍚?浣撹〃槌?鍥涘ぇ瀹堕奔锛氶潚鑽夐并槌欙級","涓ゆ爾锛堝辜浣撴按鐢熼硟鈫掓垚浣撹偤+鐨偆锛?,"鐖锛堣偤鍛煎惛/浣撹〃槌炵敳/闄嗗湴浜у嵉锛?,"楦燂紙鑲?姘斿泭鍙岄噸鍛煎惛/浣撹〃缇?鎭掓俯锛?,"鍝轰钩锛堣儙鐢熷摵涔?浣撹〃姣?鎭掓俯锛?],"examPoints":["浜旂被鑴婃鍔ㄧ墿鐗瑰緛鍜屼唬琛?,"杩涘寲椤哄簭","鎭掓俯vs鍙樻俯"],"textbookColumns":["銆岃瀵熉锋€濊€冦€嶉奔/铔?铚ヨ湸/楦?鍝轰钩鍔ㄧ墿鐗瑰緛姣旇緝","銆岀粌涔犮€嶉笩鍙岄噸鍛煎惛"],"nightMarketCase":"澶滃競涓€鎽婂彲宸＄ぜ浜旂被鑴婃鍔ㄧ墿锛氶奔鈫掕洐鑵库啋铔囪倝涓测啋楦藉瓙鈫掔緤鑲変覆","gameDesign":"銆岃剨妞庡姩鐗╄繘鍖栬窇閬撱€嶏細浜旂被鍔ㄧ墿鎸夎繘鍖栨帓鍒楄窇閬擄紝鐐瑰嚮鏌ョ湅鐗瑰緛鍗＄墖","gameType":"click-learn","free":false,"quiz":[{"type":"mc","q":"浠ヤ笅鍝被鍔ㄧ墿鏄亽娓╁姩鐗╋紵","options":["楸煎拰铔?,"楦熷拰鍝轰钩鍔ㄧ墿","铔囧拰铚ヨ湸","楸煎拰鐖鍔ㄧ墿"],"answer":1,"explanation":"楦熺被鍜屽摵涔冲姩鐗╂槸鎭掓俯鍔ㄧ墿锛岄奔绫汇€佷袱鏍栫被鍜岀埇琛岀被閮芥槸鍙樻俯鍔ㄧ墿銆?},{"type":"sort","q":"璇锋寜杩涘寲椤哄簭鎺掑垪鑴婃鍔ㄧ墿绫荤兢锛堜粠浣庣瓑鍒伴珮绛夛級","items":["楸肩被","涓ゆ爾绫?,"鐖绫?,"楦熺被","鍝轰钩绫?],"explanation":"杩涘寲椤哄簭锛氶奔鈫掍袱鏍栤啋鐖鈫掗笩鈫掑摵涔筹紝姝ｅソ涔熸槸澶滃競椋熸潗鐨勮繘鍖栧贰绀硷紒"}]},{"id":"bio-2-3-1","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗笁绔?寰敓鐗?,"section":"绗竴鑺?寰敓鐗╃殑鍒嗗竷","page":"P98-102","category":"bio","keypoints":["寰敓鐗?涓綋寰皬/缁撴瀯绠€鍗曠殑鐢熺墿缁熺О","缁嗚弻鍜岀湡鑿屽箍娉涘垎甯?,"鑿岃惤锛氱粏鑿岋紙灏?鍏夋粦/棰滆壊娴咃級vs鐪熻弻锛堝ぇ/缁掓瘺鐘?澶氬僵锛?,"鐢熷瓨鏉′欢锛氭按/閫傚疁娓╁害/鏈夋満鐗?],"examPoints":["寰敓鐗╂蹇?,"鑿岃惤鍖哄埆","鍒嗗竷鐗圭偣"],"textbookColumns":["銆屽疄楠屄锋帰绌躲€嶆娴嬬幆澧冧腑鐨勭粏鑿屽拰鐪熻弻","銆岀粌涔犮€嶇湡绌哄寘瑁呴槻鑵愯触"],"nightMarketCase":"鐢ㄥ煿鍏诲熀妫€娴嬪甯備笉鍚屼綅缃殑寰敓鐗┾€斺€旂牕鏉縱s娲楀悗钄彍vs鎵?,"gameDesign":"銆屽井鐢熺墿渚︽帰銆嶏細鍦ㄤ笉鍚屽満鏅櫄鎷熷彇鏍封啋鍩瑰吇鈫掑姣旇弻钀芥暟閲忊啋鎺掑悕绉垎","gameType":"click-compare","free":false,"quiz":[{"type":"mc","q":"缁嗚弻鑿岃惤鍜岀湡鑿岃弻钀藉瑙備笂鏈€澶х殑鍖哄埆鏄粈涔堬紵","options":["棰滆壊鐩稿悓","缁嗚弻鑿岃惤灏忎笖鍏夋粦锛岀湡鑿岃弻钀藉ぇ涓旂粧姣涚姸","缁嗚弻鑿岃惤鏇村ぇ","娌℃湁鍖哄埆"],"answer":1,"explanation":"缁嗚弻鑿岃惤涓€鑸緝灏忋€佽〃闈㈠厜婊戙€侀鑹茶緝娴咃紱鐪熻弻鑿岃惤杈冨ぇ銆佸憟缁掓瘺鐘舵垨绲姸銆?},{"type":"mc","q":"寰敓鐗╃敓瀛樹笉闇€瑕佺殑鏉′欢鏄紵","options":["姘?,"閫傚疁娓╁害","鏈夋満鐗?,"闃冲厜"],"answer":3,"explanation":"澶у鏁板井鐢熺墿涓嶉渶瑕侀槼鍏夛紝瀹冧滑闇€瑕佹按銆侀€傚疁娓╁害鍜屾湁鏈虹墿鍗冲彲鐢熷瓨绻佹畺銆?}]},{"id":"bio-2-3-2","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗笁绔?寰敓鐗?,"section":"绗簩鑺?缁嗚弻","page":"P103-108","category":"bio","keypoints":["缁嗚弻褰㈡€侊細鐞冭弻/鏉嗚弻/铻烘棆鑿?,"缁撴瀯锛氱粏鑳炲/鑶?璐?DNA锛堟棤鐪熸鏍歌啘鈫掑師鏍哥敓鐗╋級","鏈変簺鏈夎崥鑶滐紙淇濇姢锛?闉瘺锛堣繍鍔級","鍒嗚绻佹畺鏋佸揩","鑺藉=浼戠湢浣擄紙闈炵箒娈栦綋锛?,"鏈夌泭锛堥吀濂?娉¤彍锛夊拰鏈夊锛堣嚧鐥咃級"],"examPoints":["缁嗚弻褰㈡€佺粨鏋?,"鍘熸牳vs鐪熸牳","鍒嗚绻佹畺","鑺藉"],"textbookColumns":["銆岀瀛β锋妧鏈风ぞ浼氥€嶅反鏂痉涓庡反姘忔秷姣掓硶"],"nightMarketCase":"澶滃競鏀句箙椋熺墿鍙戣嚟鍙橀粡鈥斺€旂粏鑿屽ぇ閲忕箒娈栥€備钩閰歌弻鍋氶吀濂?鏈夌泭鑿?,"gameDesign":"銆岀粏鑿岀箒娈栭€熷害鎸戞垬銆嶏細1涓粏鑿?0鍒嗛挓鍒嗚1娆★紝璁＄畻3灏忔椂鍚庢暟閲?,"gameType":"calc-quiz","free":false,"quiz":[{"type":"mc","q":"缁嗚弻灞炰簬浠€涔堢被鍨嬬殑鐢熺墿锛?,"options":["鐪熸牳鐢熺墿","鍘熸牳鐢熺墿","鐥呮瘨","鐪熻弻"],"answer":1,"explanation":"缁嗚弻娌℃湁鎴愬舰鐨勭粏鑳炴牳锛堟棤鏍歌啘锛夛紝閬椾紶鐗╄川DNA闆嗕腑鍦ㄦ牳鍖猴紝灞炰簬鍘熸牳鐢熺墿銆?},{"type":"fill","q":"涓€涓粏鑿屾瘡20鍒嗛挓鍒嗚涓€娆★紝3灏忔椂鍚庢湁___涓粏鑿?,"answer":"512","hint":"3灏忔椂=180鍒嗛挓锛?80梅20=9浠ｏ紝2鈦?512","explanation":"2鈦?512銆傝繖灏辨槸鎸囨暟澧為暱鐨勫姏閲忥紒"}]},{"id":"bio-2-3-3","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗笁绔?寰敓鐗?,"section":"绗笁鑺?鐪熻弻","page":"P109-113","category":"bio","keypoints":["鐪熻弻=鐪熸牳鐢熺墿","閰垫瘝鑿岋紙鍗曠粏鑳?鍑鸿娊鐢熸畺锛?,"闇夎弻锛堝缁嗚優/鑿屼笣/瀛㈠瓙绻佹畺锛?,"铇戣弴鏈ㄨ€筹紙澶у瀷鐪熻弻锛?,"鑵愪钩=姣涢湁鍔熷姵","姗樺瓙鍙戦湁=闈掗湁"],"examPoints":["鐪熻弻涓庣粏鑿屽尯鍒?,"閰垫瘝鑿?闇夎弻鐗瑰緛","鍙戦叺搴旂敤"],"textbookColumns":["銆屽疄楠屄锋帰绌躲€嶈瀵熼叺姣嶈弻鍜岄湁鑿?,"銆岀粌涔犮€嶈槕鑿囦笉鏄鐗?],"nightMarketCase":"鍙戦潰闈犻叺姣嶈弻鈥斺€斿垎瑙ｈ憽钀勭硸浜х敓CO鈧備娇闈㈠洟鑶ㄨ儉銆傝厫涔?姣涢湁鍙戦叺","gameDesign":"銆屽彂閰甸鍝佸伐鍧娿€嶏細閫夋嫨椋熸潗+寰敓鐗╋紝鍒朵綔鍙戦叺椋熷搧锛堥澶?閰稿ザ/閰辨补/钁¤悇閰掞級","gameType":"choice-simulate","free":false,"quiz":[{"type":"mc","q":"鐪熻弻涓庣粏鑿屾渶鏈川鐨勫尯鍒槸浠€涔堬紵","options":["澶у皬涓嶅悓","鐪熻弻鏈夌湡姝ｇ殑缁嗚優鏍革紙鐪熸牳锛夛紝缁嗚弻娌℃湁","鐪熻弻浼氬姩","缁嗚弻鏇村ぇ"],"answer":1,"explanation":"鐪熻弻鏄湡鏍哥敓鐗╋紝鏈夋垚褰㈢殑缁嗚優鏍革紱缁嗚弻鏄師鏍哥敓鐗╋紝娌℃湁鐪熸鐨勭粏鑳炴牳銆?},{"type":"mc","q":"铇戣弴灞炰簬浠€涔堢敓鐗╃被缇わ紵","options":["妞嶇墿","鍔ㄧ墿","鐪熻弻","缁嗚弻"],"answer":2,"explanation":"铇戣弴灞炰簬鐪熻弻锛堝ぇ鍨嬬湡鑿岋級锛屼笉鏄鐗┾€斺€旂湡鑿屾病鏈夊彾缁夸綋锛屼笉鑳借繘琛屽厜鍚堜綔鐢ㄣ€?}]},{"id":"bio-2-3-4","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗笁绔?寰敓鐗?,"section":"绗洓鑺?鐥呮瘨","page":"P114-119","category":"bio","keypoints":["鐥呮瘨鏃犵粏鑳炵粨鏋?铔嬬櫧璐ㄥ澹?DNA鎴朢NA","蹇呴』瀵勭敓娲荤粏鑳?,"浼婁竾璇哄か鏂熀鍙戠幇鐑熻崏鑺卞彾鐥呮瘨","鍒嗙被锛氬姩鐗?妞嶇墿/缁嗚弻鐥呮瘨锛堝櫖鑿屼綋锛?,"HIV渚靛叆缁嗚優","鏈夌泭锛氬櫖鑿屼綋娌荤枟"],"examPoints":["鐥呮瘨缁撴瀯鐗圭偣","涓庣粏鑳炲叧绯?,"鍣弻浣?,"鍙戠幇鍙?],"textbookColumns":["銆岃祫鏂欏垎鏋愩€嶇儫鑽夎姳鍙剁梾姣掑彂鐜板彶","銆岀粌涔犮€嶇梾姣掍笉鑳界嫭绔嬬敓娲?],"nightMarketCase":"鐥呮瘨姣旂粏鑿屾洿灏忥紝鑲夌溂瀹屽叏鐪嬩笉瑙佲€斺€旀礂鎵嬫槸闃插尽鐥呮瘨鐨勭涓€閬撻槻绾?,"gameDesign":"銆岀梾姣掑叆渚垫ā鎷熴€嶏細鎾斁鐥呮瘨璇嗗埆鈫掓敞鍏モ啋澶嶅埗鈫掗噴鏀惧姩鐢?,"gameType":"video-quiz","free":false,"quiz":[{"type":"mc","q":"鐥呮瘨鐨勭粨鏋勭粍鎴愭槸浠€涔堬紵","options":["缁嗚優澹?缁嗚優鑶?,"铔嬬櫧璐ㄥ澹?閬椾紶鐗╄川锛圖NA鎴朢NA锛?,"缁嗚優鏍?缁嗚優璐?,"鍙湁铔嬬櫧璐?],"answer":1,"explanation":"鐥呮瘨娌℃湁缁嗚優缁撴瀯锛屼粎鐢辫泲鐧借川澶栧３鍜屽唴閮ㄧ殑閬椾紶鐗╄川缁勬垚銆?},{"type":"mc","q":"鐥呮瘨鑳界嫭绔嬬敓娲诲悧锛?,"options":["鑳?,"涓嶈兘锛屽繀椤诲瘎鐢熷湪娲荤粏鑳炰腑","鏈夋椂鑳芥湁鏃朵笉鑳?,"鍦ㄧ┖姘斾腑鑳?],"answer":1,"explanation":"鐥呮瘨涓嶈兘鐙珛鐢熸椿锛屽繀椤诲瘎鐢熷湪娲荤粏鑳炰腑鎵嶈兘杩涜澶嶅埗銆?}]},{"id":"bio-2-4-1","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗洓绔?鐢熺墿鍒嗙被鐨勬柟娉?,"section":"绗竴鑺?灏濊瘯瀵圭敓鐗╄繘琛屽垎绫?,"page":"P122-127","category":"bio","keypoints":["鍒嗙被渚濇嵁锛氬舰鎬佺粨鏋?鐢熺悊鍔熻兘/鐢熸畺鏂瑰紡","妞嶇墿鎸夋湁鏃犵瀛愨啋鏈夋棤鏋滅毊鍒嗙被","鍔ㄧ墿鎸夋湁鏃犺剨鏌扁啋鍏蜂綋鐗瑰緛鍒嗙被","妫€绱㈣〃锛堜簩姝у垎绫绘硶锛?,"銆婃湰鑽夌翰鐩€嬬翰鐩垎绫讳綋绯?],"examPoints":["鍒嗙被鏂规硶","妫€绱㈣〃浣跨敤","鍒嗙被渚濇嵁"],"textbookColumns":["銆岃瀵熉锋€濊€冦€嶅妞嶇墿鍜屽姩鐗╄繘琛屽垎绫?,"銆岀粌涔犮€嶆绱㈣〃濉┖"],"nightMarketCase":"澶滃競椋熸潗鑷劧鍒嗙被锛氭鐗╋紙钄彍/姘存灉锛塿s鍔ㄧ墿锛堥奔/鑲夛級锛屽啀缁嗗垎鍒扮","gameDesign":"銆屽垎绫绘爲鎸戞垬銆嶏細閫愮骇鐐瑰嚮鍒嗙被浠庣晫鍒扮锛岄檮妫€绱㈣〃浜掑姩濉啓","gameType":"click-tree","free":false,"quiz":[{"type":"mc","q":"浜屾鍒嗙被娉曪紙妫€绱㈣〃锛夌殑鐗圭偣鏄粈涔堬紵","options":["涓€娆″彧鑳介€変竴绉?,"姣忔鍦ㄤ袱涓绔嬬壒寰佷腑閫夋嫨涓€涓?,"闅忔剰閫夋嫨","鎸夐鑹插垎绫?],"answer":1,"explanation":"妫€绱㈣〃姣忔鎻愪緵涓や釜瀵圭珛鐗瑰緛锛岄€夋嫨鍏朵腑涓€涓户缁紝鐩村埌纭畾鐢熺墿绫诲埆銆?},{"type":"fill","q":"鐢熺墿鍒嗙被鐨?涓瓑绾т粠澶у埌灏忔槸锛氱晫鈫掗棬鈫掔翰鈫掔洰鈫抇__鈫掑睘鈫掔","answer":"绉?,"hint":"'绉?鎺掑湪鐩箣鍚庛€佸睘涔嬪墠","explanation":"鍒嗙被绛夌骇锛氱晫鈫掗棬鈫掔翰鈫掔洰鈫掔鈫掑睘鈫掔锛屽叡7绾с€?}]},{"id":"bio-2-4-2","unit":"绗簩鍗曞厓 澶氱澶氭牱鐨勭敓鐗?,"chapter":"绗洓绔?鐢熺墿鍒嗙被鐨勬柟娉?,"section":"绗簩鑺?浠庣鍒扮晫","page":"P128-134","category":"bio","keypoints":["鍒嗙被绛夌骇锛堥珮鈫掍綆锛夛細鐣屸啋闂ㄢ啋绾测啋鐩啋绉戔啋灞炩啋绉?,"绉嶆槸鏈€鍩烘湰鍒嗙被鍗曚綅","绛夌骇瓒婇珮鍏卞悓鐗瑰緛瓒婂皯","鏋楀鍙屽悕娉曪紙灞炲悕+绉嶅悕锛?,"鐙肩殑鍒嗙被锛氬姩鐗╃晫鈫掕剨绱㈠姩鐗╅棬鈫掑摵涔崇翰鈫掗鑲夌洰鈫掔姮绉戔啋鐘睘鈫掔嫾绉?],"examPoints":["鍒嗙被绛夌骇鍏崇郴","鍙屽悕娉?,"鐙肩殑鍒嗙被瀹炰緥"],"textbookColumns":["銆岃瀵熉锋€濊€冦€嶇嫾鐨勫垎绫荤瓑绾у浘绀?],"nightMarketCase":"椴奔鍜岄菠楸煎悓灞為菠绉戜笉鍚岀鈥斺€斾翰缂樺叧绯昏繎浣嗕笉鍚岀","gameDesign":"銆屾棌璋辫繛绾裤€嶏細灞曠ず鍒嗙被妗嗭紝瀛︾敓杩炵嚎瀵瑰簲鐢熺墿锛屽畬鎴愬悗鏄剧ず杩涘寲鏍?,"gameType":"drag-connect","free":false,"quiz":[{"type":"mc","q":"鐢熺墿鍒嗙被鐨勫熀鏈崟浣嶆槸锛?,"options":["鐣?,"闂?,"灞?,"绉?],"answer":3,"explanation":"绉嶏紙鐗╃锛夋槸鐢熺墿鍒嗙被鐨勬渶鍩烘湰鍗曚綅锛屽悓绉嶇殑鐢熺墿鍙互鑷劧浜ら厤浜х敓鍙偛鍚庝唬銆?},{"type":"mc","q":"鏋楀鍙屽悕娉曚腑鐨勫鍚嶇敱鍝袱閮ㄥ垎缁勬垚锛?,"options":["鐣屽悕+闂ㄥ悕","灞炲悕+绉嶅悕","绉戝悕+灞炲悕","鐩悕+绉戝悕"],"answer":1,"explanation":"鏋楀鍙屽悕娉曪細瀛﹀悕=灞炲悕+绉嶅悕锛屽Homo sapiens锛堟櫤浜猴級銆?}]}];
+const CHEM_DATA = [{"id":"chem-0","unit":"缁","chapter":"","section":"鍖栧浣夸笘鐣屽彉寰楁洿鍔犵粴涓藉褰?,"page":"P1-6","category":"chem","keypoints":["鍖栧鐮旂┒鐗╄川缁勬垚/缁撴瀯/鎬ц川/杞寲鍙婂簲鐢?,"浠庡垎瀛愬眰娆¤璇嗙墿璐?,"鍙や唬鍖栧瀹炶返锛氶櫠鍣?闈掗摐鍣?閰块厭/閫犵焊/鐏嵂","鎷夌摝閿?閬撳皵椤?闃夸紡鍔犲痉缃?闂ㄦ嵎鍒楀か","鎴戝浗鎴愬氨锛氱粨鏅剁墰鑳板矝绱?绋€鍦熷垎绂?纰冲寲纭呭弽灏勯暅"],"examPoints":["鍖栧瀹氫箟","鍖栧鍙查噸瑕佷汉鐗?],"textbookColumns":["銆岃祫鏂欍€嶆柊鐭冲櫒褰╅櫠鈫掑晢闈掗摐鈫掍笢姹夐吙閰掆啋銆婂ぉ宸ュ紑鐗┿€?],"nightMarketCase":"澶滃競灏辨槸鍖栧瀹為獙瀹わ細鐑や覆锛堢噧鐑э級銆佽厡鍒讹紙娓楅€忥級銆佸彂闈紙鍙戦叺锛夈€侀ギ鏂欙紙CO鈧傛憾瑙ｏ級","gameDesign":"銆屽甯傚寲瀛︽壘鑼€嶏細缁欏嚭澶滃競鍦烘櫙锛岄檺鏃剁偣鍑诲摢浜涙槸鍖栧鍙樺寲/鐗╃悊鍙樺寲","gameType":"click-timer","free":true,"equations":[],"quiz":[{"type":"mc","q":"鍖栧鐮旂┒鐨勬牳蹇冨眰娆℃槸浠€涔堬紵","options":["瀹忚鐗╀綋","鍒嗗瓙鍜屽師瀛愬眰娆?,"澶╀綋灞傛","鐢熸€佸眰娆?],"answer":1,"explanation":"鍖栧鏄粠鍒嗗瓙銆佸師瀛愬眰娆′笂鐮旂┒鐗╄川鐨勭粍鎴愩€佺粨鏋勩€佹€ц川鍙婂叾鍙樺寲瑙勫緥鐨勭瀛︺€?},{"type":"mc","q":"浠ヤ笅鍝綅绉戝瀹舵彁鍑轰簡鍏冪礌鍛ㄦ湡寰嬶紵","options":["鎷夌摝閿?,"閬撳皵椤?,"闂ㄦ嵎鍒楀か","闃夸紡鍔犲痉缃?],"answer":2,"explanation":"闂ㄦ嵎鍒楀か鍙戠幇浜嗗厓绱犲懆鏈熷緥骞剁紪鍒朵簡绗竴寮犲厓绱犲懆鏈熻〃銆?}]},{"id":"chem-1-1","unit":"绗竴鍗曞厓 璧拌繘鍖栧涓栫晫","chapter":"璇鹃1","section":"鐗╄川鐨勫彉鍖栧拰鎬ц川","page":"P8-13","category":"chem","keypoints":["鐗╃悊鍙樺寲锛氭棤鏂扮墿璐ㄧ敓鎴?,"鍖栧鍙樺寲锛氭湁鏂扮墿璐ㄧ敓鎴愶紙鍙戝厜/鏀剧儹/姘旀场/棰滆壊鍙樺寲/娌夋穩锛?,"鐗╃悊/鍖栧鎬ц川鏄浐鏈夊睘鎬?],"examPoints":["鐗╃悊vs鍖栧鍙樺寲鍒ゆ柇","鐗╃悊vs鍖栧鎬ц川"],"textbookColumns":["銆屽疄楠?-1銆嶆按鐨勬哺鑵惧拰鑳嗙熅鐮旂","銆屽疄楠?-2銆嶇煶鐏扮煶涓庣洂閰稿弽搴?],"nightMarketCase":"鐢熻倝鈫掕鑹?缇庢媺寰峰弽搴旓紙鍖栧鍙樺寲锛夛紱鏈ㄧ偔鍒囧壊=鐗╃悊鍙樺寲锛涚偔鐏噧鐑?鍖栧鍙樺寲","gameDesign":"銆屽彉鍖栧垎绫诲揩闂揩绛斻€嶏細闄愭椂3绉掑垽鏂墿鐞?鍖栧鍙樺寲锛岃繛瀵瑰姞閫?,"gameType":"click-timer","equations":[],"free":true,"quiz":[{"type":"mc","q":"浠ヤ笅鍝釜鏄寲瀛﹀彉鍖栵紵","options":["鍐拌瀺鍖栨垚姘?,"閾佺敓閿?,"鏈ㄦ鎶樻柇","椋熺洂婧朵簬姘?],"answer":1,"explanation":"閾佺敓閿堢敓鎴愪簡鏂扮墿璐紙姘у寲閾侊級锛屽睘浜庡寲瀛﹀彉鍖栵紱鍏朵綑閮芥病鏈夋柊鐗╄川鐢熸垚銆?},{"type":"sort","q":"璇峰皢浠ヤ笅杩囩▼鍒嗙被涓虹墿鐞嗗彉鍖栨垨鍖栧鍙樺寲","items":["閾佺敓閿?鍖栧)","姘寸粨鍐?鐗╃悊)","铚＄儧鐕冪儳(鍖栧)","鐜荤拑鐮寸(鐗╃悊)","椋熺墿鑵愯触(鍖栧)","椋熺洂婧惰В(鐗╃悊)"],"explanation":"鐢熸垚鏂扮墿璐ㄧ殑鏄寲瀛﹀彉鍖栵紝娌℃湁鐢熸垚鏂扮墿璐ㄧ殑鏄墿鐞嗗彉鍖栥€傛敞鎰忔嫭鍙峰唴鏄纭瓟妗堬紒"}]},{"id":"chem-1-2","unit":"绗竴鍗曞厓 璧拌繘鍖栧涓栫晫","chapter":"璇鹃2","section":"鍖栧瀹為獙涓庣瀛︽帰绌?,"page":"P14-25","category":"chem","keypoints":["绉戝鎺㈢┒6姝ワ細鎻愬嚭闂鈫掔寽鎯冲亣璁锯啋鍒跺畾璁″垝鈫掕繘琛屽疄楠屸啋鏀堕泦璇佹嵁鈫掑緱鍑虹粨璁?,"甯哥敤浠櫒锛氳瘯绠?鐑ф澂/閰掔簿鐏?閲忕瓛/鑳跺ご婊寸/閾佹灦鍙?,"閰掔簿鐏鐒板姞鐑€佺伅甯界唲鐏?,"閲忕瓛璇绘暟骞宠","绂佹鍝佸皾銆佹墖闂?],"examPoints":["浠櫒鍚嶇О鍜屼娇鐢?,"鎺㈢┒姝ラ","瀹夊叏鎿嶄綔"],"textbookColumns":["銆屽疄楠?-3銆嶈湣鐑涚噧鐑ф帰绌?,"銆屾帰绌躲€嶅惛鍏ヤ笌鍛煎嚭姘斾綋姣旇緝"],"nightMarketCase":"澶滃競鍘ㄥ笀=鍖栧鎺㈢┒鑰咃細鐪嬬伀鐒伴鑹茬煡鐕冩枡绉嶇被锛屽姞鐩栫伃鐏?闅旂粷姘ф皵","gameDesign":"銆岃櫄鎷熷疄楠屽銆嶏細鎷栨嫿缁勮姝ｇ‘瀹為獙瑁呯疆锛岄敊璇搷浣滆Е鍙戝畨鍏ㄨ鎶?,"gameType":"drag-assembly","equations":[],"free":true,"quiz":[{"type":"mc","q":"閰掔簿鐏姞鐑簲璇ョ敤鍝釜閮ㄥ垎锛?,"options":["鐒板績","鍐呯劙","澶栫劙","浠讳綍閮ㄥ垎"],"answer":2,"explanation":"澶栫劙娓╁害鏈€楂橈紝鍔犵儹鏃跺簲浣跨敤澶栫劙銆傜劙蹇冩俯搴︽渶浣庛€?},{"type":"fill","q":"閲忕瓛璇绘暟鏃惰绾垮簲涓巁__娑查潰___淇濇寔姘村钩","answer":"鍑?鏈€浣庡","hint":"璇绘恫浣撲綋绉骞宠","explanation":"閲忕瓛璇绘暟鏃惰绾垮簲涓庡嚬娑查潰鏈€浣庡淇濇寔姘村钩锛屼刊瑙嗗亸澶с€佷话瑙嗗亸灏忋€?}]},{"id":"chem-2-1","unit":"绗簩鍗曞厓 绌烘皵鍜屾哀姘?,"chapter":"璇鹃1","section":"鎴戜滑鍛ㄥ洿鐨勭┖姘?,"page":"P30-37","category":"chem","keypoints":["绌烘皵缁勬垚锛堜綋绉垎鏁帮級锛歂鈧?8%/O鈧?1%/绋€鏈夋皵浣?.94%/CO鈧?.03%","绾噣鐗﹙s娣峰悎鐗?,"绾㈢７鐕冪儳娴嬪畾O鈧傚惈閲忥紙姘撮潰涓婂崌绾?/5锛?],"examPoints":["绌烘皵鎴愬垎鍙婁綋绉垎鏁?,"绾噣鐗╀笌娣峰悎鐗?,"娴嬪畾O鈧傚惈閲忓疄楠?],"textbookColumns":["銆屽疄楠?-1銆嶇孩纾风噧鐑ф祴O鈧傚惈閲?,"銆岀粌涔犮€嶆爱姘斿寲瀛︽€ц川涓嶆椿娉?],"nightMarketCase":"鐐伀榧撻鏈哄師鐞嗭細澧炲姞O鈧備緵缁欙紙鍗犵┖姘斾粎21%锛夛紝O鈧傝秺澶氱噧鐑ц秺鏃?,"gameDesign":"銆岀┖姘旀垚鍒嗚皟閰嶅憳銆嶏細淇敼N鈧?O鈧?CO鈧傛瘮渚嬶紝瑙傚療瀵硅湣鐑涚伀鐒扮殑褰卞搷","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"绌烘皵涓綋绉垎鏁版渶澶х殑姘斾綋鏄紵","options":["姘ф皵","姘皵","浜屾哀鍖栫⒊","绋€鏈夋皵浣?],"answer":1,"explanation":"姘皵绾﹀崰绌烘皵浣撶Н鐨?8%锛屾哀姘旂害21%锛屾爱姘旀槸鏈€澶氱殑銆?},{"type":"fill","q":"绾㈢７鐕冪儳娴嬪畾姘ф皵瀹為獙锛屾按闈笂鍗囩害___","answer":"1/5","hint":"姘ф皵鍗犵┖姘斾綋绉殑澶氬皯锛?,"explanation":"姘ф皵绾﹀崰绌烘皵浣撶Н鐨?/5锛屾墍浠ョ孩纾锋秷鑰楀畬姘ф皵鍚庢按闈笂鍗囩害1/5銆?}]},{"id":"chem-2-2","unit":"绗簩鍗曞厓 绌烘皵鍜屾哀姘?,"chapter":"璇鹃2","section":"姘ф皵","page":"P38-42","category":"chem","keypoints":["C+O鈧傗啋CO鈧傦紙鐧藉厜锛?,"S+O鈧傗啋SO鈧傦紙钃濈传鑹茬伀鐒帮級","3Fe+2O鈧傗啋Fe鈧僌鈧勶紙鐏槦鍥涘皠锛?,"4P+5O鈧傗啋2P鈧侽鈧?,"鍖栧悎鍙嶅簲=澶氬彉涓€"],"examPoints":["O鈧傜殑鍖栧鎬ц川","鐗╄川鍦∣鈧備腑鐕冪儳鐜拌薄","鍖栧悎鍙嶅簲"],"textbookColumns":["銆屽疄楠?-2銆嶆湪鐐?纭?閾佷笣鍦∣鈧備腑鐕冪儳","銆岀粌涔犮€嶉搧涓濈噧鐑у簳閮ㄩ摵娌欓槻鐐歌"],"nightMarketCase":"閾佺浼氱敓閿堬細閾佸湪娼箍绌烘皵涓紦鎱㈡哀鍖栵紙4Fe+3O鈧傗啋2Fe鈧侽鈧冿級","gameDesign":"銆屾哀姘旀祿搴﹀疄楠屽彴銆嶏細璋冭妭姘ф皵娴撳害0%-100%锛岃瀵熺噧鐑ч€熷害鍙樺寲","gameType":"slider-simulate","equations":["C+O鈧?CO鈧?,"S+O鈧?SO鈧?,"3Fe+2O鈧?Fe鈧僌鈧?,"4P+5O鈧?2P鈧侽鈧?],"free":false,"quiz":[{"type":"mc","q":"閾佷笣鍦ㄦ哀姘斾腑鐕冪儳鐨勭幇璞℃槸锛?,"options":["鍙戝嚭鐧藉厜","鐏槦鍥涘皠锛岀敓鎴愰粦鑹插浐浣?,"浜х敓钃濈传鑹茬伀鐒?,"浜х敓澶ч噺鐧界儫"],"answer":1,"explanation":"閾佷笣鍦ㄦ哀姘斾腑鍓х儓鐕冪儳锛岀伀鏄熷洓灏勶紝鐢熸垚榛戣壊鐨勫洓姘у寲涓夐搧锛團e鈧僌鈧勶級銆?},{"type":"fill","q":"鍖栧悎鍙嶅簲鐨勭壒鐐规槸'澶氬彉___'","answer":"涓€","hint":"涓ょ鎴栧绉嶇墿璐ㄥ彉鎴愪竴绉?,"explanation":"鍖栧悎鍙嶅簲鏄敱涓ょ鎴栦袱绉嶄互涓婄墿璐ㄧ敓鎴愪竴绉嶇墿璐ㄧ殑鍙嶅簲銆?}]},{"id":"chem-2-3","unit":"绗簩鍗曞厓 绌烘皵鍜屾哀姘?,"chapter":"璇鹃3","section":"鍒跺彇姘ф皵","page":"P43-49","category":"chem","keypoints":["2KMnO鈧勨啋K鈧侻nO鈧?MnO鈧?O鈧傗啈锛堝姞鐑級","2H鈧侽鈧傗啋2H鈧侽+O鈧傗啈锛圡nO鈧傚偓鍖栵級","鍌寲鍓傦細鏀瑰彉鍙嶅簲閫熺巼浣嗚嚜韬川閲忓拰鍖栧鎬ц川涓嶅彉","宸ヤ笟鍒禣鈧傦細娑插寲绌烘皵鍒嗛","鏀堕泦锛氭帓姘存硶/鍚戜笂鎺掔┖姘旀硶"],"examPoints":["鍒禣鈧傛柟娉曞拰瑁呯疆","鍌寲鍓傛蹇?,"鏀堕泦鏂规硶"],"textbookColumns":["銆屾帰绌躲€嶅偓鍖栧墏锛圡nO鈧?Fe鈧侽鈧冨姣旓級","銆岀粌涔犮€嶅偓鍖栧墏涓€鍙樹袱涓嶅彉"],"nightMarketCase":"鍙屾哀姘存秷姣掔殑娉℃场锛氳娑蹭腑鐨勯叾鍌寲H鈧侽鈧傚垎瑙ｅ嚭O鈧傛皵娉?,"gameDesign":"銆屽埗姘ф皵瑁呯疆鎷煎浘銆嶏細缁勮姝ｇ‘瀹為獙瑁呯疆锛岄€夋嫨姝ｇ‘鏀堕泦鏂规硶","gameType":"drag-assembly","equations":["2KMnO鈧勨啋K鈧侻nO鈧?MnO鈧?O鈧傗啈","2H鈧侽鈧傗啋2H鈧侽+O鈧傗啈"],"free":false,"quiz":[{"type":"mc","q":"鍌寲鍓傚湪鍙嶅簲鍓嶅悗涓嶅彉鐨勬槸浠€涔堬紵","options":["璐ㄩ噺鍜屽寲瀛︽€ц川","璐ㄩ噺鍜岀墿鐞嗘€ц川","鍙川閲忎笉鍙?,"鍙寲瀛︽€ц川涓嶅彉"],"answer":0,"explanation":"鍌寲鍓傚湪鍙嶅簲鍓嶅悗璐ㄩ噺鍜屽寲瀛︽€ц川閮戒笉鍙橈紝鍗充竴鍙樹袱涓嶅彉鈥斺€旀敼鍙樺弽搴旈€熺巼锛岃川閲忓拰鍖栧鎬ц川涓嶅彉銆?},{"type":"mc","q":"鏀堕泦姘ф皵鍙互鐢ㄤ粈涔堟柟娉曪紵","options":["鍙兘鐢ㄦ帓姘存硶","鍙兘鐢ㄦ帓绌烘皵娉?,"鎺掓按娉曟垨鍚戜笂鎺掔┖姘旀硶","鍚戜笅鎺掔┖姘旀硶"],"answer":2,"explanation":"姘ф皵涓嶆槗婧朵簬姘村彲鐢ㄦ帓姘存硶锛屽瘑搴︽瘮绌烘皵澶у彲鐢ㄥ悜涓婃帓绌烘皵娉曘€?}]},{"id":"chem-3-1","unit":"绗笁鍗曞厓 鐗╄川鏋勬垚鐨勫ゥ绉?,"chapter":"璇鹃1","section":"鍒嗗瓙鍜屽師瀛?,"page":"P56-64","category":"chem","keypoints":["鍒嗗瓙=淇濇寔鐗╄川鍖栧鎬ц川鐨勬渶灏忕矑瀛?,"鍘熷瓙=鍖栧鍙樺寲涓殑鏈€灏忕矑瀛?,"鍒嗗瓙鐗规€э細涓嶆柇杩愬姩/鍒嗗瓙闂存湁闂撮殧锛堢儹鑳€鍐风缉锛?,"鍖栧鍙樺寲寰瀹炶川锛氬垎瀛愨啋鍘熷瓙鈫掗噸鏂扮粍鍚堚啋鏂板垎瀛?],"examPoints":["鍒嗗瓙/鍘熷瓙姒傚康鍜岀壒鎬?,"鍖栧鍙樺寲寰鏈川"],"textbookColumns":["銆屽疄楠?-1銆嶅搧绾㈡墿鏁?,"銆屾帰绌躲€嶅垎瀛愯繍鍔紙姘ㄦ按+閰氶厼锛?],"nightMarketCase":"鐑ら奔棣欏懗椋樿繙锛氶鍛冲垎瀛愪笉鏂繍鍔ㄦ墿鏁?,"gameDesign":"銆屽垎瀛愯繍鍔ㄨ拷韪父鎴忋€嶏細璋冭妭娓╁害婊戝潡锛岃瀵熼鍛冲垎瀛愭墿鏁?,"gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"淇濇寔浜屾哀鍖栫⒊鍖栧鎬ц川鐨勬渶灏忕矑瀛愭槸锛?,"options":["纰冲師瀛?,"姘у師瀛?,"浜屾哀鍖栫⒊鍒嗗瓙","纰冲拰姘у師瀛?],"answer":2,"explanation":"鍒嗗瓙鏄繚鎸佺墿璐ㄥ寲瀛︽€ц川鐨勬渶灏忕矑瀛愶紝CO鈧傜殑鍖栧鎬ц川鐢盋O鈧傚垎瀛愪繚鎸併€?},{"type":"mc","q":"鍖栧鍙樺寲鐨勫井瑙傛湰璐ㄦ槸浠€涔堬紵","options":["鍒嗗瓙鍙樺ぇ","鍒嗗瓙鍒嗚涓哄師瀛愶紝鍘熷瓙閲嶆柊缁勫悎","鍘熷瓙鍒嗚","鐗╄川娑堝け"],"answer":1,"explanation":"鍖栧鍙樺寲涓紝鍒嗗瓙鍒嗚鎴愬師瀛愶紝鍘熷瓙鍐嶉噸鏂扮粍鍚堟垚鏂扮殑鍒嗗瓙銆?}]},{"id":"chem-3-2","unit":"绗笁鍗曞厓 鐗╄川鏋勬垚鐨勫ゥ绉?,"chapter":"璇鹃2","section":"鍘熷瓙缁撴瀯","page":"P65-71","category":"chem","keypoints":["鍘熷瓙=鍘熷瓙鏍革紙璐ㄥ瓙+涓瓙锛?鐢靛瓙","璐ㄥ瓙鏁?鏍稿鐢靛瓙鏁?鍘熷瓙搴忔暟","鏍稿鐢靛瓙鍒嗗眰鎺掑竷锛圞LMN鈥︼級","鏈€澶栧眰鐢靛瓙鏁板喅瀹氬寲瀛︽€ц川","鐩稿鍘熷瓙璐ㄩ噺鈮堣川瀛愭暟+涓瓙鏁?],"examPoints":["鍘熷瓙缁撴瀯","璐ㄥ瓙/涓瓙/鐢靛瓙鍏崇郴","鐩稿鍘熷瓙璐ㄩ噺"],"textbookColumns":["銆岃祫鏂欍€嶅紶闈掕幉娴嬬浉瀵瑰師瀛愯川閲?,"銆岀粌涔犮€嶅師瀛愮粨鏋勭ず鎰忓浘缁樺埗"],"nightMarketCase":"椋熺洂鐨勫師瀛愬瘑鐮侊細Na(11鍙?鏈€澶栧眰1e鈦绘槗澶?鈫扤a鈦猴紝Cl(17鍙?鏈€澶栧眰7e鈦绘槗寰?鈫扖l鈦?,"gameDesign":"銆屽師瀛愮粨鏋勬惌绉湪銆嶏細缁欏畾璐ㄥ瓙鏁?涓瓙鏁帮紝鎼缓鍘熷瓙妯″瀷","gameType":"drag-assembly","equations":[],"free":false,"quiz":[{"type":"mc","q":"鍦ㄥ師瀛愪腑锛屼笌璐ㄥ瓙鏁扮浉绛夌殑鏄紵","options":["涓瓙鏁?,"鏍稿鐢靛瓙鏁?,"鐩稿鍘熷瓙璐ㄩ噺","鏈€澶栧眰鐢靛瓙鏁?],"answer":1,"explanation":"鍘熷瓙涓川瀛愭暟=鏍稿鐢靛瓙鏁?鏍哥數鑽锋暟=鍘熷瓙搴忔暟銆?},{"type":"fill","q":"閽狅紙Na锛夌殑鏈€澶栧眰鏈塤__涓數瀛愶紝瀹冨鏄揰__锛堝～寰楁垨澶憋級鐢靛瓙","answer":"1,澶?,"hint":"Na鏄?1鍙峰厓绱狅紝鐢靛瓙鎺掑竷2-8-1","explanation":"Na鏈€澶栧眰1涓數瀛愶紝瀹规槗澶卞幓鍙樹负Na鈦猴紝杈惧埌绋冲畾缁撴瀯銆?}]},{"id":"chem-3-3","unit":"绗笁鍗曞厓 鐗╄川鏋勬垚鐨勫ゥ绉?,"chapter":"璇鹃3","section":"鍏冪礌","page":"P72-77","category":"chem","keypoints":["鍏冪礌=璐ㄥ瓙鏁扮浉鍚岀殑涓€绫诲師瀛愭€荤О","鍏冪礌鍛ㄦ湡琛紙妯帓=鍛ㄦ湡/绔栨帓=鏃忥級","鍦板３鍚噺鍓?锛歄>Si>Al>Fe","甯歌鍏冪礌绗﹀彿20涓?,"闂ㄦ嵎鍒楀か鍙戠幇鍛ㄦ湡寰?],"examPoints":["鍏冪礌瀹氫箟","鍏冪礌绗﹀彿","鍦板３鍚噺鎺掑簭","鍛ㄦ湡琛ㄧ粨鏋?],"textbookColumns":["銆岀瀛β锋妧鏈风ぞ浼氥€嶉棬鎹峰垪澶笌鍏冪礌鍛ㄦ湡琛?],"nightMarketCase":"閾侀攨琛ラ搧鐨勭湡鐩革細Fe虏鈦虹瀛愭槸鐢熺墿蹇呴渶寰噺鍏冪礌","gameDesign":"銆屽厓绱犲懆鏈熻〃闂叧銆嶏細鐐瑰嚮鏍煎瓙寮瑰嚭澶滃競鐗╁搧鍏宠仈","gameType":"click-learn","equations":[],"free":false,"quiz":[{"type":"mc","q":"鍦板３涓惈閲忔渶楂樼殑鍏冪礌鏄紵","options":["纭?Si)","閾?Al)","姘?O)","閾?Fe)"],"answer":2,"explanation":"鍦板３涓厓绱犲惈閲忔帓搴忥細O>Si>Al>Fe>Ca锛屾哀鏄惈閲忔渶楂樼殑鍏冪礌銆?},{"type":"mc","q":"鍏冪礌鍛ㄦ湡琛ㄤ腑妯帓鍙粈涔堬紵","options":["鏃?,"鍛ㄦ湡","琛?,"鍒?],"answer":1,"explanation":"鍏冪礌鍛ㄦ湡琛ㄦí鎺掑彨鍛ㄦ湡锛堝叡7涓懆鏈燂級锛岀珫鎺掑彨鏃忥紙鍏?8涓棌锛夈€?}]},{"id":"chem-4-1","unit":"绗洓鍗曞厓 鑷劧鐣岀殑姘?,"chapter":"璇鹃1","section":"姘磋祫婧愬強鍏跺埄鐢?,"page":"P82-90","category":"chem","keypoints":["鍦扮悆娣℃按浠?.53%","纭按vs杞按锛堝惈閽欓晛鍖栧悎鐗╋級","鍑€姘存柟娉曪細娌夋穩鈫掕繃婊も啋鍚搁檮鈫掓秷姣?,"娲绘€х偔鍚搁檮鑹茬礌寮傚懗","钂搁鍙緱绾按"],"examPoints":["姘磋祫婧愮幇鐘?,"纭按杞寲","鍑€姘存柟娉曟楠?],"textbookColumns":["銆屽疄楠?-1銆嶈繃婊ゆ搷浣?,"銆屽疄楠?-2銆嶇‖姘存楠岋紙鑲ョ殏姘达級"],"nightMarketCase":"澶滃競娲楃/娲楅鏉?鍒堕ギ鏂欐秷鑰楀ぇ閲忔贰姘淬€傜‖姘村湴鍖烘礂纰楁槗鐣欐按鍨?,"gameDesign":"銆岃妭姘村喅绛栨父鎴忋€嶏細缁忚惀铏氭嫙澶滃競鎽婏紝璁＄畻鑰楁按閲?,"gameType":"choice-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"纭按鍜岃蒋姘寸殑鍖哄埆鏄粈涔堬紵","options":["棰滆壊涓嶅悓","鏄惁鍚緝澶氶挋闀佸寲鍚堢墿","娓╁害涓嶅悓","瀵嗗害涓嶅悓"],"answer":1,"explanation":"纭按鍚湁杈冨鍙憾鎬ч挋闀佸寲鍚堢墿锛岃蒋姘翠笉鍚垨鍚緝灏戙€傝偉鐨傛按妫€楠屸€斺€旀场娌皯鐨勬槸纭按銆?},{"type":"sort","q":"璇锋帓鍒楀噣姘寸殑姝ｇ‘姝ラ","items":["娌夋穩","杩囨护","鍚搁檮","娑堟瘨"],"explanation":"鍑€姘存楠わ細娌夋穩锛堥櫎鍘诲ぇ棰楃矑锛夆啋杩囨护锛堥櫎鍘诲皬棰楃矑锛夆啋鍚搁檮锛堥櫎鑹茬礌寮傚懗锛夆啋娑堟瘨锛堟潃鑿岋級銆?}]},{"id":"chem-4-2","unit":"绗洓鍗曞厓 鑷劧鐣岀殑姘?,"chapter":"璇鹃2","section":"姘寸殑缁勬垚","page":"P91-95","category":"chem","keypoints":["鐢佃В姘达細2H鈧侽鈫?H鈧傗啈+O鈧傗啈","姝ｆ瀬O鈧傦紙灏戯級/璐熸瀬H鈧傦紙澶氾級锛屼綋绉瘮1:2","H鈧傜噧鐑э細2H鈧?O鈧傗啋2H鈧侽","姘寸敱姘㈡哀鍏冪礌缁勬垚"],"examPoints":["鐢佃В姘村疄楠岀幇璞″拰浣撶Н姣?,"姘寸殑缁勬垚"],"textbookColumns":["銆屽疄楠?-3銆嶇數瑙ｆ按","銆岃祫鏂欍€嶆阿姘旂殑鎬ц川鍜岀敤閫?],"nightMarketCase":"姘㈣兘婧愭槸鏈潵澶滃競鐕冩枡锛氱數瑙ｆ按鍒舵阿锛屾阿姘旂噧鐑т骇鐢熸按鏃犳薄鏌?,"gameDesign":"銆岀數瑙ｆ按瀹為獙銆嶏細璋冭妭鐢靛帇瑙傚療姝ｈ礋鏋佹皵娉′骇鐢?,"gameType":"slider-simulate","equations":["2H鈧侽=2H鈧傗啈+O鈧傗啈","2H鈧?O鈧?2H鈧侽"],"free":false,"quiz":[{"type":"mc","q":"鐢佃В姘存椂锛屾鏋佷骇鐢熺殑姘斾綋鏄紵","options":["姘㈡皵","姘ф皵","姘磋捀姘?,"姘皵"],"answer":1,"explanation":"鐢佃В姘存鏋佷骇鐢熸哀姘旓紝璐熸瀬浜х敓姘㈡皵锛屾鏋佹皵浣撲綋绉害涓鸿礋鏋佺殑涓€鍗婏紙1:2锛夈€?},{"type":"fill","q":"姘存槸鐢盻__鍏冪礌鍜宊__鍏冪礌缁勬垚鐨?,"answer":"姘?姘?,"hint":"鐢佃В姘寸敓鎴愮殑灏辨槸杩欎袱绉嶆皵浣?,"explanation":"姘存槸鐢辨阿鍏冪礌鍜屾哀鍏冪礌缁勬垚鐨勫寲鍚堢墿锛屼笉鏄敱姘㈡皵鍜屾哀姘旂粍鎴愮殑娣峰悎鐗┿€?}]},{"id":"chem-4-3","unit":"绗洓鍗曞厓 鑷劧鐣岀殑姘?,"chapter":"璇鹃3","section":"鐗╄川缁勬垚鐨勮〃绀?,"page":"P96-103","category":"chem","keypoints":["鍖栧寮忚〃绀虹墿璐ㄧ粍鎴?,"鍖栧悎浠疯鍒欙細浠ｆ暟鍜屼负0","鍏冪礌璐ㄩ噺鍒嗘暟=鐩稿鍘熷瓙璐ㄩ噺脳涓暟梅鐩稿鍒嗗瓙璐ㄩ噺脳100%"],"examPoints":["鍖栧寮忎功鍐?,"鍖栧悎浠?,"鍏冪礌璐ㄩ噺鍒嗘暟璁＄畻"],"textbookColumns":["銆岀粌涔犮€嶅父瑙佺墿璐ㄥ寲瀛﹀紡","銆屾柟娉曞寮曘€嶅寲鍚堜环鍙ｈ瘈"],"nightMarketCase":"鍙箰=H鈧侽+CO鈧?C鈧咹鈧佲倐O鈧嗏€斺€旀垚鍒嗚〃灏辨槸鍖栧寮忓簲鐢ㄣ€傞鐩?NaCl","gameDesign":"銆屽寲瀛﹀紡閰嶅娓告垙銆嶏細鎷栨嫿鍖栧寮忓尮閰嶅甯傞鍝?,"gameType":"drag-match","equations":[],"free":false,"quiz":[{"type":"mc","q":"鍖栧悎鐗╀腑鍚勫厓绱犲寲鍚堜环鐨勪唬鏁板拰绛変簬澶氬皯锛?,"options":["1","0","-1","涓嶇‘瀹?],"answer":1,"explanation":"鍖栧悎鐗╀腑锛屽悇鍏冪礌鍖栧悎浠风殑浠ｆ暟鍜岀瓑浜?锛岃繖鏄寲鍚堜环鐨勫熀鏈鍒欍€?},{"type":"fill","q":"NaCl涓挔鏄痏__浠凤紝姘槸___浠?,"answer":"+1,-1","hint":"閽犻€氬父涓?1浠凤紝姘€氬父涓?1浠?,"explanation":"NaCl涓璑a涓?1浠凤紝Cl涓?1浠凤紝浠ｆ暟鍜屼负0銆?}]},{"id":"chem-5-1","unit":"绗簲鍗曞厓 鍖栧鍙嶅簲鐨勫畾閲忓叧绯?,"chapter":"璇鹃1","section":"璐ㄩ噺瀹堟亽瀹氬緥","page":"P110-116","category":"chem","keypoints":["鍙傚姞鍙嶅簲鍚勭墿璐ㄨ川閲忔€诲拰=鐢熸垚鍚勭墿璐ㄨ川閲忔€诲拰","寰鍘熷洜锛氬師瀛愮绫?涓暟/璐ㄩ噺涓嶅彉","绾㈢７鐕冪儳楠岃瘉锛堝瘑灏佷綋绯伙級","鍖栧鏂圭▼寮忛厤骞冲師鍒欙細鍘熷瓙瀹堟亽"],"examPoints":["璐ㄩ噺瀹堟亽瀹氬緥鍐呭鍜屽井瑙傛湰璐?,"楠岃瘉瀹為獙"],"textbookColumns":["銆屽疄楠?-1銆嶇孩纾风噧鐑ч獙璇?,"銆屽疄楠?-2銆嶉搧閽?纭吀閾?],"nightMarketCase":"100g鐢熻倝鐑ゅ悗70g鈥斺€斿鏋滃瘑灏佺儰锛岃川閲忓畧鎭掞紒姘村垎鍜孋O鈧傛病璺戞帀銆?,"gameDesign":"銆屽瘑灏佺儰鑲夊疄楠屻€嶏細寮€鏀?瀵嗗皝鐜涓嬬儰鑲夛紝瀵规瘮璐ㄩ噺鍙樺寲","gameType":"slider-simulate","equations":[],"free":false,"quiz":[{"type":"mc","q":"璐ㄩ噺瀹堟亽瀹氬緥鐨勫井瑙傛湰璐ㄦ槸浠€涔堬紵","options":["鍒嗗瓙绉嶇被涓嶅彉","鍘熷瓙绉嶇被銆佹暟鐩€佽川閲忎笉鍙?,"鐗╄川鐘舵€佷笉鍙?,"鍒嗗瓙鏁扮洰涓嶅彉"],"answer":1,"explanation":"鍖栧鍙嶅簲鍓嶅悗锛屽師瀛愮殑绉嶇被銆佹暟鐩€佽川閲忛兘涓嶅彉锛屾墍浠ユ€昏川閲忓畧鎭掋€?},{"type":"fill","q":"绾㈢７鐕冪儳瀹為獙蹇呴』鍦╛__浣撶郴涓墠鑳介獙璇佽川閲忓畧鎭?,"answer":"瀵嗗皝","hint":"濡傛灉涓嶅瘑灏侊紝鐢熸垚鐨勭儫浼氳窇鎺?,"explanation":"鏈夋皵浣撳弬涓庢垨鐢熸垚鐨勫弽搴旓紝蹇呴』鍦ㄥ瘑灏佷綋绯讳腑杩涜鎵嶈兘楠岃瘉璐ㄩ噺瀹堟亽銆?}]},{"id":"chem-5-2","unit":"绗簲鍗曞厓 鍖栧鍙嶅簲鐨勫畾閲忓叧绯?,"chapter":"璇鹃2","section":"鍖栧鏂圭▼寮?,"page":"P117-122","category":"chem","keypoints":["鍖栧鏂圭▼寮忔剰涔夛細鈶犲弽搴旂墿/鐢熸垚鐗?鏉′欢鈶″悇鐗╄川璐ㄩ噺姣斺憿寰矑涓暟姣?,"閰嶅钩鏂规硶锛氭渶灏忓叕鍊嶆暟娉?,"璁＄畻锛氬凡鐭ヤ竴绉嶇墿璐ㄨ川閲忔眰鍙︿竴绉?],"examPoints":["鍖栧鏂圭▼寮忛厤骞?,"鏍规嵁鏂圭▼寮忚绠?],"textbookColumns":["銆岀粌涔犮€嶅绉嶆柟绋嬪紡閰嶅钩","銆屾柟娉曞寮曘€嶄功鍐欐楠?],"nightMarketCase":"C+O鈧傗啋CO鈧傗€斺€斿甯傜偔鐏殑鍖栧鏈川銆侰H鈧?2O鈧傗啋CO鈧?2H鈧侽鈥斺€斿ぉ鐒舵皵鐏?,"gameDesign":"銆屾柟绋嬪紡閰嶅钩鎸戞垬銆嶏細缁欏嚭鏈厤骞虫柟绋嬪紡锛屽鐢熷～绯绘暟閰嶅钩","gameType":"fill-blank","equations":["C+O鈧?CO鈧?,"CH鈧?2O鈧?CO鈧?2H鈧侽"],"free":false,"quiz":[{"type":"mc","q":"鍖栧鏂圭▼寮忛厤骞崇殑鍘熷垯鏄粈涔堬紵","options":["鍒嗗瓙鏁扮浉绛?,"鍘熷瓙绉嶇被鍜屾暟鐩笉鍙?,"浣撶Н鐩哥瓑","棰滆壊鐩稿悓"],"answer":1,"explanation":"閰嶅钩鍖栧鏂圭▼寮忕殑鍘熷垯鏄弽搴斿墠鍚庡悇鍘熷瓙绉嶇被鍜屾暟鐩笉鍙橈紝鍗冲師瀛愬畧鎭掋€?}]},{"id":"chem-6-1","unit":"绗叚鍗曞厓 纰冲拰纰崇殑姘у寲鐗?,"chapter":"璇鹃1","section":"纰冲崟璐ㄧ殑澶氭牱鎬?,"page":"P128-135","category":"chem","keypoints":["鍚岀礌寮傚舰浣擄細閲戝垰鐭筹紙鏈€纭級/鐭冲ⅷ锛堟渶杞鐢碉級/C鈧嗏個锛堣冻鐞冪儻锛?,"鏈ㄧ偔/娲绘€х偔鍚搁檮鎬э紙鐤忔澗澶氬瓟锛?,"甯告俯鍖栧鎬ц川涓嶆椿娉硷紙鍙や唬瀛楃敾涓嶈お鑹诧級","楂樻俯锛欳+O鈧傗啋CO鈧傦紱C+2CuO鈫?Cu+CO鈧傗啈锛堣繕鍘熷弽搴旓級"],"examPoints":["鍚岀礌寮傚舰浣?,"鍚搁檮鎬?,"纰崇殑鍖栧鎬ц川","杩樺師鍙嶅簲"],"textbookColumns":["銆屽疄楠?-1銆嶆湪鐐惛闄勭孩澧ㄦ按","銆屽疄楠?-2銆嶆湪鐐繕鍘熸哀鍖栭摐"],"nightMarketCase":"鏈ㄧ偔锛堟棤瀹氬舰纰?澶氬瓟锛夊惛闄勬€у己+鐕冪儳娓╁害楂樸€傜煶澧?閾呯瑪鑺€傞捇鐭?閲戝垰鐭?,"gameDesign":"銆岀⒊鐨勫彉韬父鎴忋€嶏細鎷栨嫿纰冲師瀛愯皟鏁存帓鍒楋紝鍙樺嚭閲戝垰鐭?鐭冲ⅷ/C鈧嗏個","gameType":"drag-transform","equations":["C+O鈧?CO鈧?,"C+2CuO=2Cu+CO鈧傗啈"],"free":false,"quiz":[{"type":"mc","q":"閲戝垰鐭冲拰鐭冲ⅷ鎬ц川宸紓澶х殑鍘熷洜鏄粈涔堬紵","options":["缁勬垚鍏冪礌涓嶅悓","纰冲師瀛愭帓鍒楁柟寮忎笉鍚?,"棰滆壊涓嶅悓","鏉ユ簮涓嶅悓"],"answer":1,"explanation":"閲戝垰鐭冲拰鐭冲ⅷ閮芥槸纰冲崟璐紝浣嗙⒊鍘熷瓙鎺掑垪鏂瑰紡涓嶅悓鈥斺€旈噾鍒氱煶鏄鍥涢潰浣撶綉鐘讹紝鐭冲ⅷ鏄眰鐘躲€?},{"type":"mc","q":"娲绘€х偔鑳藉惛闄勮壊绱犲拰寮傚懗鏄洜涓轰粈涔堬紵","options":["鍖栧鍙嶅簲","鐤忔澗澶氬瓟鐨勭粨鏋?,"纾佸姏鍚稿紩","楂樻俯浣滅敤"],"answer":1,"explanation":"娲绘€х偔鍏锋湁鐤忔澗澶氬瓟鐨勭粨鏋勶紝琛ㄩ潰绉緢澶э紝鍙互鍚搁檮鑹茬礌鍜屽紓鍛冲垎瀛愩€?}]},{"id":"chem-6-2","unit":"绗叚鍗曞厓 纰冲拰纰崇殑姘у寲鐗?,"chapter":"璇鹃2","section":"纰崇殑姘у寲鐗?,"page":"P136-144","category":"chem","keypoints":["CO鈧傦細涓嶆敮鎸佺噧鐑?涓庢按鈫扝鈧侰O鈧?涓嶤a(OH)鈧傗啋CaCO鈧冣啌锛堟楠岋級","娓╁鏁堝簲锛圕O鈧?CH鈧?O鈧?姘熷埄鏄傦級","CO锛氭湁姣掞紙涓嶩b缁撳悎鑷寸己姘э級/鍙噧/杩樺師鎬?],"examPoints":["CO鈧傛€ц川鍜屾楠?,"娓╁鏁堝簲","CO姣掓€?,"浣庣⒊琛屽姩"],"textbookColumns":["銆屽疄楠?-3銆嶅€惧€扖O鈧傜伃鐏?,"銆屽疄楠?-5銆岰O鈧備笌姘村弽搴旓紙鐭宠晩绾歌姳锛?],"nightMarketCase":"鏈ㄧ偔鐑や覆瑕侀€氶锛氬瘑闂┖闂寸偔鐏笉鍏呭垎鐕冪儳浜х敓CO锛堟湁姣掞紒锛?,"gameDesign":"銆孋O涓瘨棰勮銆嶏細妯℃嫙涓嶅悓閫氶鏉′欢涓嬬偔鐏噧鐑э紝瀹炴椂鏄剧ずCO娴撳害","gameType":"slider-simulate","equations":["CO鈧?H鈧侽=H鈧侰O鈧?,"CO鈧?Ca(OH)鈧?CaCO鈧冣啌+H鈧侽","2CO+O鈧?2CO鈧?],"free":false,"quiz":[{"type":"mc","q":"妫€楠孋O鈧傜殑甯哥敤鏂规硶鏄粈涔堬紵","options":["鐢ㄧ噧鐫€鐨勬湪鏉?,"閫氬叆婢勬竻鐭崇伆姘?,"闂绘皵鍛?,"鐪嬮鑹?],"answer":1,"explanation":"CO鈧傝兘浣挎緞娓呯煶鐏版按鍙樻祽娴婏紙鐢熸垚CaCO鈧冩矇娣€锛夛紝杩欐槸妫€楠孋O鈧傜殑鐗规晥鏂规硶銆?},{"type":"mc","q":"CO涓瘨鐨勫師鍥犳槸浠€涔堬紵","options":["CO鏈夋瘨鑷懗","CO涓庤绾㈣泲鐧界粨鍚堬紝浣胯娑叉棤娉曡繍姘ф皵","CO鑵愯殌鍣ㄥ畼","CO浣夸汉绐掓伅"],"answer":1,"explanation":"CO涓庤绾㈣泲鐧界殑缁撳悎鍔涙瘮O鈧傚己200澶氬€嶏紝浣胯绾㈣泲鐧藉け鍘昏繍杈撴哀姘旂殑鑳藉姏銆?}]},{"id":"chem-6-3","unit":"绗叚鍗曞厓 纰冲拰纰崇殑姘у寲鐗?,"chapter":"璇鹃3","section":"浜屾哀鍖栫⒊鐨勫疄楠屽鍒跺彇","page":"P145-150","category":"chem","keypoints":["澶х悊鐭?绋€鐩愰吀鈫扖aCl鈧?H鈧侽+CO鈧傗啈","涓嶇敤绋€纭吀锛圕aSO鈧勬矇娣€鍖呰９锛?,"鏀堕泦锛氬悜涓婃帓绌烘皵娉?,"妫€楠岋細婢勬竻鐭崇伆姘村彉娴戞祳","楠屾弧锛氱噧鐫€鏈ㄦ潯鐔勭伃"],"examPoints":["鍒禖O鈧傝缃拰鎿嶄綔","妫€楠屾柟娉?,"姘斾綋鍒跺彇涓€鑸€濊矾"],"textbookColumns":["銆屾帰绌躲€嶈璁O鈧傚埗鍙栬缃?,"銆屾柟娉曞寮曘€嶅埗鍙栨皵浣撶殑涓€鑸€濊矾"],"nightMarketCase":"纰抽吀楗枡=CO鈧傜殑婧舵恫锛氬彲涔愬惈澶ч噺婧惰ВCO鈧傦紝寮€鐡舵皵娉℃瀽鍑?,"gameDesign":"銆岀⒊閰搁ギ鏂欓厤鏂瑰笀銆嶏細璋冭妭CO鈧傚帇鍔涘拰娓╁害锛岃瀵熸憾瑙ｉ噺鍙樺寲","gameType":"slider-simulate","equations":["CaCO鈧?2HCl=CaCl鈧?H鈧侽+CO鈧傗啈"],"free":false,"quiz":[{"type":"mc","q":"瀹為獙瀹ゅ埗鍙朇O鈧備负浠€涔堜笉鐢ㄧ█纭吀锛?,"options":["绋€纭吀澶吹","鐢熸垚CaSO鈧勬矇娣€瑕嗙洊澶х悊鐭筹紝闃绘鍙嶅簲","鍙嶅簲澶參","浜х敓鏈夋瘨姘斾綋"],"answer":1,"explanation":"绋€纭吀涓庡ぇ鐞嗙煶鍙嶅簲鐢熸垚寰憾鐨凜aSO鈧勶紝瑕嗙洊鍦ㄥぇ鐞嗙煶琛ㄩ潰闃绘鍙嶅簲缁х画杩涜銆?},{"type":"fill","q":"妫€楠孋O鈧傛槸鍚﹂泦婊＄殑鏂规硶锛氬皢鐕冪潃鐨勬湪鏉℃斁鍦╛__锛屾湪鏉__璇存槑宸叉弧","answer":"鐡跺彛,鐔勭伃","hint":"涓嶆槸浼稿叆鐡朵腑锛屾槸鏀惧湪鐡跺彛","explanation":"CO鈧備笉鏀寔鐕冪儳锛屽皢鐕冪潃鐨勬湪鏉℃斁鍦ㄧ摱鍙ｏ紙涓嶆槸鐡朵腑锛夛紝鐔勭伃鍒欏凡婊°€?}]},{"id":"chem-7-1","unit":"绗竷鍗曞厓 鑳芥簮鐨勫悎鐞嗗埄鐢ㄤ笌寮€鍙?,"chapter":"璇鹃1","section":"鐕冩枡鐨勭噧鐑?,"page":"P158-168","category":"chem","keypoints":["鐕冪儳涓夎绱狅細鍙噧鐗?O鈧?娓╁害鈮ョ潃鐏偣","鐏伀鍘熺悊=鐮村潖浠讳竴鏉′欢","鎺у埗鍙橀噺娉曟帰绌剁噧鐑ф潯浠?,"鐧界７40鈩冪潃鐏?绾㈢７260鈩?,"鍏呭垎鐕冪儳鏉′欢锛氳冻澶熺┖姘?瓒冲澶ф帴瑙﹂潰","CaO+H鈧侽鈫扖a(OH)鈧傛斁鐑?],"examPoints":["鐕冪儳鏉′欢","鐏伀鏂规硶","鐖嗙偢鏋侀檺","鎺у埗鍙橀噺娉?],"textbookColumns":["銆屾帰绌躲€嶇噧鐑ф潯浠讹紙鐧界７绾㈢７瀵规瘮锛?,"銆屽疄楠?-1銆岰aO涓庢按鏀剧儹"],"nightMarketCase":"澶滃競鐑や覆=绮惧噯鎺у埗涓夎绱犫€斺€斿姞鐐紙鍙噧鐗╋級/榧撻锛圤鈧傦級/鐑ゆ灦楂樺害锛堟俯搴︼級","gameDesign":"銆岀儰涓茬伀鍊欐帶鍒跺彴銆嶏細璋冭妭鍙噧鐗?O鈧?娓╁害涓夊彉閲忥紝鐑ゅ嚭瀹岀編鐑や覆","gameType":"slider-simulate","equations":["CaO+H鈧侽=Ca(OH)鈧?],"free":false,"quiz":[{"type":"mc","q":"鐕冪儳蹇呴』鍚屾椂鍏峰鐨勪笁涓潯浠舵槸浠€涔堬紵","options":["鍙噧鐗┿€佹哀姘斻€佽揪鍒扮潃鐏偣","鍙噧鐗┿€佹按銆佸厜鐓?,"姘ф皵銆侀珮娓┿€佸偓鍖栧墏","鍙噧鐗┿€佹爱姘斻€侀珮娓?],"answer":0,"explanation":"鐕冪儳涓夎绱狅細鍙噧鐗┿€佹哀姘旓紙鎴栫┖姘旓級銆佹俯搴﹁揪鍒扮潃鐏偣锛屼笁鑰呯己涓€涓嶅彲銆?},{"type":"mc","q":"娌归攨璧风伀锛屾渶鎭板綋鐨勭伃鐏柟娉曟槸浠€涔堬紵","options":["鐢ㄦ按娴?,"鐩栦笂閿呯洊","鐢ㄩ鎵囧惞","绔蛋娌归攨"],"answer":1,"explanation":"鐩栦笂閿呯洊鍙互闅旂粷姘ф皵锛堢牬鍧忕噧鐑ф潯浠朵箣涓€锛夛紝鏄补閿呰捣鐏渶瀹夊叏鏈夋晥鐨勬柟娉曘€?}]},{"id":"chem-7-2","unit":"绗竷鍗曞厓 鑳芥簮鐨勫悎鐞嗗埄鐢ㄤ笌寮€鍙?,"chapter":"璇鹃2","section":"鍖栫煶鑳芥簮鐨勫悎鐞嗗埄鐢?,"page":"P169-177","category":"chem","keypoints":["鍖栫煶鑳芥簮锛氱叅/鐭虫补/澶╃劧姘旓紙涓嶅彲鍐嶇敓锛?,"澶╃劧姘斾富瑕佸惈CH鈧勶紙鐢茬兎锛?,"CH鈧?2O鈧傗啋CO鈧?2H鈧侽","鍖栫煶鑳芥簮鐕冪儳鈫扖O鈧?SO鈧?NO鈧撴薄鏌?,"娓呮磥鑳芥簮锛氬お闃宠兘/椋庤兘/姘㈣兘"],"examPoints":["鍖栫煶鑳芥簮绉嶇被鍜岄棶棰?,"閰搁洦鎴愬洜","鏂拌兘婧?,"CH鈧勬€ц川"],"textbookColumns":["銆屽疄楠?-2銆嶇敳鐑风噧鐑?,"銆岃祫鏂欍€嶅彲鐕冨啺/鎴戝浗娓呮磥鍙戠數浣撶郴"],"nightMarketCase":"鏃╁勾澶滃競鐢ㄧ叅锛堥珮姹℃煋SO鈧傞吀闆級鈫掔幇鍦ㄥぉ鐒舵皵锛堣緝娓呮磥锛夆啋鏈潵姘㈣兘锛堥浂鎺掓斁锛?,"gameDesign":"銆岃兘婧愭椂闂存満鍣ㄣ€嶏細绌胯秺涓嶅悓骞翠唬澶滃競锛屼綋楠屼笉鍚岀噧鏂欑殑鏁堢巼/姹℃煋/鎴愭湰","gameType":"timeline-click","equations":["CH鈧?2O鈧?CO鈧?2H鈧侽"],"free":false,"quiz":[{"type":"mc","q":"澶╃劧姘旂殑涓昏鎴愬垎鏄粈涔堬紵","options":["CO","CH鈧?,"H鈧?,"CO鈧?],"answer":1,"explanation":"澶╃劧姘旂殑涓昏鎴愬垎鏄敳鐑凤紙CH鈧勶級锛屾槸鏈€绠€鍗曠殑鏈夋満鐗┿€?},{"type":"mc","q":"閰搁洦褰㈡垚鐨勪富瑕佸師鍥犳槸鐕冪儳鍖栫煶鐕冩枡鎺掓斁浠€涔堟皵浣擄紵","options":["CO鈧傚拰CO","SO鈧傚拰NO鈧?,"O鈧傚拰N鈧?,"H鈧侽鍜孋O鈧?],"answer":1,"explanation":"鐓ゅ拰鐭虫补涓惈纭拰姘紝鐕冪儳浜х敓SO鈧傚拰NO鈧擄紝鍦ㄥぇ姘斾腑褰㈡垚纭吀鍜岀閰稿鑷撮吀闆ㄣ€?}]}];
+const GEO_DATA = [{"id":"geo-2-1-1","unit":"绗簩绔?鍦板浘","chapter":"绗竴鑺?鍦板浘鐨勯槄璇?,"section":"鍦板浘涓夎绱?,"page":"P16-19","category":"geo","keypoints":["鍦板浘涓夎绱狅細鏂瑰悜銆佹瘮渚嬪昂銆佸浘渚?,"娌℃湁涓夎绱犱笉鏄湡姝ｇ殑鍦板浘","姣斾緥灏?鍥句笂璺濈梅瀹炲湴璺濈","鏂瑰悜鐨勪笁绉嶈〃绀烘硶锛氭寚鍚戞爣銆佺粡绾綉銆?涓婂寳涓嬪崡'","鍥句緥=鍦板浘鐨勮瑷€绗﹀彿"],"examPoints":["鍦板浘涓夎绱?,"姣斾緥灏哄叕寮?,"鎸囧悜鏍囧垽璇?],"textbookColumns":["銆岃鍥俱€嶅彴婀惧矝鍦板浘","銆屾椿鍔ㄣ€嶇粯鍒舵牎鍥钩闈㈠浘"],"gameScene":"榫欎簯鐚浘涓紝绁為緳鍚愬嚭涓夌墖槌炵墖鈥斺€旀柟鍚戦碁銆佹瘮渚嬮碁銆佸浘渚嬮碁鈥斺€斿悎鍦ㄤ竴璧锋墠鑳藉紑鍚湴鍥?,"gameDesign":"銆岄緳槌炴嫾鍥俱€嶏細鎷栨嫿涓夌墖榫欓碁鍒板湴鍥炬纭綅缃紝鎷煎嚭瀹屾暣鍦板浘鎵嶈兘杩涘叆涓嬩竴鍏?,"gameType":"drag-assembly","free":true,"quiz":[{"type":"mc","q":"鍦板浘鐨勪笁瑕佺礌鏄粈涔堬紵","options":["棰滆壊銆佸瓧浣撱€佺焊寮?,"鏂瑰悜銆佹瘮渚嬪昂銆佸浘渚?,"缁忕含绾裤€佺瓑楂樼嚎銆佺瓑娣辩嚎","灞卞嘲銆佹渤娴併€佸煄甯?],"answer":1,"explanation":"鏂瑰悜銆佹瘮渚嬪昂銆佸浘渚嬫槸鍦板浘鐨勪笁瑕佺礌锛岀己涓€涓嶅彲銆?},{"type":"fill","q":"姣斾緥灏?= ___璺濈 梅 ___璺濈","answer":"鍥句笂,瀹炲湴","hint":"鍏堝浘涓婂悗瀹炲湴","explanation":"姣斾緥灏?鍥句笂璺濈梅瀹炲湴璺濈锛岄€氬父鍐欐垚1:N鐨勫舰寮忋€?}]},{"id":"geo-2-1-2","unit":"绗簩绔?鍦板浘","chapter":"绗竴鑺?鍦板浘鐨勯槄璇?,"section":"鍦板浘涓婄殑鏂瑰悜","page":"P17-18","category":"geo","keypoints":["涓€鑸湴鍥撅細涓婂寳涓嬪崡宸﹁タ鍙充笢","鏈夋寚鍚戞爣锛氭寚鍚戞爣绠ご鎸囧悜鍖楁柟","鏈夌粡绾綉锛氱粡绾挎寚鍗楀寳/绾嚎鎸囦笢瑗?,"閲庡杈ㄥ埆鏂瑰悜锛氬お闃?鍖楁瀬鏄?鏍戝啝/骞磋疆"],"examPoints":["鎸囧悜鏍囧垽璇?,"缁忕含缃戝畾鍚?,"閲庡鏂瑰悜"],"textbookColumns":["銆屾椿鍔ㄣ€嶅湪鏍″洯閲岃鲸鍒柟鍚?,"銆岄槄璇汇€嶉噹澶栬鲸鍒柟鍚戠殑鏂规硶"],"gameScene":"绁為緳鐨勯碁鐗囨寚鍚戝洓涓柟鍚戔€斺€斾笢闈掗緳銆佽タ鐧借檸銆佸崡鏈遍泙銆佸寳鐜勬鈥斺€斿彧鏈夋寜姝ｇ‘鏂瑰悜鎺掑垪鎵嶈兘鍞ら啋鍦板浘涔嬪姏","gameDesign":"銆屽洓鏂瑰綊浣嶃€嶏細鏍规嵁鎸囧悜鏍囧拰鍦烘櫙鎻愮ず锛屾棆杞綏鐩樻寚鍚戞纭柟浣嶏紝绛斿瑙ｉ攣绁炲吔鍥捐吘","gameType":"click-timer","free":true,"quiz":[{"type":"mc","q":"涓€鑸湴鍥句笂锛?涓婂寳涓嬪崡'瀵瑰簲鐨勫彸杈规槸鍝釜鏂瑰悜锛?,"options":["涓?,"瑗?,"鍗?,"瑗垮寳"],"answer":0,"explanation":"涓€鑸湴鍥句笂鍖椾笅鍗楀乏瑗垮彸涓滐紝鍙宠竟鍗充笢銆?},{"type":"mc","q":"鎸囧悜鏍囩殑绠ご鎸囧悜鍝釜鏂瑰悜锛?,"options":["涓?,"鍗?,"瑗?,"鍖?],"answer":3,"explanation":"鎸囧悜鏍囩澶存€绘槸鎸囧悜鍖楁柟锛岃繖鏄垽璇绘柟鍚戠殑鍏抽敭銆?}]},{"id":"geo-2-1-3","unit":"绗簩绔?鍦板浘","chapter":"绗竴鑺?鍦板浘鐨勯槄璇?,"section":"姣斾緥灏?,"page":"P16-19","category":"geo","keypoints":["姣斾緥灏?鍥句笂璺濈梅瀹炲湴璺濈","涓夌琛ㄧず锛氭暟瀛楀紡(1:100000)銆佺嚎娈靛紡(0_1_2km)銆佹枃瀛楀紡(鍥句笂1cm浠ｈ〃瀹炲湴1km)","姣斾緥灏哄ぇ灏忔瘮杈冿細鍒嗘瘝瓒婂皬姣斾緥灏鸿秺澶?,"澶ф瘮渚嬪昂鈫掕寖鍥村皬鍐呭璇︾粏锛涘皬姣斾緥灏衡啋鑼冨洿澶у唴瀹圭畝鐣?],"examPoints":["姣斾緥灏哄叕寮忓拰鎹㈢畻","涓夌琛ㄧず鏂瑰紡浜掕浆","姣斾緥灏哄ぇ灏忎笌鍐呭璇︾暐"],"textbookColumns":["銆屾椿鍔ㄣ€嶆瘮杈冧笉鍚屾瘮渚嬪昂鍦板浘","銆岀粌涔犮€嶆崲绠楀浘涓婅窛绂诲拰瀹炲湴璺濈"],"gameScene":"姣斾緥槌炴樉绀虹殑鏁板瓧鍦ㄤ笉鏂彉鍖栤€斺€?:1000銆?:10000銆?:100000鈥斺€旈緳璇达細閫夊姣斾緥灏猴紝瀹濊棌鎵嶈兘鍑虹幇鍦ㄥ湴鍥句笂","gameDesign":"銆屾瘮渚嬪昂鏀惧ぇ闀溿€嶏細鎷栧姩婊戝潡鏀瑰彉姣斾緥灏猴紝瑙傚療鍦板浘浠庡浗瀹垛啋鍩庡競鈫掕閬撶殑鍙樺寲锛屾壘鍒板疂钘忕殑'鏈€浣宠瀵熸瘮渚嬪昂'","gameType":"slider-simulate","free":true,"quiz":[{"type":"mc","q":"1:1000鍜?:10000涓や釜姣斾緥灏猴紝鍝釜鏇村ぇ锛?,"options":["1:1000鏇村ぇ","1:10000鏇村ぇ","涓€鏍峰ぇ","鏃犳硶姣旇緝"],"answer":0,"explanation":"鍒嗘瘝瓒婂皬姣斾緥灏鸿秺澶р€斺€?/1000 > 1/10000锛屾墍浠?:1000鏄洿澶х殑姣斾緥灏恒€?},{"type":"mc","q":"澶ф瘮渚嬪昂鍦板浘鐨勭壒鐐规槸浠€涔堬紵","options":["鑼冨洿澶у唴瀹圭畝鐣?,"鑼冨洿灏忓唴瀹硅缁?,"鑼冨洿灏忓唴瀹圭畝鐣?,"鑼冨洿澶у唴瀹硅缁?],"answer":1,"explanation":"姣斾緥灏鸿秺澶э紝琛ㄧず鐨勮寖鍥磋秺灏忎絾鍐呭瓒婅缁嗭紝濡傛牎鍥湴鍥俱€?}]},{"id":"geo-2-1-4","unit":"绗簩绔?鍦板浘","chapter":"绗竴鑺?鍦板浘鐨勯槄璇?,"section":"鍥句緥鍜屾敞璁?,"page":"P18-19","category":"geo","keypoints":["鍥句緥锛氬湴鍥句笂鍚勭绗﹀彿鐨勮鏄?,"甯歌鍥句緥锛氶閮解棊/鐪佷細鈼?涓€鑸煄甯傗棆/灞卞嘲鈻?閾佽矾/鍏矾/鍥界晫/娌虫祦/婀栨硦","娉ㄨ锛氬湴鍥句笂鐨勬枃瀛楀拰鏁板瓧","娉ㄨ涔﹀啓瑙勮寖锛氭í鍐欎粠宸﹀埌鍙筹紝绔栧啓浠庝笂鍒颁笅"],"examPoints":["璇嗗埆甯歌鍥句緥","娉ㄨ瑙勮寖"],"textbookColumns":["銆屾椿鍔ㄣ€嶈瘑鍒父鐢ㄥ浘渚?,"銆岃鍥俱€嶅北涓滅渷鍦板浘鍥句緥"],"gameScene":"鍥句緥槌炰笂娴幇鍑哄悇绉嶇绉樼鍙封€斺€斺柌浠ｈ〃灞卞嘲锛寏浠ｈ〃娌虫祦锛屸棊浠ｈ〃閮藉煄鈥斺€旈緳璇达細璁颁綇杩欎簺绗﹀彿锛屽畠浠槸鍦板浘鐨勮瑷€","gameDesign":"銆屽浘渚嬮厤瀵瑰ぇ浣滄垬銆嶏細闄愭椂鍖归厤鍥句緥绗﹀彿鍜屽惈涔夛紝杩炲5涓В閿佹柊鍖哄煙","gameType":"drag-match","free":true,"quiz":[{"type":"mc","q":"鍦板浘涓娾棊绗﹀彿閫氬父琛ㄧず浠€涔堬紵","options":["灞卞嘲","棣栭兘","鐪佷細","涓€鑸煄甯?],"answer":1,"explanation":"鈼庝腑闂村甫鐐归€氬父琛ㄧず棣栭兘锛屸棆琛ㄧず涓€鑸煄甯傘€?},{"type":"mc","q":"鍥句緥鐨勪綔鐢ㄦ槸浠€涔堬紵","options":["璁╁湴鍥炬洿婕備寒","璇嗗埆鍚勭鍦扮悊浜嬬墿鍜岀幇璞?,"娴嬮噺璺濈","纭畾鏂瑰悜"],"answer":1,"explanation":"鍥句緥鏄湴鍥剧殑璇█锛屽府鍔╄鑰呰瘑鍒湴鍥句笂鐨勫悇绉嶅湴鐞嗕簨鐗╁拰鐜拌薄銆?}]},{"id":"geo-2-2-1","unit":"绗簩绔?鍦板浘","chapter":"绗簩鑺?鍦板舰鍥剧殑鍒よ","section":"绛夐珮绾垮湴褰㈠浘","page":"P24-28","category":"geo","keypoints":["娴锋嫈=鍦伴潰鐐归珮鍑烘捣骞抽潰鐨勫瀭鐩磋窛绂伙紙缁濆楂樺害锛?,"鐩稿楂樺害=涓ょ偣闂存捣鎷斿樊","绛夐珮绾?娴锋嫈鐩稿悓鍚勭偣鐨勮繛绾?,"绛夐珮璺?鐩搁偦涓ゆ潯绛夐珮绾跨殑楂樺樊","绛夐珮绾跨枏瀵嗏啋鍧″害闄＄紦锛堝瘑=闄★紝鐤?缂擄級"],"examPoints":["娴锋嫈vs鐩稿楂樺害","绛夐珮绾挎蹇?,"鍧″害鍒よ","绛夐珮璺濊绠?],"textbookColumns":["銆岃鍥俱€嶇瓑楂樼嚎鍦板舰鍥?,"銆屾椿鍔ㄣ€嶅埗浣滅瓑楂樼嚎妯″瀷"],"gameScene":"绁為緳甯︿綘椋炰笂涓€搴т粰灞扁€斺€斾粠绌轰腑鐪嬶紝灞遍《鏄竴鍦堜竴鍦堢殑绾匡紒榫欒锛氳繖浜涚嚎鍙瓑楂樼嚎锛屾瘡涓€鍦堝崌楂樹竴涓?榫欓樁'","gameDesign":"銆岀瓑楂樼嚎娑傝壊宸ュ潑銆嶏細缁欏畾绛夐珮绾垮湴褰㈠浘锛岀敤涓嶅悓棰滆壊鏍囨敞涓嶅悓楂樺害甯︼紙濡?00m浠ヤ笅缁?500-1000榛?1000+妫曪級锛屽畬鎴愬湴褰㈢潃鑹?,"gameType":"drag-classify","free":false,"quiz":[{"type":"mc","q":"绛夐珮绾垮瘑闆嗙殑鍦版柟锛屽潯搴﹀浣曪紵","options":["骞崇紦","闄″抄","娌℃湁鍧″害","姘村钩"],"answer":1,"explanation":"绛夐珮绾胯秺瀵嗛泦琛ㄧず鍧″害瓒婇櫋锛屽洜涓哄悓鏍风殑姘村钩璺濈鍐呴珮宸ぇ銆?},{"type":"mc","q":"娴锋嫈鏄寚浠€涔堬紵","options":["鍦伴潰鐐瑰埌闄勮繎灞遍《鐨勫瀭鐩磋窛绂?,"鍦伴潰鐐归珮鍑烘捣骞抽潰鐨勫瀭鐩磋窛绂?,"鍦伴潰鐐瑰埌灞辫胺搴曠殑璺濈","涓ょ偣涔嬮棿鐨勯珮搴﹀樊"],"answer":1,"explanation":"娴锋嫈锛堢粷瀵归珮搴︼級鏄湴闈㈢偣楂樺嚭娴峰钩闈㈢殑鍨傜洿璺濈銆?}]},{"id":"geo-2-2-2","unit":"绗簩绔?鍦板浘","chapter":"绗簩鑺?鍦板舰鍥剧殑鍒よ","section":"绛夐珮绾垮湴褰㈠浘鐨勫垽璇?,"page":"P25-28","category":"geo","keypoints":["灞卞嘲锛氱瓑楂樼嚎闂悎锛屼腑闂撮珮鍥涘懆浣庯紙绛夐珮绾挎暟鍊煎悜涓績澧炲ぇ锛?,"灞辫剨锛氱瓑楂樼嚎鍚戜綆澶勫嚫鍑猴紙'鍑镐綆涓鸿剨'锛?,"灞辫胺锛氱瓑楂樼嚎鍚戦珮澶勫嚫鍑猴紙'鍑搁珮涓鸿胺'锛?,"闉嶉儴锛氫袱灞卞嘲涔嬮棿浣庢醇澶?,"闄″礀锛氱瓑楂樼嚎閲嶅彔","鍙ｈ瘈锛?鍑镐綆涓鸿剨鍑搁珮璋凤紝閲嶅彔澶勬槸闄″礀澹?"],"examPoints":["璇嗗埆浜旂鍦板舰閮ㄤ綅","'鍑镐綆涓鸿剨鍑搁珮涓鸿胺'","璇诲浘鍒よ"],"textbookColumns":["銆岃鍥俱€嶇瓑楂樼嚎鍒よ缁冧範","銆屾椿鍔ㄣ€嶅埗浣滃湴褰㈡ā鍨?],"gameScene":"绁為緳甯︿綘椋炶秺浜斿骇绁炲吔宸㈢┐鈥斺€旈緳鑴婂礀锛堝北鑴婏級銆佽檸鍟歌胺锛堝北璋凤級銆佸嚖鏍栧嘲锛堝北宄帮級銆侀緹鑳岄瀺锛堥瀺閮級銆侀簰楹熷锛堥櫋宕栵級鈥斺€旀瘡澶勯兘钘忕潃瀹濊棌绾跨储","gameDesign":"銆屼簲鍏藉韪€嶏細缁欏嚭绛夐珮绾垮湴褰㈠浘锛岀偣鍑昏瘑鍒北宄?灞辫剨/灞辫胺/闉嶉儴/闄″礀鐨勪綅缃紝鍏ㄩ儴鎵惧鑾峰緱钘忓疂鍥?,"gameType":"click-learn","free":false,"quiz":[{"type":"mc","q":"绛夐珮绾垮悜浣庡鍑稿嚭琛ㄧず浠€涔堝湴褰紵","options":["灞辫胺","灞辫剨","闄″礀","灞卞嘲"],"answer":1,"explanation":"'鍑镐綆涓鸿剨'鈥斺€斿悜浣庡鍑稿嚭鏄北鑴婏紝鍚戦珮澶勫嚫鍑烘墠鏄北璋枫€?},{"type":"mc","q":"闉嶉儴浣嶄簬浠€涔堜綅缃紵","options":["涓ゅ北椤朵箣闂翠綆娲煎","灞遍《鏈€楂樺","灞辫剼鏈€浣庡","鍗婂北鑵?],"answer":0,"explanation":"闉嶉儴鏄袱涓北宄颁箣闂寸殑浣庢醇鍦板甫锛屽舰浼奸┈闉嶃€?}]},{"id":"geo-2-2-3","unit":"绗簩绔?鍦板浘","chapter":"绗簩鑺?鍦板舰鍥剧殑鍒よ","section":"鍒嗗眰璁捐壊鍦板舰鍥?,"page":"P28-29","category":"geo","keypoints":["鍒嗗眰璁捐壊锛氫笉鍚岄鑹茶〃绀轰笉鍚屾捣鎷旈珮搴?,"缁胯壊鈫掍綆娴锋嫈骞冲師锛岄粍鑹测啋涓捣鎷斾笜闄碉紝妫曡壊鈫掗珮娴锋嫈灞卞湴锛岀櫧鑹测啋闆嚎浠ヤ笂","钃濊壊鈫掓捣娲嬫繁搴︼紙瓒婃繁瓒婅摑锛?,"鍒嗗眰璁捐壊=绛夐珮绾?棰滆壊锛屾洿鐩磋"],"examPoints":["鍒嗗眰璁捐壊棰滆壊鍚箟","涓庣瓑楂樼嚎鍥剧殑鍏崇郴"],"textbookColumns":["銆岃鍥俱€嶅垎灞傝鑹插湴褰㈠浘","銆屾椿鍔ㄣ€嶅垽璇婚鑹蹭唬琛ㄧ殑娴锋嫈"],"gameScene":"绁為緳鍠峰嚭涓€鍙ｅ僵闆锯€斺€斿ぇ鍦版煋涓婁簡棰滆壊锛佺豢鑹叉槸骞冲師锛岄粍鑹叉槸涓橀櫟锛屾鑹叉槸楂樺北鈥斺€旈緳璇达細杩欐槸鍒嗗眰璁捐壊鐨勯瓟娉?,"gameDesign":"銆岃壊褰╄В鐮佸笀銆嶏細灞曠ず鍒嗗眰璁捐壊鍦板舰鍥撅紝瀛︾敓閫夋嫨棰滆壊瀵瑰簲鐨勬捣鎷旇寖鍥达紝鍏ㄥ瑙ｉ攣褰╄櫣榫欓碁","gameType":"fill-blank","free":false,"quiz":[{"type":"mc","q":"鍒嗗眰璁捐壊鍦板舰鍥句腑锛岀豢鑹查€氬父浠ｈ〃浠€涔堬紵","options":["楂樺北","娴锋磱","浣庢捣鎷斿钩鍘?,"闆嚎浠ヤ笂"],"answer":2,"explanation":"鍒嗗眰璁捐壊鍦板舰鍥句腑缁胯壊鈫掍綆娴锋嫈骞冲師锛岄粍鑹测啋涓橀櫟锛屾鑹测啋灞卞湴锛岀櫧鑹测啋闆嚎浠ヤ笂銆?},{"type":"fill","q":"鍒嗗眰璁捐壊鍦板舰鍥句笂鐨勯鑹茶秺___琛ㄧず娴锋嫈瓒奯__","answer":"娣?楂?,"hint":"妫曡壊娣?= 娴锋嫈楂?,"explanation":"鍒嗗眰璁捐壊锛氫粠缁垮埌榛勫埌妫曟笎鍙橈紝棰滆壊瓒婃繁娴锋嫈瓒婇珮銆?}]},{"id":"geo-2-2-4","unit":"绗簩绔?鍦板浘","chapter":"绗簩鑺?鍦板舰鍥剧殑鍒よ","section":"鍦板舰鍓栭潰鍥?,"page":"P28","category":"geo","keypoints":["鍦板舰鍓栭潰鍥?娌挎煇鏉＄嚎鎶婂湴褰?鍒囧紑'鐪嬩晶闈?,"浣滅敤锛氱洿瑙傜湅鍑哄湴褰㈣捣浼忓彉鍖?,"缁樺埗4姝ワ細鐢诲墫闈㈢嚎鈫掓爣浜ょ偣楂樺害鈫掕繛绾库啋鏍囨敞","鍓栭潰鍥句笌绛夐珮绾垮浘鐨勫叧绯伙細绛夐珮绾胯秺瀵嗏啋鍓栭潰绾胯秺闄?],"examPoints":["鍦板舰鍓栭潰鍥句綔鐢?,"缁樺埗姝ラ","涓庣瓑楂樼嚎鐨勫叧绯?],"textbookColumns":["銆屾椿鍔ㄣ€嶇粯鍒跺湴褰㈠墫闈㈠浘","銆岀粌涔犮€嶈鍓栭潰鍥惧洖绛旈棶棰?],"gameScene":"榫欑埅涓€鎸ワ紝灞变綋瑁傚紑鈥斺€旈湶鍑轰簡鍐呴儴鐨勮捣浼忔洸绾匡紒榫欒锛氳繖鏄湴褰㈠墫闈㈠浘锛屽氨鍍忔妸铔嬬硶鍒囧紑鐪嬮噷闈㈢殑灞傛","gameDesign":"銆屽垏灞卞ぇ甯堛€嶏細鍦ㄧ瓑楂樼嚎鍦板浘涓婃嫋鍔ㄥ墫闈㈢嚎锛屽彸渚у疄鏃舵樉绀哄搴旂殑鍦板舰鍓栭潰锛屾瘮杈冧笉鍚屽垏绾跨殑鍦板舰宸紓","gameType":"slider-simulate","free":false,"quiz":[{"type":"mc","q":"鍦板舰鍓栭潰鍥剧殑涓昏浣滅敤鏄粈涔堬紵","options":["鏄剧ず鍦板悕","鐩磋琛ㄧず鍦板舰璧蜂紡鍙樺寲","鏍囪瘑鏂瑰悜","鏄剧ず鍥句緥"],"answer":1,"explanation":"鍦板舰鍓栭潰鍥惧彲浠ョ洿瑙傚湴琛ㄧず娌挎煇鏉＄嚎鐨勫湴鍔胯捣浼忓拰鍧″害闄＄紦銆?},{"type":"mc","q":"绛夐珮绾垮瘑闆嗗瀵瑰簲鐨勫墫闈㈢嚎鐗瑰緛鏄粈涔堬紵","options":["骞崇紦","闄″抄","娌℃湁鍙樺寲","姘村钩"],"answer":1,"explanation":"绛夐珮绾垮瘑闆嗏啋鍧″害闄♀啋鍓栭潰绾夸笂璇ユ杈冮櫋宄€?}]}];
+const ALL_DATA = [...BIO_DATA, ...CHEM_DATA, ...GEO_DATA];
 
 // ============ STATE ============
 let currentView = 'home';
@@ -628,14 +655,16 @@ window.addEventListener('hashchange', handleHashChange);
 
 // ============ VIEW 2: SYLLABUS ============
 function renderSyllabus() {
-  const data = currentSubject === 'bio' ? BIO_DATA : CHEM_DATA;
+  const data = currentSubject === 'bio' ? BIO_DATA : currentSubject === 'chem' ? CHEM_DATA : GEO_DATA;
   const isBio = currentSubject === 'bio';
+  const isChem = currentSubject === 'chem';
+  const isGeo = currentSubject === 'geo';
   
   // Update header
-  document.getElementById('syllabusBreadcrumb').textContent = isBio ? '生物学 七年级上册' : '化学 九年级上册';
-  document.getElementById('syllabusIcon').textContent = isBio ? '🧬' : '⚗️';
-  document.getElementById('syllabusTitle').textContent = isBio ? '生物学 七年级上册' : '化学 九年级上册';
-  document.getElementById('syllabusSubtitle').textContent = '人教版 · 2024版 · 课程知识结构';
+  document.getElementById('syllabusBreadcrumb').textContent = isGeo ? '鍦扮悊 涓冨勾绾т笂鍐? : isBio ? '鐢熺墿瀛?涓冨勾绾т笂鍐? : '鍖栧 涔濆勾绾т笂鍐?;
+  document.getElementById('syllabusIcon').textContent = isGeo ? '馃椇锔? : isBio ? '馃К' : '鈿楋笍';
+  document.getElementById('syllabusTitle').textContent = isGeo ? '鍦扮悊 涓冨勾绾т笂鍐? : isBio ? '鐢熺墿瀛?涓冨勾绾т笂鍐? : '鍖栧 涔濆勾绾т笂鍐?;
+  document.getElementById('syllabusSubtitle').textContent = isGeo ? '浜烘暀鐗?路 2024鐗?路 绗簩绔?鍦板浘' : '浜烘暀鐗?路 2024鐗?路 璇剧▼鐭ヨ瘑缁撴瀯';
 
   // Stats row
   var freeCount = data.filter(function(d){return d.free;}).length;
@@ -643,11 +672,11 @@ function renderSyllabus() {
   var quizCount = data.reduce(function(s,d){return s + (d.quiz ? d.quiz.length : 0);}, 0);
   var gameTypes = new Set(data.filter(function(d){return d.gameType;}).map(function(d){return d.gameType;}));
   document.getElementById('syllabusStats').innerHTML =
-    '<div class="unit-stat-chip">📚 <span class="chip-val">' + data.length + '</span> 知识点</div>' +
-    '<div class="unit-stat-chip">📝 <span class="chip-val">' + quizCount + '</span> 练习题</div>' +
-    '<div class="unit-stat-chip">🎮 <span class="chip-val">' + gameTypes.size + '</span> 游戏类型</div>' +
-    '<div class="unit-stat-chip">🆓 <span class="chip-val">' + freeCount + '</span> 免费</div>' +
-    '<div class="unit-stat-chip">🔒 <span class="chip-val">' + paidCount + '</span> 付费</div>';
+    '<div class="unit-stat-chip">馃摎 <span class="chip-val">' + data.length + '</span> 鐭ヨ瘑鐐?/div>' +
+    '<div class="unit-stat-chip">馃摑 <span class="chip-val">' + quizCount + '</span> 缁冧範棰?/div>' +
+    '<div class="unit-stat-chip">馃幃 <span class="chip-val">' + gameTypes.size + '</span> 娓告垙绫诲瀷</div>' +
+    '<div class="unit-stat-chip">馃啌 <span class="chip-val">' + freeCount + '</span> 鍏嶈垂</div>' +
+    '<div class="unit-stat-chip">馃敀 <span class="chip-val">' + paidCount + '</span> 浠樿垂</div>';
 
   // Build unit map
   var units = {};
@@ -668,13 +697,13 @@ function renderSyllabus() {
     html += '<div class="unit-card" id="syllabus-unit-' + unitIdx + '">' +
       '<div class="unit-card-header" onclick="toggleSyllabusUnit(' + unitIdx + ')">' +
         '<div class="uh-left">' +
-          '<div class="uh-icon ' + (isBio?'bio':'chem') + '">' + (isBio?'🌿':'⚗️') + '</div>' +
+          '<div class="uh-icon ' + (isBio?'bio':isChem?'chem':'geo') + '">' + (isGeo?'馃椇锔?:isBio?'馃尶':'鈿楋笍') + '</div>' +
           '<div>' +
             '<div class="uh-title">' + unitName + '</div>' +
-            '<div class="uh-count">' + chKeys.length + ' 章 · ' + totalSections + ' 节</div>' +
+            '<div class="uh-count">' + chKeys.length + ' 绔?路 ' + totalSections + ' 鑺?/div>' +
           '</div>' +
         '</div>' +
-        '<span class="uh-arrow">▼</span>' +
+        '<span class="uh-arrow">鈻?/span>' +
       '</div>' +
       '<div class="unit-card-body"><div class="chapter-list">';
     
@@ -685,14 +714,14 @@ function renderSyllabus() {
       html += '<div class="chapter-node" id="' + chId + '">' +
           '<div class="cn-header" onclick="event.stopPropagation();toggleSyllabusChapter(\'' + chId + '\')">' +
             '<span class="cn-title">' + chName + '</span>' +
-            '<span class="cn-arrow">▼</span>' +
+            '<span class="cn-arrow">鈻?/span>' +
           '</div>' +
           '<div class="cn-sections">';
       sections.forEach(function(s) {
         html += '<div class="section-item" onclick="event.stopPropagation();navigateTo(\'learning\',\'' + s.category + '\');scrollToCard(\'' + s.id + '\')">' +
               '<span class="si-dot"></span>' +
               '<span>' + s.section + '</span>' +
-              '<span class="si-badge ' + (s.free ? 'free' : 'locked') + '">' + (s.free ? '免费' : '付费') + '</span>' +
+              '<span class="si-badge ' + (s.free ? 'free' : 'locked') + '">' + (s.free ? '鍏嶈垂' : '浠樿垂') + '</span>' +
               '<span class="si-page">' + s.page + '</span>' +
             '</div>';
       });
@@ -735,38 +764,38 @@ function renderSyllabusStandards(isBio) {
   
   if (isBio) {
     stdCards.innerHTML = '<div class="std-ref-card">' +
-      '<div class="src-icon">📘</div>' +
-      '<div class="src-title">生物学课程标准 (2022版)</div>' +
-      '<div class="src-desc">课程性质、理念、目标、内容、学业质量</div>' +
-      '<a href="pdf/义务教育生物学课程标准2022版.pdf" target="_blank" class="btn-sm btn-warm" style="display:inline-block;text-decoration:none">📥 查看PDF</a>' +
+      '<div class="src-icon">馃摌</div>' +
+      '<div class="src-title">鐢熺墿瀛﹁绋嬫爣鍑?(2022鐗?</div>' +
+      '<div class="src-desc">璇剧▼鎬ц川銆佺悊蹇点€佺洰鏍囥€佸唴瀹广€佸涓氳川閲?/div>' +
+      '<a href="pdf/涔夊姟鏁欒偛鐢熺墿瀛﹁绋嬫爣鍑?022鐗?pdf" target="_blank" class="btn-sm btn-warm" style="display:inline-block;text-decoration:none">馃摜 鏌ョ湅PDF</a>' +
       '</div>';
-    stdKps.innerHTML = '<span class="std-keypoint">生命观念</span>' +
-      '<span class="std-keypoint">科学思维</span>' +
-      '<span class="std-keypoint">探究实践</span>' +
-      '<span class="std-keypoint">态度责任</span>' +
-      '<span class="std-keypoint">生物体的结构层次</span>' +
-      '<span class="std-keypoint">生物的多样性</span>' +
-      '<span class="std-keypoint">生物与环境</span>';
+    stdKps.innerHTML = '<span class="std-keypoint">鐢熷懡瑙傚康</span>' +
+      '<span class="std-keypoint">绉戝鎬濈淮</span>' +
+      '<span class="std-keypoint">鎺㈢┒瀹炶返</span>' +
+      '<span class="std-keypoint">鎬佸害璐ｄ换</span>' +
+      '<span class="std-keypoint">鐢熺墿浣撶殑缁撴瀯灞傛</span>' +
+      '<span class="std-keypoint">鐢熺墿鐨勫鏍锋€?/span>' +
+      '<span class="std-keypoint">鐢熺墿涓庣幆澧?/span>';
   } else {
     stdCards.innerHTML = '<div class="std-ref-card">' +
-      '<div class="src-icon">📙</div>' +
-      '<div class="src-title">化学课程标准 (2022版)</div>' +
-      '<div class="src-desc">课程性质、理念、目标、内容、学业质量</div>' +
-      '<a href="pdf/义务教育化学课程标准2022版.pdf" target="_blank" class="btn-sm btn-warm" style="display:inline-block;text-decoration:none">📥 查看PDF</a>' +
+      '<div class="src-icon">馃摍</div>' +
+      '<div class="src-title">鍖栧璇剧▼鏍囧噯 (2022鐗?</div>' +
+      '<div class="src-desc">璇剧▼鎬ц川銆佺悊蹇点€佺洰鏍囥€佸唴瀹广€佸涓氳川閲?/div>' +
+      '<a href="pdf/涔夊姟鏁欒偛鍖栧璇剧▼鏍囧噯2022鐗?pdf" target="_blank" class="btn-sm btn-warm" style="display:inline-block;text-decoration:none">馃摜 鏌ョ湅PDF</a>' +
       '</div>';
-    stdKps.innerHTML = '<span class="std-keypoint">化学观念</span>' +
-      '<span class="std-keypoint">科学思维</span>' +
-      '<span class="std-keypoint">科学探究与实践</span>' +
-      '<span class="std-keypoint">科学态度与责任</span>' +
-      '<span class="std-keypoint">物质的性质与应用</span>' +
-      '<span class="std-keypoint">物质的组成与结构</span>' +
-      '<span class="std-keypoint">物质的化学变化</span>';
+    stdKps.innerHTML = '<span class="std-keypoint">鍖栧瑙傚康</span>' +
+      '<span class="std-keypoint">绉戝鎬濈淮</span>' +
+      '<span class="std-keypoint">绉戝鎺㈢┒涓庡疄璺?/span>' +
+      '<span class="std-keypoint">绉戝鎬佸害涓庤矗浠?/span>' +
+      '<span class="std-keypoint">鐗╄川鐨勬€ц川涓庡簲鐢?/span>' +
+      '<span class="std-keypoint">鐗╄川鐨勭粍鎴愪笌缁撴瀯</span>' +
+      '<span class="std-keypoint">鐗╄川鐨勫寲瀛﹀彉鍖?/span>';
   }
 }
 
 function viewStandards() {
   var isBio = currentSubject === 'bio';
-  var pdf = isBio ? 'pdf/义务教育生物学课程标准2022版.pdf' : 'pdf/义务教育化学课程标准2022版.pdf';
+  var pdf = isBio ? 'pdf/涔夊姟鏁欒偛鐢熺墿瀛﹁绋嬫爣鍑?022鐗?pdf' : 'pdf/涔夊姟鏁欒偛鍖栧璇剧▼鏍囧噯2022鐗?pdf';
   window.open(pdf, '_blank');
 }
 
@@ -777,16 +806,18 @@ function startLearning() {
 // ============ VIEW 3: LEARNING PAGE ============
 function updateLearningHeader() {
   var isBio = currentSubject === 'bio';
-  document.getElementById('lpTitle').textContent = isBio ? '🌿 生物七上' : '⚗️ 化学九上';
+  var isChem = currentSubject === 'chem';
+  document.getElementById('lpTitle').textContent = isBio ? '馃尶 鐢熺墿涓冧笂' : isChem ? '鈿楋笍 鍖栧涔濅笂' : '馃椇锔?鍦扮悊涓冧笂';
   document.querySelectorAll('.lp-tab').forEach(function(t, i) {
-    t.classList.toggle('active', (isBio && i === 0) || (!isBio && i === 1));
+    var sub = t.getAttribute('onclick').match(/switchSubject\('(\w+)'\)/);
+    t.classList.toggle('active', sub && sub[1] === currentSubject);
   });
 }
 
 function switchSubject(sub) {
   currentSubject = sub;
   updateLearningHeader();
-  var data = sub === 'bio' ? BIO_DATA : CHEM_DATA;
+  var data = sub === 'bio' ? BIO_DATA : sub === 'chem' ? CHEM_DATA : GEO_DATA;
   document.getElementById('stat-know').textContent = data.length;
   document.getElementById('stat-quiz').textContent = data.reduce(function(s,d) { return s + (d.quiz?d.quiz.length:0); }, 0);
   renderKnowledge();
@@ -794,7 +825,8 @@ function switchSubject(sub) {
 }
 
 function renderKnowledge() {
-  var data = currentSubject === 'bio' ? BIO_DATA : CHEM_DATA;
+  // Render knowledge cards
+  var data = currentSubject === 'bio' ? BIO_DATA : currentSubject === 'chem' ? CHEM_DATA : GEO_DATA;
   var container = document.getElementById('knowledge-container');
   
   var units = {};
@@ -807,34 +839,37 @@ function renderKnowledge() {
   Object.entries(units).forEach(function(entry) {
     var unit = entry[0];
     var items = entry[1];
-    var isBio = items[0].category === 'bio';
+    var cat = items[0].category;
+    var isBio = cat === 'bio';
+    var isGeo = cat === 'geo';
     html += '<div class="unit-section">' +
-      '<div class="unit-title"><span class="icon ' + (isBio?'bio':'chem') + '">' + (isBio?'🌿':'⚗️') + '</span>' + unit + '</div>' +
+      '<div class="unit-title"><span class="icon ' + (isBio?'bio':isGeo?'geo':'chem') + '">' + (isGeo?'馃椇锔?:isBio?'馃尶':'鈿楋笍') + '</span>' + unit + '</div>' +
       '<div class="knowledge-grid">';
     items.forEach(function(d) {
       var locked = !d.free && !isUnlocked;
       var quizCount = d.quiz ? d.quiz.length : 0;
+      var cardCase = isGeo ? (d.gameScene || '') : (d.nightMarketCase || '');
       html += '<div class="kcard" id="card-' + d.id + '" onclick="toggleCard(\'' + d.id + '\')">' +
         '<div class="kc-top">' +
           '<span class="kc-num">' + d.page + '</span>' +
-          (locked?'<span class="kc-lock">🔒 需解锁</span>':'') +
+          (locked?'<span class="kc-lock">馃敀 闇€瑙ｉ攣</span>':'') +
         '</div>' +
         '<div class="kc-title">' + d.section + '</div>' +
-        '<div class="kc-case">💡 ' + d.nightMarketCase + '</div>' +
+        '<div class="kc-case">馃挕 ' + cardCase + '</div>' +
         '<div class="kc-tags">' +
           d.examPoints.map(function(p){return '<span class="kc-tag exam">'+p+'</span>';}).join('') +
-          '<span class="kc-tag game">🎮 ' + (d.gameDesign||'').split('：')[0] + '</span>' +
-          '<span class="kc-tag quiz">📝 ' + quizCount + '题</span>' +
+          '<span class="kc-tag game">馃幃 ' + (d.gameDesign||'').split('锛?)[0] + '</span>' +
+          '<span class="kc-tag quiz">馃摑 ' + quizCount + '棰?/span>' +
         '</div>' +
         '<div class="kc-detail">' +
-          '<h4>📖 核心知识点</h4>' +
+          '<h4>馃摉 鏍稿績鐭ヨ瘑鐐?/h4>' +
           '<ul>' + d.keypoints.map(function(k){return '<li>'+k+'</li>';}).join('') + '</ul>' +
-          '<div class="night">🏮 夜市案例：' + d.nightMarketCase + '</div>' +
-          '<h4>教材栏目</h4>' +
+          '<div class="night">馃彯 澶滃競妗堜緥锛? + d.nightMarketCase + '</div>' +
+          '<h4>鏁欐潗鏍忕洰</h4>' +
           '<ul>' + (d.textbookColumns||[]).map(function(c){return '<li>'+c+'</li>';}).join('') + '</ul>' +
           '<div class="btns">' +
-            '<button class="btn-sm btn-green" onclick="event.stopPropagation();openQuiz(\'' + d.id + '\')">📝 随堂测验</button>' +
-            (!locked?'<button class="btn-sm btn-outline" onclick="event.stopPropagation();openGameByType(\'' + d.gameType + '\')">🎮 沙盘游戏</button>':'') +
+            '<button class="btn-sm btn-green" onclick="event.stopPropagation();openQuiz(\'' + d.id + '\')">馃摑 闅忓爞娴嬮獙</button>' +
+            (!locked?'<button class="btn-sm btn-outline" onclick="event.stopPropagation();openGameByType(\'' + d.gameType + '\')">馃幃 娌欑洏娓告垙</button>':'') +
           '</div>' +
         '</div>' +
       '</div>';
@@ -861,13 +896,13 @@ function toggleCard(id) {
 function openQuiz(knowledgeId) {
   var item = ALL_DATA.find(function(d) { return d.id === knowledgeId; });
   if (!item || !item.quiz || item.quiz.length === 0) {
-    showToast('暂无测验题', true);
+    showToast('鏆傛棤娴嬮獙棰?, true);
     return;
   }
   quizData = item.quiz;
   quizIdx = 0;
   quizScore = 0;
-  document.getElementById('quizTitle').textContent = item.section + ' · 随堂测验';
+  document.getElementById('quizTitle').textContent = item.section + ' 路 闅忓爞娴嬮獙';
   document.getElementById('quizModal').classList.add('show');
   renderQuizQuestion();
 }
@@ -880,9 +915,9 @@ function renderQuizQuestion() {
   document.getElementById('quizFeedback').classList.remove('show','ok','fail');
   document.getElementById('quizNextBtn').style.display = 'none';
 
-  var typeNames = {mc:'选择题', fill:'填空题', sort:'排序题'};
+  var typeNames = {mc:'閫夋嫨棰?, fill:'濉┖棰?, sort:'鎺掑簭棰?};
   var typeBadge = document.getElementById('quizTypeBadge');
-  typeBadge.textContent = typeNames[q.type] || '选择题';
+  typeBadge.textContent = typeNames[q.type] || '閫夋嫨棰?;
   typeBadge.className = 'quiz-type-badge ' + (q.type||'mc');
 
   document.getElementById('quizQ').textContent = q.q;
@@ -895,13 +930,13 @@ function renderQuizQuestion() {
       return '<div class="quiz-opt" onclick="answerMC('+i+')">'+String.fromCharCode(65+i)+'. '+o+'</div>';
     }).join('');
   } else if (q.type === 'fill') {
-    optContainer.innerHTML = '<input class="quiz-fill-input" id="quizFillInput" placeholder="请输入答案...">' +
-      '<div style="margin-top:6px"><button class="btn-sm btn-warm" onclick="answerFill()">提交</button></div>';
+    optContainer.innerHTML = '<input class="quiz-fill-input" id="quizFillInput" placeholder="璇疯緭鍏ョ瓟妗?..">' +
+      '<div style="margin-top:6px"><button class="btn-sm btn-warm" onclick="answerFill()">鎻愪氦</button></div>';
   } else if (q.type === 'sort') {
     var shuffled = [].concat(q.items).sort(function() { return Math.random() - 0.5; });
     optContainer.innerHTML = '<div class="quiz-sort-list" id="sortList">' +
       shuffled.map(function(s,i) { return '<div class="quiz-sort-item" draggable="true" data-idx="'+i+'" data-text="'+s+'"><span class="num">'+(i+1)+'</span>'+s.split('(')[0]+'</div>'; }).join('') +
-    '</div><div style="margin-top:8px"><button class="btn-sm btn-warm" onclick="answerSort()">提交排序</button></div>';
+    '</div><div style="margin-top:8px"><button class="btn-sm btn-warm" onclick="answerSort()">鎻愪氦鎺掑簭</button></div>';
     var dragSrc = null;
     document.querySelectorAll('#sortList .quiz-sort-item').forEach(function(item) {
       item.addEventListener('dragstart', function(e) { dragSrc = item; e.dataTransfer.effectAllowed = 'move'; });
@@ -937,7 +972,7 @@ function answerFill() {
   var q = quizData[quizIdx];
   var correctAnswers = q.answer.split(',');
   var correct = correctAnswers.some(function(a) { return userAnswer === a.trim(); });
-  showFeedback(correct, q.explanation + '（正确答案：'+q.answer+'）');
+  showFeedback(correct, q.explanation + '锛堟纭瓟妗堬細'+q.answer+'锛?);
 }
 
 function answerSort() {
@@ -946,13 +981,13 @@ function answerSort() {
   var userOrder = Array.from(items).map(function(el) { return el.dataset.text; });
   var correctOrder = q.items.map(function(s) { return s.split('(')[0]; });
   var correct = JSON.stringify(userOrder) === JSON.stringify(correctOrder);
-  showFeedback(correct, q.explanation + '\n正确顺序：' + q.items.join(' → '));
+  showFeedback(correct, q.explanation + '\n姝ｇ‘椤哄簭锛? + q.items.join(' 鈫?'));
 }
 
 function showFeedback(correct, explanation) {
   var fb = document.getElementById('quizFeedback');
   fb.className = 'quiz-feedback show ' + (correct?'ok':'fail');
-  document.getElementById('quizFeedbackIcon').textContent = correct ? '✅ 回答正确！' : '❌ 回答错误';
+  document.getElementById('quizFeedbackIcon').textContent = correct ? '鉁?鍥炵瓟姝ｇ‘锛? : '鉂?鍥炵瓟閿欒';
   document.getElementById('quizFeedbackText').textContent = '';
   document.getElementById('quizExplanation').textContent = explanation;
   if (correct) quizScore++;
@@ -973,15 +1008,15 @@ function finishQuiz() {
   var total = quizData.length;
   var percent = Math.round(quizScore/total*100);
   var grade = percent >= 80 ? 'good' : percent >= 50 ? 'mid' : 'low';
-  var emoji = percent >= 80 ? '🎉' : percent >= 50 ? '👍' : '💪';
+  var emoji = percent >= 80 ? '馃帀' : percent >= 50 ? '馃憤' : '馃挭';
   
   document.getElementById('quizModal').classList.remove('show');
   document.getElementById('quizResultModal').classList.add('show');
   document.getElementById('quizResultContent').innerHTML = 
     '<div class="score-circle '+grade+'">'+percent+'%</div>' +
-    '<h3>'+emoji+' '+quizScore+'/'+total+' 题正确</h3>' +
-    '<p style="color:var(--text2);margin-top:8px">'+(percent>=80?'太棒了！你掌握得很好！':percent>=50?'还不错，继续加油！':'别灰心，再看看知识点吧！')+'</p>' +
-    '<button class="btn-sm btn-warm" style="margin-top:16px" onclick="closeQuizResult()">返回</button>';
+    '<h3>'+emoji+' '+quizScore+'/'+total+' 棰樻纭?/h3>' +
+    '<p style="color:var(--text2);margin-top:8px">'+(percent>=80?'澶浜嗭紒浣犳帉鎻″緱寰堝ソ锛?:percent>=50?'杩樹笉閿欙紝缁х画鍔犳补锛?:'鍒伆蹇冿紝鍐嶇湅鐪嬬煡璇嗙偣鍚э紒')+'</p>' +
+    '<button class="btn-sm btn-warm" style="margin-top:16px" onclick="closeQuizResult()">杩斿洖</button>';
   
   totalScore += quizScore;
   localStorage.setItem('bioChemScore', totalScore);
@@ -1004,18 +1039,18 @@ function openGameByType(gameType) {
 }
 
 function openGameModal(gidx) {
-  var games = ['夜市生物普查员','细胞装配工厂','烤串火候控制台','变化分类快问快答','方程式配平挑战','元素周期表闯关','细菌繁殖速度挑战','碳的变身游戏'];
+  var games = ['澶滃競鐢熺墿鏅煡鍛?,'缁嗚優瑁呴厤宸ュ巶','鐑や覆鐏€欐帶鍒跺彴','鍙樺寲鍒嗙被蹇棶蹇瓟','鏂圭▼寮忛厤骞虫寫鎴?,'鍏冪礌鍛ㄦ湡琛ㄩ棷鍏?,'缁嗚弻绻佹畺閫熷害鎸戞垬','纰崇殑鍙樿韩娓告垙'];
   var descriptions = [
-    '把夜市中的物品拖放到正确的生物分类框中，学习生物分类方法。',
-    '点击细胞器名称，将它们放置到细胞中的正确位置，组装完整的植物细胞。',
-    '调节可燃物、氧气和温度三个滑块，找到完美烤串的火候——理解燃烧三要素。',
-    '快速判断生活中的变化是物理变化还是化学变化，考验你的反应速度！',
-    '给化学方程式配平系数，掌握质量守恒定律的应用。',
-    '点击元素符号收集元素，了解每个元素在夜市中的关联应用。',
-    '计算细菌分裂繁殖的数量，感受指数增长的威力。',
-    '点击按钮改变碳原子的排列方式，观察同素异形体的奇妙变化。'
+    '鎶婂甯備腑鐨勭墿鍝佹嫋鏀惧埌姝ｇ‘鐨勭敓鐗╁垎绫绘涓紝瀛︿範鐢熺墿鍒嗙被鏂规硶銆?,
+    '鐐瑰嚮缁嗚優鍣ㄥ悕绉帮紝灏嗗畠浠斁缃埌缁嗚優涓殑姝ｇ‘浣嶇疆锛岀粍瑁呭畬鏁寸殑妞嶇墿缁嗚優銆?,
+    '璋冭妭鍙噧鐗┿€佹哀姘斿拰娓╁害涓変釜婊戝潡锛屾壘鍒板畬缇庣儰涓茬殑鐏€欌€斺€旂悊瑙ｇ噧鐑т笁瑕佺礌銆?,
+    '蹇€熷垽鏂敓娲讳腑鐨勫彉鍖栨槸鐗╃悊鍙樺寲杩樻槸鍖栧鍙樺寲锛岃€冮獙浣犵殑鍙嶅簲閫熷害锛?,
+    '缁欏寲瀛︽柟绋嬪紡閰嶅钩绯绘暟锛屾帉鎻¤川閲忓畧鎭掑畾寰嬬殑搴旂敤銆?,
+    '鐐瑰嚮鍏冪礌绗﹀彿鏀堕泦鍏冪礌锛屼簡瑙ｆ瘡涓厓绱犲湪澶滃競涓殑鍏宠仈搴旂敤銆?,
+    '璁＄畻缁嗚弻鍒嗚绻佹畺鐨勬暟閲忥紝鎰熷彈鎸囨暟澧為暱鐨勫▉鍔涖€?,
+    '鐐瑰嚮鎸夐挳鏀瑰彉纰冲師瀛愮殑鎺掑垪鏂瑰紡锛岃瀵熷悓绱犲紓褰綋鐨勫濡欏彉鍖栥€?
   ];
-  document.getElementById('gameTitle').textContent = '🎮 ' + games[gidx];
+  document.getElementById('gameTitle').textContent = '馃幃 ' + games[gidx];
   document.getElementById('gameModal').classList.add('show');
   document.getElementById('gameContent').innerHTML = 
     '<div class="game-instructions">' + descriptions[gidx] + '</div>' +
@@ -1030,13 +1065,14 @@ function closeGame() {
 
 function renderGame(g) {
   if (g===0) return `<div id="g0-phaser-container" style="width:100%;max-width:600px;margin:0 auto"></div><p id="g0-score" style="text-align:center;margin-top:8px;font-weight:600;font-size:1rem"></p>`;
-  if (g===1) return `<p style="color:var(--text2)">拖拽细胞器到正确位置组装植物细胞</p><div id="g1-area" style="width:300px;height:300px;border:2px dashed var(--border);border-radius:50%;margin:10px auto;position:relative"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px" id="g1-parts"></div><p id="g1-msg" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
-  if (g===2) return `<p style="text-align:center;font-size:3rem" id="g3-skewer">🍢</p><div style="margin:10px 0"><label>🪵 可燃物: <span id="g3-fuel-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-fuel" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>💨 氧气: <span id="g3-o2-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-o2" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>🌡 温度: <span id="g3-temp-val">200°C</span></label><input type="range" min="0" max="300" value="200" id="g3-temp" oninput="updateG3()" style="width:100%"></div><p id="g3-feedback" style="text-align:center;font-weight:600;margin-top:8px"></p><p id="g3-detail" style="text-align:center;font-size:.8rem;color:var(--text3);margin-top:4px"></p>`;
-  if (g===3) return `<p style="text-align:center;font-size:1.5rem;margin:10px 0" id="g4-question"></p><div style="display:flex;gap:12px;justify-content:center;margin-top:8px"><button class="btn-sm btn-blue" onclick="answerG4('physical')" style="background:var(--blue);color:#fff">🔄 物理变化</button><button class="btn-sm btn-warm" onclick="answerG4('chemical')">⚡ 化学变化</button></div><p id="g4-score" style="text-align:center;margin-top:8px;font-weight:600"></p><p id="g4-timer" style="text-align:center;color:var(--text3)"></p>`;
-  if (g===4) return `<p style="text-align:center;font-size:1.2rem;font-weight:600;margin:10px 0" id="g5-eq"></p><input class="quiz-fill-input" id="g5-input" placeholder="填系数，用逗号分隔，如 1,2,1,2"><button class="btn-sm btn-warm" onclick="checkG5()" style="margin-top:8px">检查</button><p id="g5-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===1) return `<p style="color:var(--text2)">鎷栨嫿缁嗚優鍣ㄥ埌姝ｇ‘浣嶇疆缁勮妞嶇墿缁嗚優</p><div id="g1-area" style="width:300px;height:300px;border:2px dashed var(--border);border-radius:50%;margin:10px auto;position:relative"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px" id="g1-parts"></div><p id="g1-msg" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===2) return `<p style="text-align:center;font-size:3rem" id="g3-skewer">馃崲</p><div style="margin:10px 0"><label>馃 鍙噧鐗? <span id="g3-fuel-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-fuel" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>馃挩 姘ф皵: <span id="g3-o2-val">50</span></label><input type="range" min="0" max="100" value="50" id="g3-o2" oninput="updateG3()" style="width:100%"></div><div style="margin:10px 0"><label>馃尅 娓╁害: <span id="g3-temp-val">200掳C</span></label><input type="range" min="0" max="300" value="200" id="g3-temp" oninput="updateG3()" style="width:100%"></div><p id="g3-feedback" style="text-align:center;font-weight:600;margin-top:8px"></p><p id="g3-detail" style="text-align:center;font-size:.8rem;color:var(--text3);margin-top:4px"></p>`;
+  if (g===3) return `<p style="text-align:center;font-size:1.5rem;margin:10px 0" id="g4-question"></p><div style="display:flex;gap:12px;justify-content:center;margin-top:8px"><button class="btn-sm btn-blue" onclick="answerG4('physical')" style="background:var(--blue);color:#fff">馃攧 鐗╃悊鍙樺寲</button><button class="btn-sm btn-warm" onclick="answerG4('chemical')">鈿?鍖栧鍙樺寲</button></div><p id="g4-score" style="text-align:center;margin-top:8px;font-weight:600"></p><p id="g4-timer" style="text-align:center;color:var(--text3)"></p>`;
+  if (g===4) return `<p style="text-align:center;font-size:1.2rem;font-weight:600;margin:10px 0" id="g5-eq"></p><input class="quiz-fill-input" id="g5-input" placeholder="濉郴鏁帮紝鐢ㄩ€楀彿鍒嗛殧锛屽 1,2,1,2"><button class="btn-sm btn-warm" onclick="checkG5()" style="margin-top:8px">妫€鏌?/button><p id="g5-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
   if (g===5) return `<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:320px;margin:0 auto" id="g6-grid"></div><p id="g6-info" style="text-align:center;margin-top:10px;font-weight:600"></p>`;
-  if (g===6) return `<p style="font-size:1rem;text-align:center" id="g7-q"></p><input class="quiz-fill-input" id="g7-input" placeholder="输入你的答案"><button class="btn-sm btn-warm" onclick="checkG7()" style="margin-top:8px">提交</button><p id="g7-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
-  if (g===7) return `<p style="text-align:center;font-size:5rem;margin:16px 0" id="g8-display">💎</p><p id="g8-name" style="text-align:center;font-weight:600">金刚石</p><p id="g8-desc" style="text-align:center;font-size:.8rem;color:var(--text3)">最硬的天然物质</p><div style="text-align:center;margin-top:12px"><button class="btn-sm btn-warm" onclick="transformG8()">🔄 改变原子排列</button></div>`;
+  if (g===6) return `<p style="font-size:1rem;text-align:center" id="g7-q"></p><input class="quiz-fill-input" id="g7-input" placeholder="杈撳叆浣犵殑绛旀"><button class="btn-sm btn-warm" onclick="checkG7()" style="margin-top:8px">鎻愪氦</button><p id="g7-result" style="text-align:center;margin-top:8px;font-weight:600"></p>`;
+  if (g===7) return `<p style="text-align:center;font-size:5rem;margin:16px 0" id="g8-display">馃拵</p><p id="g8-name" style="text-align:center;font-weight:600">閲戝垰鐭?/p><p id="g8-desc" style="text-align:center;font-size:.8rem;color:var(--text3)">鏈€纭殑澶╃劧鐗╄川</p><div style="text-align:center;margin-top:12px"><button class="btn-sm btn-warm" onclick="transformG8()">馃攧 鏀瑰彉鍘熷瓙鎺掑垪</button></div>`;
+  if (g===8) return `<div id="g9-phaser-container" style="width:100%;max-width:640px;margin:0 auto"></div><p id="g9-score" style="text-align:center;margin-top:8px;font-weight:600;font-size:1rem"></p>`;
   return '';
 }
 function initGame(g) {
@@ -1047,16 +1083,17 @@ function initGame(g) {
   if (g===4) initG5();
   if (g===5) initG6();
   if (g===6) initG7();
+  if (g===8) initG9();
 }
 function initG0() {
   var container = document.getElementById('g0-phaser-container');
   if (!container) return;
   container.innerHTML = '';
   window.g0Score = 0;
-  document.getElementById('g0-score').textContent = '正确: 0/8';
+  document.getElementById('g0-score').textContent = '姝ｇ‘: 0/8';
   
-  var bins = [{label:'🌿 植物',color:0x5b9a6b},{label:'🐟 动物',color:0xe87d4b},{label:'🦠 微生物',color:0x5a85d9},{label:'⚪ 非生物',color:0x999999}];
-  var items = [{n:'🥬 青菜',c:0},{n:'🦐 活虾',c:1},{n:'🍄 酵母粉',c:2},{n:'🍖 烤串',c:1},{n:'🔥 炭火',c:3},{n:'🍄 蘑菇',c:2},{n:'🔩 铁签',c:3},{n:'🌿 紫菜',c:0}];
+  var bins = [{label:'馃尶 妞嶇墿',color:0x5b9a6b},{label:'馃悷 鍔ㄧ墿',color:0xe87d4b},{label:'馃 寰敓鐗?,color:0x5a85d9},{label:'鈿?闈炵敓鐗?,color:0x999999}];
+  var items = [{n:'馃ガ 闈掕彍',c:0},{n:'馃 娲昏櫨',c:1},{n:'馃崉 閰垫瘝绮?,c:2},{n:'馃崠 鐑や覆',c:1},{n:'馃敟 鐐伀',c:3},{n:'馃崉 铇戣弴',c:2},{n:'馃敥 閾佺',c:3},{n:'馃尶 绱彍',c:0}];
   // Shuffle
   for (var i = items.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tmp = items[i]; items[i] = items[j]; items[j] = tmp; }
   
@@ -1084,7 +1121,7 @@ function initG0() {
     }, this);
     
     // Instruction
-    this.add.text(W/2, H - 10, '把物品拖到正确的分类框中!', {fontSize:'13px',color:'#999'}).setOrigin(0.5);
+    this.add.text(W/2, H - 10, '鎶婄墿鍝佹嫋鍒版纭殑鍒嗙被妗嗕腑!', {fontSize:'13px',color:'#999'}).setOrigin(0.5);
     
     items.forEach(function(item, idx) {
       var bx = 40 + (idx % 4) * 140, by = 100 + Math.floor(idx / 4) * 55;
@@ -1120,9 +1157,9 @@ function initG0() {
             this.setStyle({backgroundColor:'#ebf7ef',color:'#5b9a6b'});
             this.disableInteractive();
             window.g0Score++;
-            document.getElementById('g0-score').textContent = '✅ 正确: ' + window.g0Score + '/8';
+            document.getElementById('g0-score').textContent = '鉁?姝ｇ‘: ' + window.g0Score + '/8';
             if (window.g0Score >= 8) {
-              this.scene.add.text(W/2, H/2, '🎉 全部正确!', {fontSize:'32px',color:'#e87d4b',fontWeight:'bold'}).setOrigin(0.5);
+              this.scene.add.text(W/2, H/2, '馃帀 鍏ㄩ儴姝ｇ‘!', {fontSize:'32px',color:'#e87d4b',fontWeight:'bold'}).setOrigin(0.5);
             }
             return;
           }
@@ -1138,10 +1175,10 @@ function initG0() {
 }
 
 function initG1() {
-  const parts = ['细胞核','细胞质','细胞膜','细胞壁','液泡','叶绿体','线粒体'];
+  const parts = ['缁嗚優鏍?,'缁嗚優璐?,'缁嗚優鑶?,'缁嗚優澹?,'娑叉场','鍙剁豢浣?,'绾跨矑浣?];
   document.getElementById('g1-parts').innerHTML = parts.map(p=>`<span style="padding:6px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-size:.78rem" onclick="placeG1('${p}')">${p}</span>`).join('');
   window.g1Placed = [];
-  document.getElementById('g1-msg').textContent = '点击细胞器再点击圆圈放置';
+  document.getElementById('g1-msg').textContent = '鐐瑰嚮缁嗚優鍣ㄥ啀鐐瑰嚮鍦嗗湀鏀剧疆';
 }
 
 function placeG1(name) {
@@ -1156,7 +1193,7 @@ function placeG1(name) {
   dot.title = name;
   area.appendChild(dot);
   if (window.g1Placed.length >= 7) {
-    document.getElementById('g1-msg').textContent = '✅ 植物细胞组装完成！';
+    document.getElementById('g1-msg').textContent = '鉁?妞嶇墿缁嗚優缁勮瀹屾垚锛?;
     totalScore += 5;
     localStorage.setItem('bioChemScore', totalScore);
     document.getElementById('stat-score').textContent = totalScore;
@@ -1168,48 +1205,48 @@ function updateG3() {
   const o2 = parseInt(document.getElementById('g3-o2')?.value||50);
   const temp = parseInt(document.getElementById('g3-temp')?.value||200);
   const fuelOk = fuel>=60&&fuel<=85, o2Ok = o2>=55&&o2<=85, tempOk = temp>=160&&temp<=240;
-  let emoji = '🥩', fb='', detail='';
-  if (fuelOk&&o2Ok&&tempOk) { emoji='🍖'; fb='🎉 完美！外焦里嫩！'; detail='燃烧三要素恰到好处！'; }
-  else if ((fuelOk&&o2Ok)||(fuelOk&&tempOk)||(o2Ok&&tempOk)) { fb='👍 还不错，再微调一下'; detail='两个达标，差一个'; }
-  else if (fuelOk||o2Ok||tempOk) { fb='😐 差得远'; detail='只有一个达标'; }
-  else { fb='🧊 完全没烤好！'; detail='三要素都不满足'; }
-  if (fuel>90) detail+=' 炭太多了！'; if (o2>90) detail+=' O₂太多！'; if (temp>260) detail+=' 温度太高！'; if (fuel<30) detail+=' 炭不够！';
+  let emoji = '馃ォ', fb='', detail='';
+  if (fuelOk&&o2Ok&&tempOk) { emoji='馃崠'; fb='馃帀 瀹岀編锛佸鐒﹂噷瀚╋紒'; detail='鐕冪儳涓夎绱犳伆鍒板ソ澶勶紒'; }
+  else if ((fuelOk&&o2Ok)||(fuelOk&&tempOk)||(o2Ok&&tempOk)) { fb='馃憤 杩樹笉閿欙紝鍐嶅井璋冧竴涓?; detail='涓や釜杈炬爣锛屽樊涓€涓?; }
+  else if (fuelOk||o2Ok||tempOk) { fb='馃槓 宸緱杩?; detail='鍙湁涓€涓揪鏍?; }
+  else { fb='馃 瀹屽叏娌＄儰濂斤紒'; detail='涓夎绱犻兘涓嶆弧瓒?; }
+  if (fuel>90) detail+=' 鐐お澶氫簡锛?; if (o2>90) detail+=' O鈧傚お澶氾紒'; if (temp>260) detail+=' 娓╁害澶珮锛?; if (fuel<30) detail+=' 鐐笉澶燂紒';
   document.getElementById('g3-skewer')&&(document.getElementById('g3-skewer').textContent=emoji);
   document.getElementById('g3-feedback')&&(document.getElementById('g3-feedback').textContent=fb);
   document.getElementById('g3-detail')&&(document.getElementById('g3-detail').textContent=detail);
   document.getElementById('g3-fuel-val')&&(document.getElementById('g3-fuel-val').textContent=fuel);
   document.getElementById('g3-o2-val')&&(document.getElementById('g3-o2-val').textContent=o2);
-  document.getElementById('g3-temp-val')&&(document.getElementById('g3-temp-val').textContent=temp+'°C');
+  document.getElementById('g3-temp-val')&&(document.getElementById('g3-temp-val').textContent=temp+'掳C');
 }
 
 function initG4() {
   window.g4Questions = [
-    {q:'铁签生锈',a:'chemical'},{q:'木炭切割',a:'physical'},{q:'食物腐败',a:'chemical'},{q:'冰融化',a:'physical'},{q:'燃气燃烧',a:'chemical'},{q:'食盐溶解',a:'physical'},{q:'烤串变色',a:'chemical'},{q:'酒杯打碎',a:'physical'}
+    {q:'閾佺鐢熼攬',a:'chemical'},{q:'鏈ㄧ偔鍒囧壊',a:'physical'},{q:'椋熺墿鑵愯触',a:'chemical'},{q:'鍐拌瀺鍖?,a:'physical'},{q:'鐕冩皵鐕冪儳',a:'chemical'},{q:'椋熺洂婧惰В',a:'physical'},{q:'鐑や覆鍙樿壊',a:'chemical'},{q:'閰掓澂鎵撶',a:'physical'}
   ];
   window.g4Idx = 0; window.g4Score = 0;
-  document.getElementById('g4-score').textContent = '积分: 0';
+  document.getElementById('g4-score').textContent = '绉垎: 0';
   nextG4();
 }
 
 function nextG4() {
   if (!window.g4Questions || window.g4Idx >= window.g4Questions.length) {
-    document.getElementById('g4-question').textContent = `完成！得分：${window.g4Score}/${window.g4Questions.length}`;
+    document.getElementById('g4-question').textContent = `瀹屾垚锛佸緱鍒嗭細${window.g4Score}/${window.g4Questions.length}`;
     return;
   }
-  document.getElementById('g4-question').textContent = window.g4Questions[window.g4Idx].q + ' 是？';
+  document.getElementById('g4-question').textContent = window.g4Questions[window.g4Idx].q + ' 鏄紵';
 }
 
 function answerG4(type) {
   const q = window.g4Questions[window.g4Idx];
-  if (q.a === type) { window.g4Score++; showToast('✅ 正确！', false); }
-  else showToast('❌ 错误', true);
+  if (q.a === type) { window.g4Score++; showToast('鉁?姝ｇ‘锛?, false); }
+  else showToast('鉂?閿欒', true);
   window.g4Idx++;
-  document.getElementById('g4-score').textContent = `积分: ${window.g4Score}`;
+  document.getElementById('g4-score').textContent = `绉垎: ${window.g4Score}`;
   nextG4();
 }
 
 function initG5() {
-  window.g5eqs = [{eq:'__H₂ + __O₂ → __H₂O', ans:'2,1,2'},{eq:'__C + __O₂ → __CO₂', ans:'1,1,1'},{eq:'__Fe + __O₂ → __Fe₃O₄', ans:'3,2,1'},{eq:'__CH₄ + __O₂ → __CO₂ + __H₂O', ans:'1,2,1,2'}];
+  window.g5eqs = [{eq:'__H鈧?+ __O鈧?鈫?__H鈧侽', ans:'2,1,2'},{eq:'__C + __O鈧?鈫?__CO鈧?, ans:'1,1,1'},{eq:'__Fe + __O鈧?鈫?__Fe鈧僌鈧?, ans:'3,2,1'},{eq:'__CH鈧?+ __O鈧?鈫?__CO鈧?+ __H鈧侽', ans:'1,2,1,2'}];
   window.g5Idx = 0;
   document.getElementById('g5-eq').textContent = window.g5eqs[0].eq;
 }
@@ -1217,47 +1254,47 @@ function initG5() {
 function checkG5() {
   const input = document.getElementById('g5-input').value.replace(/\s/g,'');
   if (input === window.g5eqs[window.g5Idx].ans) {
-    document.getElementById('g5-result').textContent = '✅ 正确！';
+    document.getElementById('g5-result').textContent = '鉁?姝ｇ‘锛?;
     window.g5Idx++;
     if (window.g5Idx >= window.g5eqs.length) {
-      document.getElementById('g5-eq').textContent = '全部配平完成！';
+      document.getElementById('g5-eq').textContent = '鍏ㄩ儴閰嶅钩瀹屾垚锛?;
       document.getElementById('g5-input').style.display = 'none';
     } else {
       document.getElementById('g5-eq').textContent = window.g5eqs[window.g5Idx].eq;
     }
   } else {
-    document.getElementById('g5-result').textContent = '❌ 不对，再试试';
+    document.getElementById('g5-result').textContent = '鉂?涓嶅锛屽啀璇曡瘯';
   }
   document.getElementById('g5-input').value = '';
 }
 
 function initG6() {
-  const elems = [{s:'H',n:'氢',nm:'水'},{s:'C',n:'碳',nm:'木炭'},{s:'O',n:'氧',nm:'呼吸'},{s:'N',n:'氮',nm:'空气'},{s:'Na',n:'钠',nm:'食盐'},{s:'Cl',n:'氯',nm:'食盐'},{s:'Fe',n:'铁',nm:'铁锅'},{s:'Ca',n:'钙',nm:'骨头'},{s:'K',n:'钾',nm:'香蕉'},{s:'Mg',n:'镁',nm:'绿叶'}];
+  const elems = [{s:'H',n:'姘?,nm:'姘?},{s:'C',n:'纰?,nm:'鏈ㄧ偔'},{s:'O',n:'姘?,nm:'鍛煎惛'},{s:'N',n:'姘?,nm:'绌烘皵'},{s:'Na',n:'閽?,nm:'椋熺洂'},{s:'Cl',n:'姘?,nm:'椋熺洂'},{s:'Fe',n:'閾?,nm:'閾侀攨'},{s:'Ca',n:'閽?,nm:'楠ㄥご'},{s:'K',n:'閽?,nm:'棣欒晧'},{s:'Mg',n:'闀?,nm:'缁垮彾'}];
   window.g6Collected = [];
   document.getElementById('g6-grid').innerHTML = elems.map((e,i)=>`<div style="padding:8px;text-align:center;background:var(--bg2);border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;border:1px solid var(--border)" onclick="collectG6(${i})">${e.s}<br><small style="color:var(--text3)">${e.n}</small></div>`).join('');
 }
 
 function collectG6(i) {
-  const elems = [{s:'H',n:'氢',nm:'水'},{s:'C',n:'碳',nm:'木炭'},{s:'O',n:'氧',nm:'呼吸'},{s:'N',n:'氮',nm:'空气'},{s:'Na',n:'钠',nm:'食盐'},{s:'Cl',n:'氯',nm:'食盐'},{s:'Fe',n:'铁',nm:'铁锅'},{s:'Ca',n:'钙',nm:'骨头'},{s:'K',n:'钾',nm:'香蕉'},{s:'Mg',n:'镁',nm:'绿叶'}];
+  const elems = [{s:'H',n:'姘?,nm:'姘?},{s:'C',n:'纰?,nm:'鏈ㄧ偔'},{s:'O',n:'姘?,nm:'鍛煎惛'},{s:'N',n:'姘?,nm:'绌烘皵'},{s:'Na',n:'閽?,nm:'椋熺洂'},{s:'Cl',n:'姘?,nm:'椋熺洂'},{s:'Fe',n:'閾?,nm:'閾侀攨'},{s:'Ca',n:'閽?,nm:'楠ㄥご'},{s:'K',n:'閽?,nm:'棣欒晧'},{s:'Mg',n:'闀?,nm:'缁垮彾'}];
   if (window.g6Collected.includes(i)) return;
   window.g6Collected.push(i);
-  document.getElementById('g6-info').textContent = `✅ ${elems[i].s}（${elems[i].n}）→ 夜市关联：${elems[i].nm} | 已收集 ${window.g6Collected.length}/10`;
-  if (window.g6Collected.length >= 10) showToast('🎉 全部元素收集完毕！', false);
+  document.getElementById('g6-info').textContent = `鉁?${elems[i].s}锛?{elems[i].n}锛夆啋 澶滃競鍏宠仈锛?{elems[i].nm} | 宸叉敹闆?${window.g6Collected.length}/10`;
+  if (window.g6Collected.length >= 10) showToast('馃帀 鍏ㄩ儴鍏冪礌鏀堕泦瀹屾瘯锛?, false);
 }
 
 function initG7() {
   const hours = Math.floor(Math.random()*4)+1;
   window.g7Answer = Math.pow(2, hours*3);
-  document.getElementById('g7-q').textContent = `1个细菌每20分钟分裂1次，${hours}小时后有多少个？`;
+  document.getElementById('g7-q').textContent = `1涓粏鑿屾瘡20鍒嗛挓鍒嗚1娆★紝${hours}灏忔椂鍚庢湁澶氬皯涓紵`;
 }
 
 function checkG7() {
   const input = parseInt(document.getElementById('g7-input').value);
-  document.getElementById('g7-result').textContent = input === window.g7Answer ? `✅ 正确！${window.g7Answer}个！这就是指数增长` : `❌ 不对，正确答案是 ${window.g7Answer}`;
+  document.getElementById('g7-result').textContent = input === window.g7Answer ? `鉁?姝ｇ‘锛?{window.g7Answer}涓紒杩欏氨鏄寚鏁板闀縛 : `鉂?涓嶅锛屾纭瓟妗堟槸 ${window.g7Answer}`;
 }
 
 function transformG8() {
-  const states = [{emoji:'💎',name:'金刚石',desc:'碳原子正四面体排列，最硬的天然物质'},{emoji:'✏️',name:'石墨',desc:'碳原子层状排列，最软且导电'},{emoji:'⚽',name:'C₆₀',desc:'60个碳原子排列成足球形状'}];
+  const states = [{emoji:'馃拵',name:'閲戝垰鐭?,desc:'纰冲師瀛愭鍥涢潰浣撴帓鍒楋紝鏈€纭殑澶╃劧鐗╄川'},{emoji:'鉁忥笍',name:'鐭冲ⅷ',desc:'纰冲師瀛愬眰鐘舵帓鍒楋紝鏈€杞笖瀵肩數'},{emoji:'鈿?,name:'C鈧嗏個',desc:'60涓⒊鍘熷瓙鎺掑垪鎴愯冻鐞冨舰鐘?}];
   window.g8State = ((window.g8State||0)+1) % 3;
   const s = states[window.g8State];
   document.getElementById('g8-display').textContent = s.emoji;
@@ -1270,25 +1307,25 @@ async function sendMessage() {
   var input = document.getElementById('chatInput');
   var msg = input.value.trim();
   if (!msg) return;
-  if (!apiKey) { showToast('请先在⚙️设置中配置DeepSeek API Key', true); return; }
+  if (!apiKey) { showToast('璇峰厛鍦ㄢ殭锔忚缃腑閰嶇疆DeepSeek API Key', true); return; }
   var body = document.getElementById('chatBody');
   body.innerHTML += '<div class="chat-msg user">' + msg + '</div>';
-  body.innerHTML += '<div class="chat-msg ai">阿火在想...</div>';
+  body.innerHTML += '<div class="chat-msg ai">闃跨伀鍦ㄦ兂...</div>';
   body.scrollTop = body.scrollHeight;
   input.value = '';
   try {
     var res = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
       body:JSON.stringify({model:'deepseek-chat',messages:[
-        {role:'system',content:'你是「夜市大厨阿火」，在夜市摆摊20年的老厨师，也是生化知识隐藏大师。说话像老厨师给徒弟支招——直接、实用、接地气。常用夜市食材/现象类比知识点。规则：1.先夜市场景类比1-2句，再用教科书语言解释 2.每个回答含夜市实例 3.回答200字以内 4.超出生物七上/化学九上范围礼貌引导回来。'},
+        {role:'system',content:'浣犳槸銆屽甯傚ぇ鍘ㄩ樋鐏€嶏紝鍦ㄥ甯傛憜鎽?0骞寸殑鑰佸帹甯堬紝涔熸槸鐢熷寲鐭ヨ瘑闅愯棌澶у笀銆傝璇濆儚鑰佸帹甯堢粰寰掑紵鏀嫑鈥斺€旂洿鎺ャ€佸疄鐢ㄣ€佹帴鍦版皵銆傚父鐢ㄥ甯傞鏉?鐜拌薄绫绘瘮鐭ヨ瘑鐐广€傝鍒欙細1.鍏堝甯傚満鏅被姣?-2鍙ワ紝鍐嶇敤鏁欑涔﹁瑷€瑙ｉ噴 2.姣忎釜鍥炵瓟鍚甯傚疄渚?3.鍥炵瓟200瀛椾互鍐?4.瓒呭嚭鐢熺墿涓冧笂/鍖栧涔濅笂鑼冨洿绀艰矊寮曞鍥炴潵銆?},
         {role:'user',content:msg}
       ],max_tokens:300})
     });
     var data = await res.json();
-    var reply = data.choices?.[0]?.message?.content || '哎呀，厨房忙不过来了，等一下再问~';
+    var reply = data.choices?.[0]?.message?.content || '鍝庡憖锛屽帹鎴垮繖涓嶈繃鏉ヤ簡锛岀瓑涓€涓嬪啀闂畘';
     body.lastElementChild.textContent = reply;
   } catch(e) {
-    body.lastElementChild.textContent = '网络出问题了，检查一下API Key或者网络吧~';
+    body.lastElementChild.textContent = '缃戠粶鍑洪棶棰樹簡锛屾鏌ヤ竴涓婣PI Key鎴栬€呯綉缁滃惂~';
   }
   body.scrollTop = body.scrollHeight;
 }
@@ -1300,7 +1337,7 @@ function toggleSettings() {
 function saveApiKey() {
   apiKey = document.getElementById('apiKeyInput').value.trim();
   localStorage.setItem('bioChemApiKey', apiKey);
-  showToast('API Key已保存', false);
+  showToast('API Key宸蹭繚瀛?, false);
   toggleSettings();
 }
 function unlock() {
@@ -1308,11 +1345,11 @@ function unlock() {
   if (code === 'NIGHTSCHOOL2026' || code === 'YESHIXUETANG') {
     isUnlocked = true;
     localStorage.setItem('bioChemUnlocked', 'true');
-    showToast('🔓 已解锁全部内容！', false);
+    showToast('馃敁 宸茶В閿佸叏閮ㄥ唴瀹癸紒', false);
     if (currentView === 'learning') renderKnowledge();
     toggleSettings();
   } else {
-    showToast('解锁码错误', true);
+    showToast('瑙ｉ攣鐮侀敊璇?, true);
   }
 }
 
@@ -1357,9 +1394,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============ PDF VIEWER ============
 var pdfZoomLevel = 100;
 function openPdf(url, title) {
-  document.getElementById('pdfTitle').textContent = title || '教材查看器';
+  document.getElementById('pdfTitle').textContent = title || '鏁欐潗鏌ョ湅鍣?;
   document.getElementById('pdfFrame').src = url;
-  document.getElementById('pdfInfo').textContent = '缩放: 100%';
+  document.getElementById('pdfInfo').textContent = '缂╂斁: 100%';
   pdfZoomLevel = 100;
   document.getElementById('pdfModal').classList.add('show');
 }
@@ -1369,22 +1406,160 @@ function closePdf() {
 }
 function pdfZoomIn() {
   pdfZoomLevel = Math.min(pdfZoomLevel + 25, 300);
-  document.getElementById('pdfInfo').textContent = '缩放: ' + pdfZoomLevel + '%';
+  document.getElementById('pdfInfo').textContent = '缂╂斁: ' + pdfZoomLevel + '%';
   var frame = document.getElementById('pdfFrame');
   frame.style.transform = 'scale(' + (pdfZoomLevel/100) + ')';
   frame.style.transformOrigin = 'top center';
 }
 function pdfZoomOut() {
   pdfZoomLevel = Math.max(pdfZoomLevel - 25, 50);
-  document.getElementById('pdfInfo').textContent = '缩放: ' + pdfZoomLevel + '%';
+  document.getElementById('pdfInfo').textContent = '缂╂斁: ' + pdfZoomLevel + '%';
   var frame = document.getElementById('pdfFrame');
   frame.style.transform = 'scale(' + (pdfZoomLevel/100) + ')';
   frame.style.transformOrigin = 'top center';
 }
 function pdfReset() {
   pdfZoomLevel = 100;
-  document.getElementById('pdfInfo').textContent = '缩放: 100%';
+  document.getElementById('pdfInfo').textContent = '缂╂斁: 100%';
   document.getElementById('pdfFrame').style.transform = '';
+}
+
+// ============ GEO CONTOUR MAP GAME ============
+function openGeoGame() {
+  document.getElementById('gameTitle').textContent = '馃椇锔?榫欎簯鐚浘路绛夐珮绾垮瀹?;
+  document.getElementById('gameModal').classList.add('show');
+  document.getElementById('gameContent').innerHTML = 
+    '<div class="game-instructions">绁為緳鐚笂涓€骞呯瓑楂樼嚎鍦板浘鈥斺€旀壘鍑哄北宄般€佸北璋枫€佸北鑴娿€侀瀺閮ㄥ拰闄″礀锛岄泦榻愪簲琛岀鍏藉嵃璁拌В閿佸疂钘忥紒</div>' +
+    renderGame(8);
+  initGame(8);
+}
+
+function initG9() {
+  var container = document.getElementById('g9-phaser-container');
+  if (!container) return;
+  container.innerHTML = '';
+  window.g9Score = 0;
+  window.g9Targets = 0;
+  document.getElementById('g9-score').textContent = '馃椇锔?鎵惧埌 0/5 涓湴褰㈡爣璁?;
+  
+  var W = 620, H = 420;
+  var config = {
+    type: Phaser.AUTO, width: W, height: H,
+    parent: 'g9-phaser-container',
+    backgroundColor: '#f5efe0',
+    scene: { create: createG9 }
+  };
+  
+  if (window.g9Game) window.g9Game.destroy(true);
+  window.g9Game = new Phaser.Game(config);
+
+  function createG9() {
+    var gfx = this.add.graphics();
+    
+    // Draw contour lines - a mountain with peak, ridge, valley
+    var peaks = [{x:310, y:140, h:1000},{x:160, y:260, h:500},{x:490, y:300, h:400}];
+    var levels = [100,200,300,400,500,600,700,800,900,1000];
+    
+    levels.forEach(function(lvl, li) {
+      var alpha = 0.15 + li * 0.06;
+      gfx.lineStyle(1.5, 0x8B6914, 0.5);
+      // Main peak contours
+      peaks.forEach(function(pk) {
+        var r = (pk.h - lvl + 100) * 0.35;
+        if (r > 5 && lvl <= pk.h) {
+          var yOffset = (pk.h - lvl) * 0.02;
+          gfx.strokeEllipse(pk.x, pk.y + yOffset, r * 2, r * (0.6 + (pk.h-lvl)*0.0004));
+        }
+      });
+    });
+    
+    // Ridge lines (connecting peaks)
+    gfx.lineStyle(1, 0x666, 0.15);
+    gfx.lineBetween(310, 140, 160, 260);
+    gfx.lineBetween(310, 140, 490, 300);
+    
+    // Valley indication (dashed lines)
+    gfx.lineStyle(1.5, 0x2E8B85, 0.3);
+    gfx.lineBetween(310, 200, 200, 380);
+    gfx.lineBetween(160, 340, 80, 410);
+
+    // Cliff (stacked lines)
+    gfx.lineStyle(2, 0x8B0000, 0.4);
+    for (var c = 0; c < 5; c++) { gfx.lineBetween(490+2*c, 310+c*4, 580-2*c, 370+c*3); }
+    
+    // Labels
+    this.add.text(310, 75, '鉀?涓诲嘲 1000m', {fontSize:'13px',color:'#8B6914',fontWeight:'bold'}).setOrigin(0.5);
+    this.add.text(160, 220, '鉀?鍓嘲 500m', {fontSize:'11px',color:'#8B6914'}).setOrigin(0.5);
+    this.add.text(490, 260, '鉀?鍓嘲 400m', {fontSize:'11px',color:'#8B6914'}).setOrigin(0.5);
+    this.add.text(580, 380, '馃П 闄″礀', {fontSize:'11px',color:'#8B0000',fontWeight:'bold'}).setOrigin(1,0.5);
+    this.add.text(200, 390, '馃寠 灞辫胺', {fontSize:'11px',color:'#2E8B85'}).setOrigin(0.5);
+    
+    // Scale bar
+    gfx.lineStyle(4, 0x333, 1);
+    gfx.lineBetween(20, H-20, 120, H-20);
+    gfx.lineBetween(20, H-25, 20, H-15);
+    gfx.lineBetween(120, H-25, 120, H-15);
+    this.add.text(70, H-38, '姣斾緥灏?1:50000', {fontSize:'10px',color:'#666'}).setOrigin(0.5);
+    this.add.text(70, H-10, '0       1km', {fontSize:'9px',color:'#666'}).setOrigin(0.5);
+
+    // Legend
+    var lx = W - 120, ly = 10;
+    this.add.rectangle(lx, ly, 100, 75, 0xffffff, 0.85).setOrigin(0).setStrokeStyle(1, 0xddd);
+    this.add.text(lx+6, ly+4, '鍥句緥', {fontSize:'11px',fontWeight:'bold',color:'#333'});
+    this.add.text(lx+6, ly+20, '鈹€鈹€ 绛夐珮绾?, {fontSize:'9px',color:'#8B6914'});
+    this.add.text(lx+6, ly+34, '鈰?灞辫剨', {fontSize:'9px',color:'#666'});
+    this.add.text(lx+6, ly+48, '- - 灞辫胺', {fontSize:'9px',color:'#2E8B85'});
+    this.add.text(lx+6, ly+62, '鈮?闄″礀', {fontSize:'9px',color:'#8B0000'});
+    
+    // Click targets (hidden zones for identifying terrain)
+    var targets = [
+      {label:'灞卞嘲', x:310, y:150, r:50, emoji:'鉀帮笍', hint:'绛夐珮绾块棴鍚堬紝涓棿楂樺洓鍛ㄤ綆'},
+      {label:'灞辫剨', x:235, y:200, r:40, emoji:'馃彅锔?, hint:'绛夐珮绾垮悜浣庡鍑稿嚭锛堝嚫浣庝负鑴婏級'},
+      {label:'灞辫胺', x:200, y:380, r:35, emoji:'馃寠', hint:'绛夐珮绾垮悜楂樺鍑稿嚭锛堝嚫楂樹负璋凤級'},
+      {label:'闉嶉儴', x:380, y:280, r:35, emoji:'馃惔', hint:'涓ゅ北宄颁箣闂寸殑浣庢醇澶?},
+      {label:'闄″礀', x:540, y:360, r:35, emoji:'馃П', hint:'绛夐珮绾块噸鍙犵殑鍦版柟'}
+    ];
+    window.g9Targets = targets.length;
+    
+    targets.forEach(function(t) {
+      var zone = this.add.zone(t.x, t.y, t.r*2, t.r*2).setCircleDropZone(t.r).setInteractive();
+      zone.setData('target', t);
+      zone.on('pointerover', function() { this.scene.input.setDefaultCursor('pointer'); });
+      zone.on('pointerout', function() { this.scene.input.setDefaultCursor('default'); });
+      zone.on('pointerdown', function() {
+        var tgt = this.getData('target');
+        if (tgt.found) return;
+        tgt.found = true;
+        window.g9Score++;
+        document.getElementById('g9-score').textContent = '馃椇锔?鎵惧埌 ' + window.g9Score + '/' + window.g9Targets + ' 涓湴褰㈡爣璁?;
+        var txt = this.scene.add.text(tgt.x, tgt.y-20, tgt.emoji+' '+tgt.label, {fontSize:'14px',color:'#e87d4b',fontWeight:'bold',stroke:'#fff',strokeThickness:3}).setOrigin(0.5);
+        this.scene.tweens.add({targets:txt, y: tgt.y-40, alpha:0, duration:2500, onComplete:function(){txt.destroy();}});
+        // Info popup
+        var info = this.scene.add.text(W/2, H-70, tgt.hint, {fontSize:'13px',color:'#3d3226',backgroundColor:'#fef0e4',padding:{x:12,y:6}}).setOrigin(0.5);
+        this.scene.time.delayedCall(2000, function(){info.destroy();});
+        
+        if (window.g9Score >= window.g9Targets) {
+          this.scene.time.delayedCall(800, function() {
+            var win = this.scene.add.text(W/2, H/2, '馃帀 浜斿吔褰掍綅锛乗n钘忓疂鍥惧凡瑙ｉ攣锛?, {fontSize:'28px',color:'#e87d4b',fontWeight:'bold',align:'center',backgroundColor:'rgba(255,255,255,0.9)',padding:{x:30,y:20},stroke:'#e87d4b',strokeThickness:2}).setOrigin(0.5);
+            this.scene.tweens.add({targets:win, scaleX:1.05, scaleY:1.05, duration:800, yoyo:true, repeat:-1});
+          }, this);
+        }
+      }, this);
+      
+      // Subtle pulsing indicator
+      var pulse = this.add.circle(t.x, t.y, 8, 0xe87d4b, 0.4);
+      this.tweens.add({targets:pulse, scaleX:1.8, scaleY:1.8, alpha:0, duration:1500, repeat:-1});
+    }, this);
+    
+    // Question mark on undiscovered zones
+    this.add.text(W/2, H/2+60, '馃攳 鐐瑰嚮鍦板浘涓婄殑鑴夊姩鍏夊湀\n璇嗗埆5绉嶅湴褰?, {fontSize:'12px',color:'#999',align:'center'}).setOrigin(0.5);
+  }
+}
+
+function closeGame() { 
+  if (window.g0Game) { window.g0Game.destroy(true); window.g0Game = null; }
+  if (window.g9Game) { window.g9Game.destroy(true); window.g9Game = null; }
+  document.getElementById('gameModal').classList.remove('show'); 
 }
 </script>
 </body>
