@@ -287,6 +287,14 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
         <!-- filled by JS -->
       </div>
     </div>
+    <div class="course-section" style="margin-top:32px">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <h2 style="margin-bottom:0">🚀 项目制学习</h2>
+        <a href="projects/" style="background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;padding:8px 20px;border-radius:20px;font-size:.82rem;font-weight:600;text-decoration:none;transition:.2s">查看全部项目 →</a>
+        <a href="sections/" style="background:var(--blue-600);color:#fff;padding:8px 20px;border-radius:20px;font-size:.82rem;font-weight:600;text-decoration:none;transition:.2s">📑 全部章节索引 →</a>
+        <span style="font-size:.75rem;color:var(--gray-400)">每小节独立页面，内容全面升级</span>
+      </div>
+    </div>
     <div class="resource-section">
       <h2>📋 教材资源库</h2>
       <div class="res-grid" id="resourceGrid">
@@ -634,8 +642,8 @@ function openSection(sectionId) {
     showUnlockModal();
     return;
   }
-  currentSectionId = sectionId;
-  navigateTo('learning', currentSubject);
+  // 跳转到独立小节页面
+  window.location.href = `sections/${currentSubject}/${sectionId}.html`;
 }
 
 // ============ LEARNING PAGE ============
@@ -707,8 +715,8 @@ function selectSection(sectionId) {
     showUnlockModal();
     return;
   }
-  currentSectionId = sectionId;
-  navigateTo('learning', currentSubject);
+  // 跳转到独立小节页面
+  window.location.href = `sections/${currentSubject}/${sectionId}.html`;
 }
 
 function renderContent(item) {
