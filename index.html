@@ -136,6 +136,10 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sa
 .sidebar-chapter .sc-sections .sc-item{padding:6px 16px 6px 32px;cursor:pointer;font-size:.75rem;color:var(--gray-500);transition:var(--transition);display:flex;align-items:center;gap:6px;border-left:2px solid transparent}
 .sidebar-chapter .sc-sections .sc-item:hover{background:var(--blue-50);color:var(--blue-700);border-left-color:var(--blue-400)}
 .sidebar-chapter .sc-sections .sc-item.active{background:var(--blue-50);color:var(--blue-700);border-left-color:var(--blue-600);font-weight:600}
+/* Flat sidebar items (new structure) */
+.lp-sidebar>.sidebar-title+.sc-item,.lp-sidebar>div:not(.sidebar-title)>.sc-item{padding:6px 16px 6px 24px;cursor:pointer;font-size:.75rem;color:var(--gray-500);transition:var(--transition);display:flex;align-items:center;gap:6px;border-left:2px solid transparent}
+.lp-sidebar .sc-item:hover{background:var(--blue-50);color:var(--blue-700);border-left-color:var(--blue-400)}
+.lp-sidebar .sc-item.active{background:var(--blue-50);color:var(--blue-700);border-left-color:var(--blue-600);font-weight:600}
 
 /* Content area */
 .lp-content{flex:1;overflow-y:auto;padding:24px 28px 40px}
@@ -756,14 +760,12 @@ function renderSidebar() {
     units[unitKey].push(item);
   });
   
-  let html = '<div class=\"sidebar-title\">📑 课程目录</div>';
+  let html = '<div class="sidebar-title">📑 课程目录</div>';
   Object.entries(units).forEach(([unitName, sections]) => {
-    html += `<div style="padding:4px 16px;font-size:.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-top:4px">${unitName.length > 20 ? unitName.substring(0,20)+'…' : unitName}</div>`;
+    html += '<div style="padding:6px 16px 2px;font-size:.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase">' + (unitName.length > 22 ? unitName.substring(0,22)+'…' : unitName) + '</div>';
     sections.forEach(sec => {
       const active = sec.id === currentSectionId;
-      html += `<div class=\"sc-item${active?' active':''}\" onclick=\"selectSection('${sec.id}')\">
-        <span>${sec.title.length > 18 ? sec.title.substring(0,18)+'…' : sec.title}</span>
-      </div>`;
+      html += '<div class="sc-item' + (active ? ' active' : '') + '" onclick="selectSection(\'' + sec.id + '\')"><span class="si-dot" style="' + (active ? 'background:var(--blue-500)' : 'background:var(--gray-300)') + ';flex-shrink:0;width:5px;height:5px;border-radius:50%"></span><span>' + (sec.title.length > 18 ? sec.title.substring(0,18)+'…' : sec.title) + '</span></div>';
     });
   });
   document.getElementById('lpSidebar').innerHTML = html;
@@ -970,10 +972,10 @@ function updateAIAssistant() {
   
   document.getElementById('aiAvatar').textContent = s ? s.icon : '🤖';
   document.getElementById('aiName').textContent = s ? s.name + '助教' : 'AI助教';
-  document.getElementById('aiRole').textContent = item ? '当前：' + item.section : '选一个知识点开始吧';
+  document.getElementById('aiRole').textContent = item ? '当前：' + item.title : '选一个知识点开始吧';
   
   document.getElementById('aiGreeting').textContent = item 
-    ? '👋 关于「' + item.section + '」有什么问题？我可以用生活中的例子帮你理解！'
+    ? '👋 关于「' + item.title + '」有什么问题？我可以用生活中的例子帮你理解！'
     : '👋 你好！我是AI学习助手，选一个知识点开始学习吧～';
 }
 
@@ -1003,9 +1005,10 @@ async function sendChat() {
   try {
     const items = ALL_DATA[currentSubject] || [];
     const item = items.find(d => d.id === currentSectionId);
+    var kpList = (item && item.concepts) ? item.concepts.map(function(c){ return c.title; }).join('；') : '';
     const systemPrompt = item 
-      ? `你是初中${SUBJECTS[currentSubject]?.name||''}学科AI助教。当前学生在学习「${item.section}」，核心知识点：${(item.keypoints||[]).join('；')}。请用生活化的例子解释，语言简洁，200字以内。`
-      : '你是初中全科AI学习助教，请用生活化的例子解释学生的问题，语言简洁，200字以内。';
+      ? '你是初中' + (SUBJECTS[currentSubject]?.name||'') + '学科AI助教。当前学生在学习「' + item.title + '」，核心知识点：' + kpList + '。请用生活化的例子解释，语言简洁，200字以内。'
+      : '你是初中全科AI学习助手，请用生活化的例子解释学生的问题，语言简洁，200字以内。';
     
     const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
@@ -1096,7 +1099,7 @@ let pdfZoomLevel = 100;
 let currentPdfItem = null;
 
 function openPdfViewer(item) {
-  if (!item || !item.pdf_file) return;
+  if (!item || !item.pdfFile) return;
   currentPdfItem = item;
   
   const modal = document.getElementById('pdfModal');
@@ -1104,19 +1107,19 @@ function openPdfViewer(item) {
   const iframe = document.getElementById('pdfIframe');
   
   // Update title
-  document.getElementById('pdfModalTitle').innerHTML = `📖 ${item.section} — ${item.unit || ''}`;
-  document.getElementById('pdfPageBadge').textContent = item.pdf_page ? `第 ${item.pdf_page} 页` : '';
+  document.getElementById('pdfModalTitle').innerHTML = '📖 ' + (item.title || '') + ' — ' + (item.unitChapter || '');
+  document.getElementById('pdfPageBadge').textContent = item.pdfPage ? '第 ' + item.pdfPage + ' 页' : '';
   
   // Check paywall
-  if (!item.free && !isUnlocked) {
+  if (!item.isFree && !isUnlocked) {
     paywall.style.display = 'flex';
     iframe.style.display = 'none';
     iframe.src = '';
   } else {
     paywall.style.display = 'none';
     iframe.style.display = 'block';
-    const page = item.pdf_page || 1;
-    iframe.src = `pdf/${item.pdf_file}#page=${page}&view=FitH`;
+    var page = item.pdfPage || 1;
+    iframe.src = 'pdf/' + encodeURIComponent(item.pdfFile) + '#page=' + page + '&view=FitH';
   }
   
   pdfZoomLevel = 100;
@@ -1162,7 +1165,7 @@ function updatePdfFab() {
   if (!fbPdfBtn) return;
   const items = ALL_DATA[currentSubject] || [];
   const item = items.find(d => d.id === currentSectionId);
-  fbPdfBtn.style.display = (item && item.pdf_file) ? 'flex' : 'none';
+  fbPdfBtn.style.display = (item && item.pdfFile) ? 'flex' : 'none';
 }
 
 // ============ RESOURCE LIBRARY ============
