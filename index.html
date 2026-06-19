@@ -562,18 +562,6 @@ function renderCourseCards() {
 }
 
 
-// ============ GRADE MODAL ============
-function openGradeModal(subjId) {
-  const s = SUBJECTS[subjId];
-  document.getElementById('gmIcon').textContent = s.icon;
-  document.getElementById('gmTitle').textContent = s.name;
-  document.getElementById('gmSubtitle').textContent = '请选择年级开始学习';
-  
-  const gradesDiv = document.getElementById('gmGrades');
-  gradesDiv.innerHTML = s.grades.map(g => 
-    `<button class="grade-btn${g===s.grades[0]?' selected':''}" data-grade="${g}" onclick="selectGrade(this,${g})">${g}年级</button>`
-  ).join('');
-  
 // ============ GRADE-SEMESTER MODAL ============
 let currentSemester = '';
 
@@ -631,38 +619,6 @@ function confirmGrade() {
   navigateTo('syllabus', currentSubject);
 }
 
-  // Group by unit
-  const items = (ALL_DATA[currentSubject] || []);
-  const units = {};
-  items.forEach(item => {
-    const unit = item.unit || '其他';
-    if (!units[unit]) units[unit] = { chapters: {} };
-    const ch = item.chapter || '未分类';
-    if (!units[unit].chapters[ch]) units[unit].chapters[ch] = [];
-    units[unit].chapters[ch].push(item);
-  });
-  
-  let html = '';
-  let unitIdx = 0;
-  Object.entries(units).forEach(([unitName, unitData]) => {
-    unitIdx++;
-    html += `<div style="margin-bottom:20px">
-      <div style="font-size:.95rem;font-weight:700;color:var(--gray-700);margin-bottom:10px;display:flex;align-items:center;gap:8px">
-        <span style="width:28px;height:28px;border-radius:8px;background:var(--blue-100);color:var(--blue-700);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700">${unitIdx}</span>
-        ${unitName}
-      </div>`;
-    
-    Object.entries(unitData.chapters).forEach(([chName, sections]) => {
-      const chId = 'ch-' + unitIdx + '-' + chName.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g,'');
-      html += `<div class="chapter-card" id="${chId}">
-        <div class="chapter-header" onclick="toggleChapter('${chId}')">
-          <div class="ch-left">
-            <div class="ch-num">${chName.substring(0,4)}</div>
-            <span class="ch-title">${chName.length > 20 ? chName.substring(0,20)+'...' : chName}</span>
-            <span class="ch-count">${sections.length}节</span>
-          </div>
-          <span class="ch-arrow">▼</span>
-        </div>
 // ============ SYLLABUS (CHAPTER OUTLINE) ============
 function renderSyllabus() {
   const s = SUBJECTS[currentSubject];
@@ -775,9 +731,50 @@ function openSectionById(sectionId) {
   const items = ALL_DATA[currentSubject] || [];
   const item = items.find(d => d.id === sectionId);
   if (!item) return;
-  // Navigate to section page
-  const sectionPath = `sections/${currentSubject}/${sectionId}.html`;
-  window.location.href = sectionPath;
+  // 在当前页面内渲染学习内容
+  currentSectionId = sectionId;
+  currentGrade = item.grade;
+  currentSemester = item.semester;
+  navigateTo('learning', currentSubject);
+}
+
+// ============ LEARNING VIEW RENDER ============
+function renderLearning() {
+  const s = SUBJECTS[currentSubject];
+  if (!s) return;
+  const items = ALL_DATA[currentSubject] || [];
+  const currentItem = items.find(d => d.id === currentSectionId);
+  if (!currentItem && items.length > 0) {
+    currentSectionId = items[0].id;
+  }
+  const item = items.find(d => d.id === currentSectionId);
+  if (!item) {
+    document.getElementById('lpContent').innerHTML = '<p style=\"text-align:center;padding:40px;color:var(--gray-400)\">请选择一个小节开始学习</p>';
+    return;
+  }
+  
+  // Update grade/semester from item
+  currentGrade = item.grade;
+  currentSemester = item.semester;
+  
+  // Breadcrumb
+  document.getElementById('lpBreadcrumb').innerHTML = 
+    `<span onclick=\"navigateTo('syllabus','${currentSubject}')\" style=\"cursor:pointer;color:var(--blue-500)\">${s.name}</span> / <span class=\"current\">${item.section || item.title}</span>`;
+  
+  // Unlock badge
+  const badge = document.getElementById('unlockBadge');
+  badge.style.display = 'inline-block';
+  badge.className = 'unlock-badge ' + (item.free || isUnlocked ? 'free' : 'locked');
+  badge.textContent = item.free || isUnlocked ? '免费' : '需解锁';
+  
+  // Render sidebar
+  renderSidebar();
+  
+  // Render content
+  renderContent(item);
+  
+  // Update AI assistant context
+  updateAIAssistant();
 }
 
 // ============ LEARNING VIEW SIDEBAR ============
@@ -821,8 +818,12 @@ function selectSection(sectionId) {
     showUnlockModal();
     return;
   }
-  // 跳转到独立小节页面
-  window.location.href = `sections/${currentSubject}/${sectionId}.html`;
+  // 在当前页面内渲染学习内容
+  currentSectionId = sectionId;
+  currentGrade = item ? item.grade : currentGrade;
+  currentSemester = item ? item.semester : currentSemester;
+  renderLearning();
+  updatePdfFab();
 }
 
 function renderContent(item) {
