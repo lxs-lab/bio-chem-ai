@@ -1,8 +1,16 @@
-# 智慧学堂 · 初中 AI 辅助学习
+# 智慧学堂 - 初中全科 AI 学习平台
 
-面向初中生物、化学、地理地图专题的 AI 辅助学习项目。当前版本保留静态单页能力，同时新增 Node 后端 API，方便后续扩展资料库、课程数据、AI 服务和用户系统。
+这是一个可直接部署到 GitHub Pages 的静态学习网站，覆盖初中多学科教材目录、知识点罗列、随堂测试、教材 PDF 对应页查看和右侧 AI 问答。
 
-地理七上第二章“地图”已升级为“长征路上的地图课”：用遵义、赤水、泸定桥、夹金山、吴起五个长征场景串联方向、比例尺、图例、等高线、分层设色、地形剖面图和综合读图训练。
+## 在线访问
+
+如果 GitHub Pages 已启用，访问：
+
+```text
+https://lxs-lab.github.io/bio-chem-ai/
+```
+
+分享给别人时，直接发送这个链接即可。页面内每个小节都会生成 `#section=...` 形式的链接，打开后可以直达对应课程。
 
 ## 本地运行
 
@@ -10,52 +18,43 @@
 npm start
 ```
 
-打开：
+然后打开：
 
 ```text
 http://localhost:3000
 ```
 
-## API
+不建议直接双击 `index.html`，因为浏览器可能限制本地 `fetch` 读取 `data/full_courses.json`。
 
-- `GET /api/health`：服务健康检查
-- `GET /api/courses`：三科课程概览
-- `GET /api/courses/bio`：生物课程数据
-- `GET /api/courses/chem`：化学课程数据
-- `GET /api/courses/geo`：地理地图专题数据
-- `GET /api/resources`：WPS 课程资料索引，支持 `subject`、`type`、`q` 查询参数
+## 数据说明
 
-## 资料同步
+- `data/full_courses.json`：全量课程数据，包含 747 个有效小节/课题。
+- `pdf/`：教材与课程标准 PDF。
+- `scripts/build_full_app.py`：从全量目录和已有精修数据生成统一课程数据。
+- `scripts/render_full_index.py`：生成新的动态主页。
 
-项目同步了 WPS 资料库中的关键资料：
-
-- `docs/course-design/`：课程设计文档
-- `pdf/义务教育地理课程标准2022版.pdf`
-- `pdf/义务教育地理七年级上册.pdf`
-- `data/resource_manifest.json`：WPS 资料库全量索引
-
-刷新资源索引：
+重新生成数据和主页：
 
 ```bash
-npm run sync:resources
+python scripts/build_full_app.py
+python scripts/render_full_index.py
 ```
 
-如果资料根目录变化，可以指定：
+## 教材页码
+
+系统同时显示：
+
+- 书本页码：教材目录中的印刷页码，例如 `P2`。
+- PDF 页码：浏览器 PDF 查看器实际跳转页码，例如 `PDF 第 8 页`。
+
+两者不同是正常现象，因为 PDF 前面包含封面、版权页、目录等页面。
+
+## 上传 GitHub
 
 ```bash
-COURSE_SOURCE_ROOT=/path/to/初中生课程培训 npm run sync:resources
+git add .
+git commit -m "Build full curriculum learning workspace"
+git push origin master
 ```
 
-## 部署说明
-
-`index.html` 仍可作为静态页面运行，适合 GitHub Pages。通过 `node server.js` 运行时，前端会优先从 `/api/courses/:subject` 加载数据；API 不可用时会自动使用页面内置数据作为回退。
-
-## 地理数据生成
-
-长征叙事版地理数据由脚本生成：
-
-```bash
-npm run build:geo
-```
-
-该命令会同步更新 `data/geo_data.json` 和 `index.html` 中的静态 `GEO_DATA` 回退数据。
+推送后，如果仓库启用了 GitHub Pages，等待 Pages 自动部署完成即可通过线上链接访问。

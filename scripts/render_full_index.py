@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+
+HTML = r'''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -305,3 +309,7 @@ init();
 </script>
 </body>
 </html>
+'''
+
+(ROOT / "index.html").write_text(HTML, encoding="utf-8")
+print("Wrote index.html")
