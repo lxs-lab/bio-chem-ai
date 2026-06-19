@@ -583,7 +583,7 @@ function renderCourseCards() {
 
 
 // ============ GRADE-SEMESTER MODAL ============
-let currentSemester = '';
+let currentSemester = '上';
 
 function openGradeSemesterModal(subjId) {
   const s = SUBJECTS[subjId];
@@ -636,6 +636,15 @@ function closeGradeModal() {
 
 function confirmGrade() {
   closeGradeModal();
+  // Ensure grade/semester are set to valid values
+  var s = SUBJECTS[currentSubject];
+  if (s && s.semesters && s.semesters.length > 0) {
+    var valid = s.semesters.some(function(sm){return sm.grade === currentGrade && sm.semester === currentSemester;});
+    if (!valid) {
+      currentGrade = s.semesters[0].grade;
+      currentSemester = s.semesters[0].semester;
+    }
+  }
   navigateTo('syllabus', currentSubject);
 }
 
